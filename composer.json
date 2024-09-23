@@ -1,0 +1,8 @@
+{
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "teamcoltra/php-video-to-gif": "dev-main",
+        "cloudmersive/cloudmersive_video_api_client": "^1.0"
+    }
+}
