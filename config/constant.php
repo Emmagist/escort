@@ -7,7 +7,7 @@
 define("DB_HOST",             "localhost");
 define("DB_USER",             "root");
 define("DB_PASSWORD",         "Emmagist@1994204"); //Emmagist@1994204;
-define("DB_NAME",             "escort");
+define("DB_NAME",             "escorts");
 
 // Online Database
 // define("DB_HOST",              "localhost");

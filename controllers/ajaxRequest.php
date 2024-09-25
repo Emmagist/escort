@@ -2,6 +2,7 @@
 
 require_once "../config/db.php";
 // require_once "../phpMailer.php";
+require_once "../vendor/autoload.php";
 
 class Ajax
 {
@@ -54,6 +55,26 @@ class Ajax
         }
     }
 
+    public static function getRequestById($token)
+    {
+        global $db;
+
+        $rows = [];
+        $result = $db->query("SELECT * FROM ". TBL_REQUESTS . "
+                INNER JOIN " . TBL_USERS . " 
+                ON " . TBL_REQUESTS . ".escortee = ". TBL_USERS . ".user_guid
+                INNER JOIN " . TBL_CATEGORY . " 
+                ON " . TBL_REQUESTS . ".category_id = ". TBL_CATEGORY . ".token_guid 
+                WHERE ". TBL_REQUESTS . ".entity = '$token'
+            ");
+        if (!empty($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            return $rows;
+        }
+    }
+
     public static function getAllEscortRequest($token)
     {
         global $db;
@@ -61,10 +82,10 @@ class Ajax
         $rows = [];
         $result = $db->query("SELECT * FROM ". TBL_REQUESTS . "
                 INNER JOIN " . TBL_USERS . " 
-                ON " . TBL_REQUESTS . ".escorter = ". TBL_USERS . ".user_guid
+                ON " . TBL_REQUESTS . ".escortee = ". TBL_USERS . ".user_guid
                 INNER JOIN " . TBL_CATEGORY . " 
                 ON " . TBL_REQUESTS . ".category_id = ". TBL_CATEGORY . ".token_guid 
-                WHERE ". TBL_REQUESTS . ".escorter = '$token' ORDER BY id DESC
+                WHERE ". TBL_REQUESTS . ".escorter = '$token'
             ");
         if (!empty($result)) {
             while ($row = $result->fetch_assoc()) {

@@ -11,12 +11,16 @@
         <h4 class="form-title mb-4">Upload Profile</h4>
         <div class="row escort_profile">
             <form action=""method="POST" id="upload_porn">
+              <div class="mb-3">
+                <li class="alert alert-success list-unstyled" style="display: none;" id="reg_success"></li>
+                <li class="alert alert-danger list-unstyled" style="display: none;" id="reg_danger"></li>
+              </div>
               <div class="row">
                 <div class="col-md-6">
                   <label for="title">Title</label>
                   <input type="text" class="form-control mb-3" name="title" id="title">
                 </div>
-                <input type="hidden" class="form-control mb-3" name="token" value="12345">
+                <input type="hidden" class="form-control mb-3" name="token" value="67543388$re386yf32198765430op876y$">
                 <div class="col-md-6">
                   <label for="hash_tag">Hash Tag</label>
                   <input type="text" class="form-control mb-3" name="hash_tag" id="hash_tag">
@@ -54,9 +58,22 @@
               $('#post_button').html('Uploading...');
           },
           success: (param) => {
-              if (param) {
-                $('#post_button').html('Uploaded');
-              }
+            if (param.success) {
+              $('#post_button').html('Uploaded');
+              $('#reg_success').fadeIn()
+              $('#reg_success').text(param.success);
+              setInterval(() => {
+                $('#reg_success').fadeOut();
+                location.reload();
+              }, 5000);
+            }else if(param.error){
+              $('#post_button').html('Upload');
+              $('#reg_danger').fadeIn()
+              $('#reg_danger').text(param.error);
+              setInterval(() => {
+                $('#reg_danger').fadeOut();
+              }, 5000);
+            }
           }
       })
       return false;

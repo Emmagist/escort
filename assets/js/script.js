@@ -38,7 +38,7 @@ $('#registeration_form').submit(function () {
                 setInterval(() => {
                     $('#reg_success').fadeOut();
                     location.reload();
-                }, 5000);
+                }, 7000);
             }else if(param.error){
                 $('#reg_danger').fadeIn()
                 $('#reg_danger').text(param.error);
@@ -52,7 +52,8 @@ $('#registeration_form').submit(function () {
 });
 
 //login
-$('#login_form').submit(function () {
+$('#login_form').submit(function (event) {
+    event.preventDefault();
     const formData = new FormData(this);
     $.ajax({
         url: 'controllers/fetchAjax.php?pg=201',

@@ -189,10 +189,10 @@
     echo json_encode($outPut);
   }
 
-  if ($_GET['table']) {
-    $token = $_GET['table'];exit;
+  if ($_GET['req_vw']) {
+    $token = $_GET['req_vw'];//exit;
     $outPut = '';
-    var_dump(Ajax::getAllEscortRequest($token));exit;
+    // var_dump(Ajax::getAllEscortRequest($token));exit;
 
     if (Ajax::getAllEscortRequest($token)) {
       $outPut .= '<table class="table text-nowrap mb-0 align-middle">
@@ -206,9 +206,6 @@
                         </th>
                         <th class="border-bottom-0">
                           <h6 class="fw-semibold mb-0">Service</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                          <h6 class="fw-semibold mb-0">Amount</h6>
                         </th>
                         <th class="border-bottom-0">
                           <h6 class="fw-semibold mb-0">Comment</h6>
@@ -226,37 +223,30 @@
                     </thead>
                     <tbody>';
                     foreach (Ajax::getAllEscortRequest($token) as $key) {
+                      $count = 1;
                       $outPut .= '
                       <tr>
-                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0">1</h6></td>
+                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0">'.$count++.'</h6></td>
                         <td class="border-bottom-0">  
-                            <h6 class="fw-semibold mb-0 fs-4">$3.9</h6>                         
+                            <h6 class="fw-semibold mb-0 fs-4">'.ucwords($key['name']).'</h6>                         
                         </td>
                         <td class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0 fs-4">$3.9</h6>
+                            <h6 class="fw-semibold mb-0 fs-4">'.ucwords($key['category']).'</h6>
                         </td>
                         <td class="border-bottom-0">
-                          <h6 class="fw-semibold mb-0 fs-4">$3.9</h6>
+                            <p class="mb-0 fw-normal">'.ucfirst($key['request_comments']).'</p>
                         </td>
                         <td class="border-bottom-0">
-                            <p class="mb-0 fw-normal">Elite Admin</p>
-                        </td>
-                        <td class="border-bottom-0">
-                          <h6 class="fw-semibold mb-0 fs-4">$3.9</h6>
-                        </td>
-                        <td class="border-bottom-0">
-                          <h6 class="fw-semibold mb-0 fs-4">$3.9</h6>
+                          <h6 class="fw-semibold mb-0 fs-4">'.Database::dateFormat($key['created_at']).'</h6>
                         </td>
                         <td class="border-bottom-0">
                           <select name="" id="" class="form-control">
-                            <option value="">Hold</option>
-                            <option value="">Accept</option>
-                            <option value="">Decline</option>
+                            <option value="">'.ucfirst($key['request_status']).'</option>
                           </select>
                         </td>
                         <td class="border-bottom-0">
                           <div class="d-flex">
-                            <a class="ti ti-pencil text-warning" style="padding-right: 6px; font-size:18px;"></a>
+                            <a data-id="`" class="ti ti-pencil text-warning view_request" style="padding-right: 6px; font-size:18px;" onclick=viewRequest(`'.$key['entity'].'`)></a>
                             <a class="ti ti-article text-success" style="font-size:18px;"></a>
                         </div>
                         </td>
@@ -265,6 +255,47 @@
                     $outPut .= '</tbody>
                   </table>';
       
+    }
+
+    echo json_encode($outPut);
+  }
+
+  if ($_GET['view_req']) {
+    $token = $_GET['view_req'];
+    $outPut = '';
+
+    if (Ajax::getRequestById($token)) {
+      foreach (Ajax::getRequestById($token) as $key) {
+        $outPut .= '
+        <form action="" class="form-group" id="acceptForm">
+          <label>Name</label>
+          <input type="text" class="form-control mb-3" id="date" value="'.$key['name'].'" disabled>
+          <label>Service</label>
+          <input type="text" class="form-control mb-3" id="time" value="'.$key['category'].'" disabled>
+          <label>Click the box to Accept/Decline the service</label>
+          <select name="" id="request_status" class="form-control mb-3">
+            <option value="'.$key['request_status'].'">'.ucfirst($key['request_status']).'</option>
+            <option value="accept">Accept</option>
+            <option value="decline">Decline</option>
+          </select>
+          <label for="start">Service Start At</label>
+          <input type="text" class="form-control mb-3" value="'.$key['service_time_start'].'" id="start" disabled>
+          <label for="end">Service End At</label>
+          <input type="text" class="form-control mb-3" value="'.$key['service_time_end'].'" id="end" disabled>
+          <input type="hidden" class="form-control mb-3" value="'.$key['escorter'].'" name="escortr" disabled>
+          <input type="hidden" class="form-control mb-3" value="'.$key['escortee'].'" name="escortee" disabled>';
+          if($key['request_comments']):
+          $outPut .= ' <label for="req_com">Note</label>
+          <textarea class="form-control mb-3" id="req_com" value="'.$key['request_comments'].'" disabled>'.$key['request_comments'].'</textarea>';
+          endif;
+          $outPut .= '<label for="comment">Do you have any request for your meet-up? Feel free to tell the person here</label>
+          <textarea class="form-control mb-3" id="comment" placeholder="Your request here"></textarea>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success" id="send-request">Send</button>
+          </div>
+        </form>
+        ';
+      }
     }
 
     echo json_encode($outPut);

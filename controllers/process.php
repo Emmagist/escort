@@ -1,6 +1,6 @@
 <?php
 
-    require_once "investors.php";
+    require_once "users.php";
 
     // $errors = [];
     // $success = [];
@@ -19,7 +19,7 @@
             $errors = "Password is required!";
         }
 
-        if (Ajax::getUserByEmail($email) > 0) { 
+        if (Users::getUserByEmail($email) > 0) { 
 
             // Set cookie
             // echo $_POST['checkbox'];exit; 
@@ -35,8 +35,8 @@
             }
         }
         if (empty($errors)) {//echo "done";exit;
-            if (Ajax::getUserByEmail(($email))) {
-                foreach (Ajax::getUserByEmail($email) as $userInfo) {
+            if (Users::getUserByEmail(($email))) {
+                foreach (Users::getUserByEmail($email) as $userInfo) {
                     if (password_verify($password, $userInfo['password'])) {
                         $_SESSION['token'] = $userInfo['user_guid'];
                         $_SESSION['email'] = $userInfo['email'];

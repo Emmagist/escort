@@ -29,7 +29,7 @@
     // event.preventDefault(); 
     const token = '<?=$token?>';
     $.ajax({
-        url: 'controllers/ajaxGet.php?table='+token,
+        url: 'controllers/ajaxGet.php?req_vw='+token,
         method: 'GET',
         dataType: 'json',
         data: token,
@@ -45,5 +45,46 @@
         }
     })
 
+  })
+
+  function viewRequest(params) {
+      $('#view-request').modal('show');
+
+      $.ajax({
+          url: 'controllers/ajaxGet.php?view_req='+params,
+          method: 'GET',
+          dataType: 'json',
+          data: params,
+          contentType: false,
+          processData: false,
+          beforeSend: () => {
+              $('#modal-body-view').html('Loading contents...');
+          },
+          success: (param) => {
+              if (param) {
+                  $('#modal-body-view').html(param);
+              }
+          }
+      })
+  }
+
+  $('#acceptForm').submit(function () {
+      const formData = new FormData(this); //alert(formData);
+      $.ajax({
+          url: 'controllers/fetchAjax.php?pg=205',
+          method: 'POST',
+          dataType: 'json',
+          data: formData,
+          contentType: false,
+          processData: false,
+          beforeSend: () => {
+              $('#send-request').html('Sending...');
+          },
+          success: (param) => {
+              if (param) {
+              }
+          }
+      })
+      return false;
   })
 </script>

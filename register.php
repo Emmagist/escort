@@ -18,8 +18,8 @@
                 <p class="text-center">Your Social Campaigns</p>
                 <form action="" method="post" id="registeration_form">
                   <div class="mb-3">
-                  <li class="alert alert-success list-unstyled" style="display: none;" id="reg_danger"></li>
-                  <li class="alert alert-danger list-unstyled" style="display: none;" id="reg_success"></li>
+                  <li class="alert alert-success list-unstyled" style="display: none;" id="reg_succes"></li>
+                  <li class="alert alert-danger list-unstyled" style="display: none;" id="sreg_danger"></li>
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputtext1" class="form-label">Name</label>

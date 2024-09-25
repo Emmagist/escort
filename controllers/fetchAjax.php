@@ -3,7 +3,6 @@
 use Egulias\EmailValidator\EmailValidator;
 
 require_once "ajaxRequest.php";
-require_once "vendor/autoload.php";
 
 // Configure API key authorization: Apikey
 $config = Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Apikey', CLOUD_MERSIVE);
@@ -305,34 +304,34 @@ if ($pg == 204) {
     $target_file  = $target_dir . basename($_FILES["fileUpload"]["name"]);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    $check = getimagesize($_FILES["fileUpload"]["tmp_name"]);
-    if ($check == false) {
-        $error =  "File is not an image";
-        $uploadOk = 0;
-    }
+    // $check = getimagesize($_FILES["fileUpload"]["tmp_name"]);
+    // if ($check == false) {
+    //     $error =  "File is not an image";
+    //     $uploadOk = 0;
+    // }
 
     if (file_exists($target_file)) {
         $error = "Sorry, file already exists.";
         $uploadOk = 0;
     }
 
-    if ($_FILES["fileUpload"]["size"] > 500000) {
-        $error = "Sorry, your file is too large.";
-        $uploadOk = 0;
-    }
+    // if ($_FILES["fileUpload"]["size"] > 5000000) {
+    //     $error = "Sorry, your file is too large.";
+    //     $uploadOk = 0;
+    // }
 
-    if ($imageFileType != "mp3" && $imageFileType != "mp3" && $imageFileType != "mkv" && $imageFileType != "avi") {
+    if ($imageFileType != "mp3" && $imageFileType != "mp4" && $imageFileType != "mkv" && $imageFileType != "avi") {
         $error = "Sorry, only mp3, mp4, mkv videos are allowed.";
         $uploadOk = 0;
     }
 
     if ($uploadOk == 1 && empty($error)) {
-        $re= $apiInstance->videoConvertToGif($_FILES["fileUpload"]);
-        print_r($re);
+        // $re= $apiInstance->videoConvertToGif($_FILES["fileUpload"]);
+        // print_r($re);
         // echo 'Exception when calling VideoApi->videoConvertToGif: ', $e->getMessage(), PHP_EOL;
         $move_file = move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file);
         if ($move_file) {
-            $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', entity_guid = 'uuid()', title = '$title', contents = '$content', porn_video = '$target_file'");
+            $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', entity_guid = uuid(), title = '$title', contents = '$content', porn_video = '$target_file'");
             // var_dump($re);
             if ($result) {
                 $success = "Successfully uploaded...";

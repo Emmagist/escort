@@ -1,6 +1,6 @@
 <?php
 
-require_once "../config/db.php";
+require_once "config/db.php";
 // require_once "emailVerification.php";
 
 class Users
@@ -10,6 +10,12 @@ class Users
           global $db;
           return $db->selectData(TBL_CATEGORY, "*");
      }
+
+     public static function getUserByEmail($email)
+    {
+        global $db;
+        return $db->selectData(TBL_USERS, "*", "email = '$email'");
+    }
 
      // public static function getInvestorByUsername($username)
      // {
