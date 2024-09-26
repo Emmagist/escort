@@ -1,4 +1,5 @@
 <?php
+  require "inc/auth.php";
   require "inc/head.php";
   require "inc/aside.php";
   require "inc/header.php";

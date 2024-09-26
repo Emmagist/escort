@@ -1,5 +1,6 @@
 <?php
 
+  require "inc/auth.php";
   if (isset($_GET['pg'])) {
     $slug = $_GET['pg'];
   }

@@ -65,8 +65,20 @@ $('#login_form').submit(function (event) {
         beforeSend: () => {
             $('.login_button').html('Signing In...');
         },
-        success: (param) => {
-            if (param) {
+        success: (param) => { //alert(param)
+            if (param.success) {
+                $('#reg_success').fadeIn()
+                $('#reg_success').text(param.success);
+                setInterval(() => {
+                    $('#reg_success').fadeOut();
+                    location.href = '/';
+                }, 7000);
+            }else if(param.error){
+                $('#reg_danger').fadeIn()
+                $('#reg_danger').text(param.error);
+                setInterval(() => {
+                    $('#reg_danger').fadeOut();
+                }, 5000);
             }
         }
     })

@@ -1,4 +1,5 @@
 <?php
+  require "inc/auth.php";
   if (isset($_GET['pg'])) {
     $slug = $_GET['pg'];
   }
@@ -50,25 +51,25 @@
     $(this).attr("src", "assets/images/products/no-img-men.jpg");
   })
   
-  $(document).ready(function(event) {
-    // event.preventDefault(); 
-    const slug = '<?=$slug?>';
-    $.ajax({
-        url: 'controllers/ajaxGet.php?escorts='+slug,
-        method: 'GET',
-        dataType: 'json',
-        data: slug,
-        contentType: false,
-        processData: false,
-        beforeSend: () => {
-            $('.escort_row').html('Loading contents...');
-        },
-        success: (param) => {
-            if (param) {
-                $('.escort_row').html(param);
-            }
-        }
-    })
+  // $(document).ready(function(event) {
+  //   // event.preventDefault(); 
+  //   const slug = '<?//=$slug?>';
+  //   $.ajax({
+  //       url: 'controllers/ajaxGet.php?escorts='+slug,
+  //       method: 'GET',
+  //       dataType: 'json',
+  //       data: slug,
+  //       contentType: false,
+  //       processData: false,
+  //       beforeSend: () => {
+  //           $('.escort_row').html('Loading contents...');
+  //       },
+  //       success: (param) => {
+  //           if (param) {
+  //               $('.escort_row').html(param);
+  //           }
+  //       }
+  //   })
 
-  })
+  // })
 </script>

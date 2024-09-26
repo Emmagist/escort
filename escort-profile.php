@@ -1,4 +1,5 @@
 <?php
+    require "inc/auth.php";
     if (isset($_GET['esc']) && isset($_GET['sg'])) {
         $token = $_GET['esc'];
         $slug = $_GET['sg'];
@@ -16,13 +17,13 @@
             
         </div>
         <form action="" method="post" class="form-group" id="orderForm" style="display: none;">
-          <input type="hidden" class="form-control mb-3" disabled name="escotee_date" id="escotee_date">
-          <input type="hidden" class="form-control mb-3" disabled name="escotee_time" id="escotee_time">
-          <input type="hidden" class="form-control mb-3" disabled name="price" id="esc_price">
+          <input type="hidden" class="form-control mb-3" disabled id="escotee_date" name=" escortee_date">
+          <input type="hidden" class="form-control mb-3" disabled id="escotee_time" name="escortee_time">
+          <input type="hidden" class="form-control mb-3" disabled id="esc_price" name="esc_price">
           <input type="hidden" class="form-control mb-3" name="escort" id="escort_id">
           <input type="hidden" class="form-control mb-3" name="escortee" id="escortee_id">
           <input type="hidden" class="form-control mb-3" name="page" id="page">
-          <input type="hidden" name="invoice" id="ref_invoice">
+          <input type="hidden" name="ref_invoice" id="ref_invoice">
           <button type="submit" class="btn btn-success" id="paymentButton"></button>
         </form>
 <?php 
@@ -32,26 +33,26 @@
 <script src="https://checkout.squadco.com/widget/squad.min.js"></script>
 
 <script>
-    $(document).ready(function(event) {//alert('hey')
-        // event.preventDefault(); 
-        $.ajax({
-            url: 'controllers/ajaxGet.php?escorts=121',
-            method: 'GET',
-            dataType: 'json',
-            data: '121',
-            contentType: false,
-            processData: false,
-            beforeSend: () => {
-                $('.escort_row').html('Loading contents...');
-            },
-            success: (param) => {
-                if (param) {
-                    $('.escort_row').html(param);
-                }
-            }
-        })
+    // $(document).ready(function(event) {//alert('hey')
+    //     // event.preventDefault(); 
+    //     $.ajax({
+    //         url: 'controllers/ajaxGet.php?escorts=121',
+    //         method: 'GET',
+    //         dataType: 'json',
+    //         data: '121',
+    //         contentType: false,
+    //         processData: false,
+    //         beforeSend: () => {
+    //             $('.escort_row').html('Loading contents...');
+    //         },
+    //         success: (param) => {
+    //             if (param) {
+    //                 $('.escort_row').html(param);
+    //             }
+    //         }
+    //     })
 
-    })
+    // })
     
     $(document).ready(function(event) {//alert('hey')
         // event.preventDefault(); 
@@ -146,7 +147,7 @@
         const amount_pay = $('#esc_price').val(price);
         const page = $('#page').val(slug);
 
-        if (amount_pay.val() != '' && invoiceGen != '' && escort_id != '' && escortee_id != '' && escotee_date != '' && escotee_time != '') {
+        if (amount_pay != '' && invoiceGen != '' && escort_id != '' && escortee_id != '' && escotee_date != '' && escotee_time != '') {
             $('#paymentButton').click();
         }
     }

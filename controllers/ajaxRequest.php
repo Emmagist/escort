@@ -34,7 +34,18 @@ class Ajax
     public static function getAllEscortsBySlug($slug)
     {
         global $db;
-        return $db->selectData(TBL_ESCORTS, "*", "category_id = '$slug'");
+        $rows = [];
+        $result = $db->query("SELECT * FROM " . TBL_ESCORTS . "
+                 INNER JOIN " . TBL_USERS . " 
+                 ON " . TBL_USERS . ".user_guid = " . TBL_ESCORTS . ".user_id 
+                 WHERE " . TBL_ESCORTS . ".category_id = '$slug'
+            ");
+        if (!empty($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            return $rows;
+        }
     }
 
     public static function getEscortById($token)
@@ -45,7 +56,7 @@ class Ajax
         $result = $db->query("SELECT * FROM " . TBL_ESCORTS . "
                  INNER JOIN " . TBL_USERS . " 
                  ON " . TBL_USERS . ".user_guid = " . TBL_ESCORTS . ".user_id 
-                 WHERE " . TBL_ESCORTS . ".user_id = '$token'
+                 WHERE " . TBL_ESCORTS . ".entity_guid = '$token'
             ");
         if (!empty($result)) {
             while ($row = $result->fetch_assoc()) {

@@ -1,5 +1,5 @@
 <?php 
-  //require_once "controllers/process.php";
+  require_once "controllers/process.php";
   require "inc/head.php";
 ?>
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -15,7 +15,11 @@
                   <img src="../assets/images/logos/dark-logo.svg" width="180" alt="">
                 </a>
                 <p class="text-center">Your Social Campaigns</p>
-                <form action="" method="post" id="login_form">
+                <form action="" method="post" id="login_for">
+                  <div class="mb-3">
+                    <li class="alert alert-success list-unstyled" style="display: none;" id="reg_succes"></li>
+                    <li class="alert alert-danger list-unstyled" style="display: none;" id="sreg_danger"></li>
+                  </div>
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Username</label>
                     <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
@@ -33,7 +37,7 @@
                     </div>
                     <a class="text-primary fw-bold" href="forgot-password.php">Forgot Password ?</a>
                   </div>
-                  <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2 login_button">Sign In</button>
+                  <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2 login_button" name="login_button">Sign In</button>
                   <div class="d-flex align-items-center justify-content-center">
                     <p class="fs-4 mb-0 fw-bold">New to Modernize?</p>
                     <a class="text-primary fw-bold ms-2" href="register.php">Create an account</a>

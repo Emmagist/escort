@@ -105,12 +105,14 @@ if ($pg == 201) {
                     $_SESSION['role'] = $userInfo['role_id'];
                     // $_SESSION['username'] = $userInfo['username'];
                     $db->set('login', true);
-                    $redirect = $_REQUEST['page_url'];
-                    if ($redirect == '') {
-                        header('Location: ../');
-                    }else {
-                        header("Location: $redirect");
-                    }
+                    // $redirect = $_REQUEST['page_url'];
+                    // if ($redirect == '') {
+                    //     header('Location: ../');
+                    // }else {
+                    //     header("Location: $redirect");
+                    // }
+
+                    $success = "Login successfull...";
                 }
                 else {
                     $errors = "Email or password not correct!";
@@ -127,12 +129,12 @@ if ($pg == 201) {
 //payment form
 if ($pg == 202) {
     echo 202;
-    echo $escort_id = $db->escape($_POST['escort_id']);exit;
-    echo $amount = $db->escape($_POST['price']);
-    echo $escortee_id = $db->escape($_POST['escortee_id']);
+    echo $escort_id = $db->escape($_POST['escort']);
+    echo $amount = $db->escape($_POST['esc_price']);
+    echo $escortee_id = $db->escape($_POST['escortee']);
     echo $escortee_date = $db->escape($_POST['escortee_date']);
     echo $escortee_time = $db->escape($_POST['escortee_time']);
-    echo $invoice = $db->escape($_POST['ref_invoice']); exit;
+    echo $invoice = $db->escape($_POST['ref_invoice']);
     echo $invoice = $db->escape($_POST['page']); exit;
 
     $db->saveData(TBL_PAYMENTS_LOG, "user_guid = '$token', investment_plan_id = '$plan', invoice_code = '$invoice', paystack_invoice = '', amount = '$amount', payment_channel = 'FlutterWave', conditions = 'processing'");
@@ -263,7 +265,7 @@ if ($pg == 203) {
     if ($uploadOk == 1 && empty($error)) {
         $move_file = move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file);
         if ($move_file) {
-            $result = $db->saveData(TBL_ESCORTS, "user_id = '$token', category_id = '$category', entity_guid = 'uuid()', age = '$age', height = '$height', weight = '$weight', period_prices = '$period', prices = '$prices', currency = '$currency', gender = '$gender', comments = '$bio', ethnicity = '$ethnicity', hair_long = '$hair_long', hair_color = '$hair_color', bust_size = '$bust_size', smoker = '$smoker', alcohol = '$alcohol', build = '$build', sexual_orientation = '$sexual_orientation', profile_image = '$target_file'");
+            $result = $db->saveData(TBL_ESCORTS, "user_id = '$token', category_id = '$category', entity_guid = uuid(), age = '$age', height = '$height', weight = '$weight', period_prices = '$period', prices = '$prices', currency = '$currency', gender = '$gender', comments = '$bio', ethnicity = '$ethnicity', hair_long = '$hair_long', hair_color = '$hair_color', bust_size = '$bust_size', smoker = '$smoker', alcohol = '$alcohol', build = '$build', sexual_orientation = '$sexual_orientation', profile_image = '$target_file'");
             // var_dump($re);
             if ($result) {
                 $success = "Successfully uploaded...";

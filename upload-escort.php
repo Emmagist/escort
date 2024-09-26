@@ -1,4 +1,5 @@
 <?php
+  require "inc/auth.php";
   require "inc/head.php";
   require "inc/aside.php";
   require "inc/header.php";
@@ -11,6 +12,10 @@
         <h4 class="form-title mb-4">Upload Profile</h4>
         <div class="row escort_profile">
             <form action=""method="POST" id="upload_escort">
+              <div class="mb-3">
+                <li class="alert alert-success list-unstyled" style="display: none;" id="reg_success"></li>
+                <li class="alert alert-danger list-unstyled" style="display: none;" id="reg_danger"></li>
+              </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="category">Category</label>
@@ -162,8 +167,22 @@
               $('#post_button').html('Posting...');
           },
           success: (param) => {
-              if (param) {
-              }
+            if (param.success) {
+              $('#post_button').html('Uploaded');
+              $('#reg_success').fadeIn()
+              $('#reg_success').text(param.success);
+              setInterval(() => {
+                $('#reg_success').fadeOut();
+                location.reload();
+              }, 5000);
+            }else if(param.error){
+              $('#post_button').html('Upload');
+              $('#reg_danger').fadeIn()
+              $('#reg_danger').text(param.error);
+              setInterval(() => {
+                $('#reg_danger').fadeOut();
+              }, 5000);
+            }
           }
       })
       return false;

@@ -28,7 +28,7 @@
                 <span class="hide-menu">Dashboard</span>
               </a>
             </li>
-            <?php //if($_SESSION['role'] == 2):?>
+            <?php if($_SESSION['role'] == 2):?>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu text-capitalization">activities</span>
@@ -49,7 +49,7 @@
                 <span class="hide-menu">Upload Porn Vidoe</span>
               </a>
             </li>
-            <?php //endif?>
+            <?php endif?>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu text-capitalization">services</span>

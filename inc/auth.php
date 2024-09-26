@@ -7,7 +7,7 @@
 
     $ip_address = Database::getClientIp();
 
-    if (isset($_SESSION['token']) && isset($_SESSION['role']) && $_SESSION['role'] == 3) {
+    if (isset($_SESSION['token']) && isset($_SESSION['role']) && $_SESSION['role'] == 3 || $_SESSION['role'] == 2) {
         $token = $_SESSION['token'];
         $role = $_SESSION['role'];
     }else{
