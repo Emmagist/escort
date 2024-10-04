@@ -303,6 +303,7 @@ if ($pg == 204) {
 
     // File upload
     $target_dir = "../porn_video/";
+    $target_gif = "../porn_gif/";
     $target_file  = $target_dir . basename($_FILES["fileUpload"]["name"]);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
@@ -327,12 +328,12 @@ if ($pg == 204) {
         $uploadOk = 0;
     }
 
-    if ($uploadOk == 1 && empty($error)) {
-        // $re= $apiInstance->videoConvertToGif($_FILES["fileUpload"]);
-        // print_r($re);
-        // echo 'Exception when calling VideoApi->videoConvertToGif: ', $e->getMessage(), PHP_EOL;
+    if ($uploadOk == 1 && empty($error)) { 
         $move_file = move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file);
         if ($move_file) {
+            // $gif= $apiInstance->videoConvertToGif($target_file, $target_file, '560', '170', );
+            // $target_gif_file  = $target_gif . basename($gif);
+            // $move_file = move_uploaded_file($git, $target_gif_file);
             $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', entity_guid = uuid(), title = '$title', contents = '$content', porn_video = '$target_file'");
             // var_dump($re);
             if ($result) {

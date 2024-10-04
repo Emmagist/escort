@@ -50,19 +50,56 @@
               </a>
             </li>
             <?php endif?>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="request-connect.php" aria-expanded="false">
+                <span>
+                  <i class="ti ti-typography"></i>
+                </span>
+                <span class="hide-menu">Request Sugar Boy</span>
+              </a>
+            </li>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu text-capitalization">services</span>
             </li>
             <li id="navigation_lists"></li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="connect.php" aria-expanded="false">
-                <span>
-                  <i class="ti ti-typography"></i>
-                </span>
-                <span class="hide-menu">Sugar Daddy</span>
-              </a>
-            </li>
+            <?php if($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 's_daddy') : ?>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="connect.php" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-typography"></i>
+                  </span>
+                  <span class="hide-menu">Sugar Girl</span>
+                </a>
+              </li>
+            <?php elseif($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 's_mummy') : ?>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="connect.php" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-typography"></i>
+                  </span>
+                  <span class="hide-menu">Sugar Boy</span>
+                </a>
+              </li>
+            <?php elseif($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 'none') : ?>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="connect.php" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-typography"></i>
+                  </span>
+                  <span class="hide-menu">Sugar Mummy</span>
+                </a>
+              </li>
+            <?php elseif($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 'none') : ?>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="connect.php" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-typography"></i>
+                  </span>
+                  <span class="hide-menu">Sugar Daddy</span>
+                </a>
+              </li>
+            <?php endif; ?>
             <li class="sidebar-item">
               <a class="sidebar-link" href="sex-videos.php" aria-expanded="false">
                 <span>

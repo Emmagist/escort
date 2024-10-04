@@ -106,6 +106,25 @@ class Ajax
         }
     }
 
+    public static function getAllSexVideos()
+    {
+        global $db;
+        return $db->selectData(TBL_PORN_VIDEOS, "*");
+    }
+
+    public static function getSingleSexVideos($slug)
+    {
+        global $db;
+        return $db->selectData(TBL_PORN_VIDEOS, "*", "entity_guid = '$slug'");
+    }
+
+    public static function getRelatedSexVideos($slug, $cat)
+    {
+        global $db;
+        return $db->selectLimit(TBL_PORN_VIDEOS, "*", "sex_cat_id = '$cat' OR user_id = '$slug'", "title", 30);
+
+    }
+
     // public static function checkUserIfVerified($email)
     // {
     //     global $db;

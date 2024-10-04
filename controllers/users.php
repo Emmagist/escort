@@ -17,6 +17,12 @@ class Users
         return $db->selectData(TBL_USERS, "*", "email = '$email'");
     }
 
+    public static function getSingleSexVideos($slug)
+    {
+        global $db;
+        return $db->selectData(TBL_PORN_VIDEOS, "*", "entity_guid = '$slug'");
+    }
+
      // public static function getInvestorByUsername($username)
      // {
      //      global $db;

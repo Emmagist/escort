@@ -43,6 +43,7 @@
                         $_SESSION['role'] = $userInfo['role_id'];
                         $_SESSION['username'] = $userInfo['username'];
                         $_SESSION['gender'] = $userInfo['gender'];
+                        $_SESSION['connect'] = $userInfo['connect'];
                         $db->set('login', true);
                         $redirect = $_REQUEST['page_url'];
                         if ($redirect == '') {
