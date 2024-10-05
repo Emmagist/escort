@@ -29,7 +29,7 @@
                   <label for="age">Age</label>
                   <input type="number" class="form-control mb-3" name="age" id="age">
                 </div>
-                <input type="hidden" class="form-control mb-3" name="token" value="12345">
+                <input type="hidden" class="form-control mb-3" name="token" value="<?=$_SESSION['token']?>">
                 <div class="col-md-6">
                   <label for="gender">Gender</label>
                   <select name="gender" id="gender" class="form-control">

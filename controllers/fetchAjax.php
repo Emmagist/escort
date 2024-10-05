@@ -149,7 +149,6 @@ if ($pg == 203) {
     $category = $db->escape($_POST['category']);
     $age = $db->escape($_POST['age']);
     $token = $db->escape($_POST['token']);
-    $gender = $db->escape($_POST['gender']);
     $period = $db->escape($_POST['period']);
     $currency = $db->escape($_POST['currency']);
     $prices = $db->escape($_POST['prices']);
@@ -175,10 +174,6 @@ if ($pg == 203) {
 
     if (empty($token)) {
         $error = "Something went wrong!";
-    }
-
-    if (empty($gender)) {
-        $error = "Gender is required!";
     }
 
     if (empty($period)) {
@@ -265,7 +260,7 @@ if ($pg == 203) {
     if ($uploadOk == 1 && empty($error)) {
         $move_file = move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file);
         if ($move_file) {
-            $result = $db->saveData(TBL_ESCORTS, "user_id = '$token', category_id = '$category', entity_guid = uuid(), age = '$age', height = '$height', weight = '$weight', period_prices = '$period', prices = '$prices', currency = '$currency', gender = '$gender', comments = '$bio', ethnicity = '$ethnicity', hair_long = '$hair_long', hair_color = '$hair_color', bust_size = '$bust_size', smoker = '$smoker', alcohol = '$alcohol', build = '$build', sexual_orientation = '$sexual_orientation', profile_image = '$target_file'");
+            $result = $db->saveData(TBL_ESCORTS, "user_id = '$token', category_id = '$category', entity_guid = uuid(), age = '$age', height = '$height', weight = '$weight', period_prices = '$period', prices = '$prices', currency = '$currency', comments = '$bio', ethnicity = '$ethnicity', hair_long = '$hair_long', hair_color = '$hair_color', bust_size = '$bust_size', smoker = '$smoker', alcohol = '$alcohol', build = '$build', sexual_orientation = '$sexual_orientation', profile_image = '$target_file'");
             // var_dump($re);
             if ($result) {
                 $success = "Successfully uploaded...";
@@ -335,6 +330,129 @@ if ($pg == 204) {
             // $target_gif_file  = $target_gif . basename($gif);
             // $move_file = move_uploaded_file($git, $target_gif_file);
             $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', entity_guid = uuid(), title = '$title', contents = '$content', porn_video = '$target_file'");
+            // var_dump($re);
+            if ($result) {
+                $success = "Successfully uploaded...";
+            }else {
+                $error = "Something went wrong";
+            }
+        }else {
+            $error = "File not uploaded! Something went wrong";
+        }
+    }
+
+    echo json_encode(['error' => $error, 'success' => $success]);
+}
+
+//upload escort profile
+if ($pg == 205) {
+    $error = '';
+    $success = '';
+    $category = $db->escape($_POST['category']);
+    $age = $db->escape($_POST['age']);
+    $token = $db->escape($_POST['token']);
+    $currency = $db->escape($_POST['currency']);
+    $prices = $db->escape($_POST['prices']);
+    $business = $db->escape($_POST['business']);
+    $age_request = $db->escape($_POST['age_request']);
+    $ethnicity = $db->escape($_POST['ethnicity']);
+    $smoker = $db->escape($_POST['smoker']);
+    $alcohol = $db->escape($_POST['alcohol']);
+    $sexual_orientation = $db->escape($_POST['sexual_orientation']);
+    $weight_request = $db->escape($_POST['weight_request']);
+    $height_request = $db->escape($_POST['height_request']);
+    $complexion = $db->escape($_POST['complexion']);
+    $note = $_POST['note'];
+
+    if (empty($category)) {
+        $error = "Category is required!";
+    }
+
+    if (empty($age)) {
+        $error = "Age is required!";
+    }
+
+    if (empty($token)) {
+        $error = "Something went wrong!";
+    }
+
+    if (empty($currency)) {
+        $error = "Currency is required!";
+    }
+    if (empty($prices)) {
+        $error = "Prices is required!";
+    }
+
+    if (empty($business)) {
+        $error = "Business is required!";
+    }
+
+    if (empty($age_request)) {
+        $error = "All field is required!";
+    }
+
+    if (empty($ethnicity)) {
+        $error = "Ethnicity is required!";
+    }
+
+    if (empty($smoker)) {
+        $error = "Smoker is required!";
+    }
+
+    if (empty($alcohol)) {
+        $error = "Alcohol is required!";
+    }
+
+    if (empty($sexual_orientation)) {
+        $error = "Sexual orientation is required!";
+    }
+
+    if (empty($weight_request)) {
+        $error = "All field is required!";
+    }
+
+    if (empty($height_request)) {
+        $error = "All field is required!";
+    }
+
+    if (empty($complexion)) {
+        $error = "All field is required!";
+    }
+
+    if (empty($note)) {
+        $error = "All field is required!";
+    }
+
+    // File upload
+    $target_dir = "../sugar_mum_dad_boy_girl/";
+    $target_file  = $target_dir . basename($_FILES["fileUpload"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $check = getimagesize($_FILES["fileUpload"]["tmp_name"]);
+    if ($check == false) {
+        $error =  "File is not an image";
+        $uploadOk = 0;
+    }
+
+    if (file_exists($target_file)) {
+        $error = "Sorry, file already exists.";
+        $uploadOk = 0;
+    }
+
+    if ($_FILES["fileUpload"]["size"] > 500000) {
+        $error = "Sorry, your file is too large.";
+        $uploadOk = 0;
+    }
+
+    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+        $error = "Sorry, only JPG, JPEG, PNG files are allowed.";
+        $uploadOk = 0;
+    }
+
+    if ($uploadOk == 1 && empty($error)) {
+        $move_file = move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file);
+        if ($move_file) {
+            $result = $db->saveData(TBL_ESCORTS, "user_id = '$token', category_id = '$category', entity_guid = uuid(), age = '$age', currency = '$currency', prices = '$prices', occupation = '$business', age_request = '$age_request', ethnicity = '$ethnicity', smoker = '$smoker', alcohol = '$alcohol', weight_request = '$weight_request', height_request = '$height_request', complexion = '$complexion', upload_file = '$target_file', description = '$note'");
             // var_dump($re);
             if ($result) {
                 $success = "Successfully uploaded...";

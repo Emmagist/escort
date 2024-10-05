@@ -9,9 +9,35 @@
     
       <!--  Header End -->
       <div class="container-fluid">
-        <h4 class="form-title mb-4">Upload Profile</h4>
+        <h4 class="form-title mb-4">Request For Sugar
+          <?php
+          if ($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 's_mummy') {
+            echo 'Boy';
+          }elseif ($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 'none') {
+            echo 'Daddy';
+          }elseif ($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 's_daddy') {
+            echo 'Baby';
+          }elseif ($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 'none') {
+            echo 'Mummy';
+          }
+          ?>
+        </h4>
+        <p class="">We will be charging you
+        <?php
+          if ($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 's_mummy') {
+            echo '<strong>#50,000</strong>';
+          }elseif ($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 'none') {
+            echo '<strong>#35,000</strong>';
+          }elseif ($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 's_daddy') {
+            echo '<strong>#50,000</strong>';
+          }elseif ($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 'none') {
+            echo '<strong>#35,000</strong>';
+          }
+          ?>
+          for this service.
+        </p>
         <div class="row escort_profile">
-            <form action=""method="POST" id="upload_escort">
+            <form action=""method="POST" id="request_sugar">
               <div class="mb-3">
                 <li class="alert alert-success list-unstyled" style="display: none;" id="reg_success"></li>
                 <li class="alert alert-danger list-unstyled" style="display: none;" id="reg_danger"></li>
@@ -29,65 +55,30 @@
                   <label for="age">Age</label>
                   <input type="number" class="form-control mb-3" name="age" id="age">
                 </div>
-                <input type="hidden" class="form-control mb-3" name="token" value="12345">
-                <div class="col-md-6">
-                  <label for="gender">Gender</label>
-                  <select name="gender" id="gender" class="form-control">
-                    <option value="">Select Gender</option>
-                    <option value="female">Female</option>
-                    <option value="male">Male</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <label for="period">Period</label>
-                  <select name="period" id="period" class="form-control">
-                    <option value="">Select Period</option>
-                    <option value="hour">Hour</option>
-                    <option value="day">Day</option>
-                    <option value="week">Week</option>
-                  </select>
-                </div>
+                <input type="hidden" class="form-control mb-3" name="token" value="'<?=$_SESSION['token']?>'">
                 <div class="col-md-6">
                   <label for="currency">Currency</label>
-                  <select name="currency" id="currency" class="form-control">
+                  <select name="currency" id="currency" class="form-control mb-3">
                     <option value="">Select Currency</option>
                     <option value="ngn">NGN</option>
                     <option value="usd">USD</option>
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label for="prices">Price</label>
+                  <label for="prices">Offering Price</label>
                   <input type="number" class="form-control mb-3" name="prices" id="prices">
                 </div>
                 <div class="col-md-6">
-                  <label for="weight">Weight</label>
-                  <input type="text" class="form-control mb-3" name="weight" id="weight">
+                  <label for="business">Your Business Type</label>
+                  <input type="text" class="form-control mb-3" name="business" id="business">
                 </div>
                 <div class="col-md-6">
-                  <label for="height">Height</label>
-                  <input type="text" class="form-control mb-3" name="height" id="height">
+                  <label for="age_request">Age Requesting For:</label>
+                  <input type="number" class="form-control mb-3" name="age_request" id="age_request">
                 </div>
                 <div class="col-md-6">
                   <label for="ethnicity">Ethnicity</label>
                   <input type="text" class="form-control mb-3" name="ethnicity" id="ethnicity">
-                </div>
-                <div class="col-md-6">
-                  <label for="hair_long">Hair Lenght</label>
-                  <input type="text" class="form-control mb-3" name="hair_long" id="hair_long">
-                </div>
-                <div class="col-md-6">
-                  <label for="hair_color">Hair Color</label>
-                  <input type="text" class="form-control mb-3" name="hair_color" id="hair_color">
-                </div>
-                <div class="col-md-6">
-                  <label for="bust_size">Bust</label>
-                  <select name="bust_size" id="bust_size" class="form-control mb-3">
-                    <option value="">Select Bust Size</option>
-                    <option value="l">L</option>
-                    <option value="xl">XL</option>
-                    <option value="xxl">XXL</option>
-                    <option value="xxxl">XXXL</option>
-                  </select>
                 </div>
                 <div class="col-md-6">
                   <label for="smoker">Smoker</label>
@@ -106,20 +97,33 @@
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label for="build">Build</label>
-                  <input type="text" class="form-control mb-3" name="build" id="build">
-                </div>
-                <div class="col-md-6">
                   <label for="sexual_orientation">Sexual Orientation</label>
                   <input type="text" class="form-control mb-3" name="sexual_orientation" id="sexual_orientation">
                 </div>
                 <div class="col-md-6">
-                  <label for="fileUpload">Upload file</label>
+                  <label for="weight_request">Weight Requesting For:</label>
+                  <input type="text" class="form-control mb-3" name="weight_request" id="weight_request">
+                </div>
+                <div class="col-md-6">
+                  <label for="height_request">Height Requesting For:</label>
+                  <input type="text" class="form-control mb-3" name="height_request" id="height_request">
+                </div>
+                <div class="col-md-6">
+                  <label for="complex">Complexion</label>
+                  <select name="complexion" id="complex" class="form-control mb-3">
+                    <option value="">Select Complexion</option>
+                    <option value="black_skin">Black Skin</option>
+                    <option value="light_skin">Light Skin</option>
+                    <option value="chocolate_skin">Chocolate Skin</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="fileUpload">Upload Your Picture</label>
                   <input type="file" class="form-control mb-3" id="fileUpload" name="fileUpload">
                 </div>
                 <div class="col-md-12">
-                  <label>Bio</label>
-                  <textarea class="form-control mb-3" placeholder="Bio" name="bio"></textarea>
+                  <label for="note">Describe what you want and your self very well here</label>
+                  <textarea class="form-control mb-3" placeholder="Describe what you want and your self very well here" name="note" id="note"></textarea>
                 </div>
                 <div class="col-md-6"><button type="submit" class="btn btn-primary p-3" id="post_button">Request</button></div>
               </div>
@@ -134,12 +138,13 @@
 <script>
   //get category
   $(document).ready(function(event) {//alert('hey')
-    // event.preventDefault(); 
+    const con = '<?=$_SESSION['connect']?>';
+    const gender = '<?=$_SESSION['gender']?>';
     $.ajax({
-      url: 'controllers/ajaxGet.php?cat=200',
+      url: 'controllers/ajaxGet.php?con='+con+'&gender='+gender,
       method: 'GET',
-      dataType: 'json',
-      data: '200',
+      dataType: 'json', 
+      data: {con,gender},
       contentType: false,
       processData: false,
       beforeSend: () => {
@@ -154,10 +159,10 @@
   })
 
   //upload escort profile
-  $('#upload_escort').submit(function () {
+  $('#request_sugar').submit(function () {
       const formData = new FormData(this); //alert(formData);
       $.ajax({
-          url: 'controllers/fetchAjax.php?pg=203',
+          url: 'controllers/fetchAjax.php?pg=205',
           method: 'POST',
           dataType: 'json',
           data: formData,
