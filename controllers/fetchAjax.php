@@ -161,6 +161,8 @@ if ($pg == 203) {
     $smoker = $db->escape($_POST['smoker']);
     $alcohol = $db->escape($_POST['alcohol']);
     $build = $db->escape($_POST['build']);
+    $state = $db->escape($_POST['state']);
+    $lga = $db->escape($_POST['lga']);
     $sexual_orientation = $db->escape($_POST['sexual_orientation']);
     $bio = $_POST['bio'];
 
@@ -180,9 +182,18 @@ if ($pg == 203) {
         $error = "Period is required!";
     }
 
+    if (empty($state)) {
+        $error = "State is required!";
+    }
+
+    if (empty($lga)) {
+        $error = "LGA is required!";
+    }
+
     if (empty($currency)) {
         $error = "Currency is required!";
     }
+
     if (empty($prices)) {
         $error = "Prices is required!";
     }
@@ -260,7 +271,7 @@ if ($pg == 203) {
     if ($uploadOk == 1 && empty($error)) {
         $move_file = move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file);
         if ($move_file) {
-            $result = $db->saveData(TBL_ESCORTS, "user_id = '$token', category_id = '$category', entity_guid = uuid(), age = '$age', height = '$height', weight = '$weight', period_prices = '$period', prices = '$prices', currency = '$currency', comments = '$bio', ethnicity = '$ethnicity', hair_long = '$hair_long', hair_color = '$hair_color', bust_size = '$bust_size', smoker = '$smoker', alcohol = '$alcohol', build = '$build', sexual_orientation = '$sexual_orientation', profile_image = '$target_file'");
+            $result = $db->saveData(TBL_ESCORTS, "user_id = '$token', category_id = '$category', entity_guid = uuid(), age = '$age', height = '$height', weight = '$weight', period_prices = '$period', prices = '$prices', currency = '$currency', comments = '$bio', ethnicity = '$ethnicity', hair_long = '$hair_long', hair_color = '$hair_color', bust_size = '$bust_size', smoker = '$smoker', alcohol = '$alcohol', build = '$build', sexual_orientation = '$sexual_orientation', profile_image = '$target_file', state = '$state', lga = '$lga'");
             // var_dump($re);
             if ($result) {
                 $success = "Successfully uploaded...";

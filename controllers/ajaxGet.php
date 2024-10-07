@@ -182,18 +182,18 @@
   //   echo json_encode($outPut);
   // }
 
-  // if ($_GET['cat']) {
-  //   $outPut = '';
+  if ($_GET['cat']) {
+    $outPut = '';
 
-  //   if (Ajax::getSideBarLists()) {
-  //     $outPut .= '<option value="">Select category</option>';
-  //     foreach (Ajax::getSideBarLists() as $key) {
-  //       $outPut .= '<option value="'.$key['token_guid'].'">'.$key['category'].'</option>';
-  //     }
-  //   }
+    if (Ajax::getSideBarLists()) {
+      $outPut .= '<option value="">Select category</option>';
+      foreach (Ajax::getSideBarLists() as $key) {
+        $outPut .= '<option value="'.$key['token_guid'].'">'.$key['category'].'</option>';
+      }
+    }
 
-  //   echo json_encode($outPut);
-  // }
+    echo json_encode($outPut);
+  }
 
   // if ($_GET['req_vw']) {
   //   $token = $_GET['req_vw'];//exit;
@@ -380,21 +380,21 @@
   // }
 
   // Suger mummy category
-  if ($_GET['con'] && $_GET['gender']) {
-    $con = $_GET['con'];
-    $gender = $_GET['gender'];
-    $outPut = '';
+  // if ($_GET['con'] && $_GET['gender']) {
+  //   $con = $_GET['con'];
+  //   $gender = $_GET['gender'];
+  //   $outPut = '';
 
-    $outPut .= '<option value="">Select category</option>';
-    if ($con == 's_mummy' && $gender == 'female') {
-      $outPut .= '<option value="sugar_boy">Sugar Boy</option>';
-    }elseif ($con == 'none' && $gender == 'female') {
-      $outPut .= '<option value="sugar_daddy">Sugar Daddy</option>';
-    }elseif ($con == 's_daddy' && $gender == 'male') {
-      $outPut .= '<option value="sugar_girl">Sugar Girl</option>';
-    }elseif ($con == 'none' && $gender == 'male') {
-      $outPut .= '<option value="sugar_mummy">Sugar Mommy</option>';
-    }
+  //   $outPut .= '<option value="">Select category</option>';
+  //   if ($con == 's_mummy' && $gender == 'female') {
+  //     $outPut .= '<option value="sugar_boy">Sugar Boy</option>';
+  //   }elseif ($con == 'none' && $gender == 'female') {
+  //     $outPut .= '<option value="sugar_daddy">Sugar Daddy</option>';
+  //   }elseif ($con == 's_daddy' && $gender == 'male') {
+  //     $outPut .= '<option value="sugar_girl">Sugar Girl</option>';
+  //   }elseif ($con == 'none' && $gender == 'male') {
+  //     $outPut .= '<option value="sugar_mummy">Sugar Mommy</option>';
+  //   }
 
-    echo json_encode($outPut);
-  }
+  //   echo json_encode($outPut);
+  // }
