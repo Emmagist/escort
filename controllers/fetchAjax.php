@@ -294,6 +294,8 @@ if ($pg == 204) {
     $hash_tag = $db->escape($_POST['hash_tag']);
     $token = $db->escape($_POST['token']);
     $content = $_POST['content'];
+    $category = $_POST['category'];
+    $custom_cat = $_POST['custom_cat'];
 
     if (empty($title)) {
         $error = "Title is required!";
@@ -340,7 +342,25 @@ if ($pg == 204) {
             // $gif= $apiInstance->videoConvertToGif($target_file, $target_file, '560', '170', );
             // $target_gif_file  = $target_gif . basename($gif);
             // $move_file = move_uploaded_file($git, $target_gif_file);
-            $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', entity_guid = uuid(), title = '$title', contents = '$content', porn_video = '$target_file'");
+            if (empty($category) && ! empty($custom_cat)) {
+                $slug = Database::slug($custom_cat);
+                $cat_result = $db->saveData(TBL_SEX_VIDEO_CATEGORY, "identity_guid = uuid(), sex_category = '$custom_cat', slugs = '$slugs'");
+                if ($cat_result) {
+                    foreach (Ajax::getSingleSexVideosCategory($slug) as $key) {
+                        $identity_guid = $key['identity_guid'];
+                        $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', sex_cat_id = '$identity_guid', entity_guid = uuid(), title = '$title', contents = '$content', porn_video = '$target_file'");
+                        // var_dump($re);
+                        if ($result) {
+                            $success = "Successfully uploaded...";
+                        }else {
+                            $error = "Something went wrong";
+                        }
+                    }
+                }
+            }else{
+
+            }
+            $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', sex_cat_id = '$category', entity_guid = uuid(), title = '$title', contents = '$content', porn_video = '$target_file'");
             // var_dump($re);
             if ($result) {
                 $success = "Successfully uploaded...";

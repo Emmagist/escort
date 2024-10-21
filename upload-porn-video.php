@@ -17,6 +17,16 @@
                 <li class="alert alert-danger list-unstyled" style="display: none;" id="reg_danger"></li>
               </div>
               <div class="row">
+              <div class="col-md-6">
+                  <label for="category">Category</label>
+                  <select name="" class="form-control" id="choose_cat">
+                    <option value="">Choose Option</option>
+                    <option value="custom">Add my custom category</option>
+                    <option value="built_cat">Choose from category</option>
+                  </select>
+                  <select name="category" class="form-control" id="built_cat" style="display:none"></select>
+                  <input type="text" class="form-control mb-3" name="custom_cat" id="custom_cat" style="display:none" placeholder="Add your custom category">
+                </div>
                 <div class="col-md-6">
                   <label for="title">Title</label>
                   <input type="text" class="form-control mb-3" name="title" id="title">
@@ -30,7 +40,7 @@
                   <label for="fileUpload">Upload file</label>
                   <input type="file" class="form-control mb-3" id="fileUpload" name="fileUpload">
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <label for="content">Contents</label>
                   <textarea class="form-control mb-3" placeholder="Contents" name="content" id="content"></textarea>
                 </div>
@@ -45,6 +55,32 @@
 ?>
 
 <script>
+  $('#choose_cat').change(function () {
+    if($(this).val() == 'custom'){
+      $('#custom_cat').show();
+      $(this).hide();
+    }else if($(this).val() == 'built_cat'){
+      $(this).hide();
+      $('#custom_cat').hide();
+      $('#built_cat').show();
+      $.ajax({
+      url: 'controllers/ajaxGet.php?built_cat=200',
+      method: 'GET',
+      dataType: 'json',
+      data: '200',
+      contentType: false,
+      processData: false,
+      beforeSend: () => {
+          $('#built_cat').html('Loading contents...');
+      },
+      success: (param) => {
+        if (param) {
+          $('#built_cat').html(param);
+        }
+      }
+    })
+    }
+  })
   //upload escort profile
   $('#upload_porn').submit(function () {
       const formData = new FormData(this); //alert(formData);

@@ -7,7 +7,7 @@
 define("DB_HOST",             "localhost");
 define("DB_USER",             "root");
 define("DB_PASSWORD",         "Emmagist@1994204"); //Emmagist@1994204;
-define("DB_NAME",             "escort");
+define("DB_NAME",             "escorts");
 
 // Online Database
 // define("DB_HOST",              "localhost");
@@ -71,7 +71,7 @@ define("TBL_USERS",           "users");
 define("TBL_ESCORTS",         "escorts");
 define("TBL_REQUESTS",         "requests");
 define("TBL_PORN_VIDEOS",            "porn_videos");
-define("TBL_PLAN",                  "investment_plan");
+define("TBL_SEX_VIDEO_CATEGORY",    "sex_categories");
 define("TBL_CONTACT",               "contact");
 define("TBL_SUBSCRIBE",             "news_letter");
 define("TBL_CATEGORY",              "category");

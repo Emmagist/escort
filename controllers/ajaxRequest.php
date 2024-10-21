@@ -125,6 +125,18 @@ class Ajax
 
     }
 
+    public static function getSexVideosCategory()
+    {
+        global $db;
+        return $db->selectData(TBL_SEX_VIDEO_CATEGORY, "*");
+    }
+
+    public static function getSingleSexVideosCategory($slug)
+    {
+        global $db;
+        return $db->selectData(TBL_PORN_VIDEOS, "*", "sex_category = '$slug'");
+    }
+
     // public static function checkUserIfVerified($email)
     // {
     //     global $db;
