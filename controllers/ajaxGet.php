@@ -308,29 +308,29 @@
   // }
 
   // //Get all Sex Videos
-  // if ($_GET['svd']) {
-  //   // $slug = $_GET['escorts'];
-  //   $outPut = '';
+  if ($_GET['svd']) {
+    // $slug = $_GET['escorts'];
+    $outPut = '';
 
-  //   if (Ajax::getAllSexVideos()) {
-  //     foreach (Ajax::getAllSexVideos() as $key) {
-  //       if ($key['img']) {
-  //         $outPut .= '<div class="col-sm-6 col-xl-3">
-  //           <div class=" overflow-hidden rounded-2">
-  //             <div class="position-relative" id="testing">
-  //             <a href="video.php?ent='.$key['entity_guid'].'" class="align-middle">
-  //               <img src="'.$key['img'].'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`)" alt="" width="560" height="170">
-  //               <h5 class=" text-capitalize text-center">'.$key['title'].'</h5>
-  //             </a>
-  //             </div>
-  //           </div>
-  //         </div>';
-  //       }
-  //     }
-  //   }
+    if (Ajax::getAllSexVideos()) {
+      foreach (Ajax::getAllSexVideos() as $key) {
+        if ($key['img']) {
+          $outPut .= '<div class="col-sm-6 col-xl-3">
+            <div class=" overflow-hidden rounded-2">
+              <div class="position-relative" id="testing">
+                <a href="video.php?ent='.$key['entity_guid'].'" class="align-middle">
+                  <img src="'.$key['img'].'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`)" alt="" width="560" height="170">
+                  <h6 class=" text-capitalize text-center d-inline-block text-truncate pt-1" title="'.$key['title'].'">'.$key['title'].'</h6>
+                </a>
+              </div>
+            </div>
+          </div>';
+        }
+      }
+    }
 
-  //     echo json_encode($outPut);
-  // }
+      echo json_encode($outPut);
+  }
 
   // //Sex Video Show
   // if ($_GET['ent']) {
@@ -400,18 +400,18 @@
   // }
 
   // get sex cat on upload
-  if ($_GET['built_cat']) {
-      $token = $_GET['built_cat'];
-      $outPut = '';
+  // if ($_GET['built_cat']) {
+  //     $token = $_GET['built_cat'];
+  //     $outPut = '';
   
-      if (Ajax::getSexVideosCategory()) {
-        foreach (Ajax::getSexVideosCategory() as $key) {
-          $outPut .= '
-            <option value="">Choose Option</option>
-            <option value="'.$key['identity_guid'].'">'.$key['sex_category'].'</option>
-          ';
-        }
-      }
+  //     if (Ajax::getSexVideosCategory()) {
+  //       foreach (Ajax::getSexVideosCategory() as $key) {
+  //         $outPut .= '
+  //           <option value="">Choose Option</option>
+  //           <option value="'.$key['identity_guid'].'">'.$key['sex_category'].'</option>
+  //         ';
+  //       }
+  //     }
   
-      echo json_encode($outPut);
-    }
+  //     echo json_encode($outPut);
+  //   }
