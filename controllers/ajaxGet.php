@@ -2,75 +2,75 @@
 
     require_once "ajaxRequest.php";
 
-  //   if ($_GET['nav']) {
-  //     $token = $_GET['nav'];
-  //     $outPut = '';
+    // if ($_GET['nav']) {
+    //   $token = $_GET['nav'];
+    //   $outPut = '';
   
-  //     if (Ajax::getSideBarLists()) {
-  //       foreach (Ajax::getSideBarLists() as $key) {
-  //         $outPut .= '
-  //         <li class="sidebar-item">
-  //           <a class="sidebar-link" href="pages.php?pg='.$key['token_guid'].'" aria-expanded="false">
-  //             <span>
-  //               <i class="'.$key['icon'].'"></i>
-  //             </span>
-  //             <span class="hide-menu">'.ucfirst($key['category']).'</span>
-  //           </a>
-  //         </li>
-  //         ';
-  //       }
-  //     }
+    //   if (Ajax::getSideBarLists()) {
+    //     foreach (Ajax::getSideBarLists() as $key) {
+    //       $outPut .= '
+    //       <li class="sidebar-item">
+    //         <a class="sidebar-link" href="pages.php?pg='.$key['token_guid'].'" aria-expanded="false">
+    //           <span>
+    //             <i class="'.$key['icon'].'"></i>
+    //           </span>
+    //           <span class="hide-menu">'.ucfirst($key['category']).'</span>
+    //         </a>
+    //       </li>
+    //       ';
+    //     }
+    //   }
   
-  //     echo json_encode($outPut);
-  //   }
+    //   echo json_encode($outPut);
+    // }
 
-  //   if ($_GET['escorts']) {
-  //     $slug = $_GET['escorts'];
-  //     $outPut = '';
+    if ($_GET['escorts']) {
+      $slug = $_GET['escorts'];
+      $outPut = '';
 
-  //     if (Ajax::getAllEscortsBySlug($slug)) {
-  //       foreach (Ajax::getAllEscortsBySlug($slug) as $key) {
-  //         $outPut .= '<div class="col-sm-4 col-xl-3">
-  //           <div class="card overflow-hidden rounded-2" style="width:250px">
-  //             <div class="position-relative">
-  //               <a href="escort-profile.php?esc='.$key['entity_guid'].'&sg='.$slug.'">';
-  //                 if($key['gender'] == 'male' && empty($key['profile_image'])): 
-  //                   $image = 'assets/images/products/no-img-men.jpg';
-  //                   // $image->blurImage(5,3);
-  //                 $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
-  //                 elseif ($key['gender'] == 'female' && empty($key['profile_image'])) :
-  //                   $image = 'assets/images/products/no-img-women.jpg';
-  //                   // $image->blurImage(5,3);
-  //                 $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
-  //                 else : 
-  //                   $image = $key['profile_image'];
-  //                   // $image->blurImage(5,3);
-  //                 $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
-  //                 endif;
-  //               $outPut .= '</a>
-  //               <a href="escort-profile.php?esc='.$key['entity_guid'].'&sg='.$slug.'" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-placement="top" data-bs-title="Add To Cart">book<i class=" fs-4"></i>
-  //               </a>               
-  //             </div>
-  //             <div class="card-body pt-3 p-4">
-  //               <h6 class="fw-semibold fs-4">'.$key['username'].'</h6>
-  //               <div class="d-flex align-items-center justify-content-between">
-  //                 <h6 class="fw-semibold fs-4 mb-0">$'.$key['prices'].'/<span>'.$key['period_prices'].'</span></h6>
-  //                 <ul class="list-unstyled d-flex align-items-center mb-0">
-  //                   <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-  //                   <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-  //                   <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-  //                   <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-  //                   <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-  //                 </ul>
-  //               </div>
-  //             </div>
-  //           </div>
-  //         </div>';
-  //       }
-  //     }
+      if (Ajax::getAllEscortsBySlug($slug)) {
+        foreach (Ajax::getAllEscortsBySlug($slug) as $key) {
+          $outPut .= '<div class="col-sm-4 col-xl-3">
+            <div class="card overflow-hidden rounded-2" style="width:250px">
+              <div class="position-relative">
+                <a href="escort-profile.php?esc='.$key['entity_guid'].'&sg='.$slug.'">';
+                  if($key['gender'] == 'male' && empty($key['profile_image'])): 
+                    $image = 'assets/images/products/no-img-men.jpg';
+                    // $image->blurImage(5,3);
+                  $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                  elseif ($key['gender'] == 'female' && empty($key['profile_image'])) :
+                    $image = 'assets/images/products/no-img-women.jpg';
+                    // $image->blurImage(5,3);
+                  $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                  else : 
+                    $image = $key['profile_image'];
+                    // $image->blurImage(5,3);
+                  $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                  endif;
+                $outPut .= '</a>
+                <a href="escort-profile.php?esc='.$key['entity_guid'].'&sg='.$slug.'" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-placement="top" data-bs-title="Add To Cart">book<i class=" fs-4"></i>
+                </a>               
+              </div>
+              <div class="card-body pt-3 p-4">
+                <h6 class="fw-semibold fs-4">'.$key['username'].'</h6>
+                <div class="d-flex align-items-center justify-content-between">
+                  <h6 class="fw-semibold fs-4 mb-0">$'.$key['prices'].'/<span>'.$key['period_prices'].'</span></h6>
+                  <ul class="list-unstyled d-flex align-items-center mb-0">
+                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                    <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>';
+        }
+      }
 
-  //       echo json_encode($outPut);
-  //   }
+        echo json_encode($outPut);
+    }
 
   //   //get escort profile
   // if ($_GET['esc']) {
@@ -308,29 +308,29 @@
   // }
 
   // //Get all Sex Videos
-  if ($_GET['svd']) {
-    // $slug = $_GET['escorts'];
-    $outPut = '';
+  // if ($_GET['svd']) {
+  //   // $slug = $_GET['escorts'];
+  //   $outPut = '';
 
-    if (Ajax::getAllSexVideos()) {
-      foreach (Ajax::getAllSexVideos() as $key) {
-        if ($key['img']) {
-          $outPut .= '<div class="col-sm-6 col-xl-3">
-            <div class=" overflow-hidden rounded-2">
-              <div class="position-relative" id="testing">
-                <a href="video.php?ent='.$key['entity_guid'].'" class="align-middle">
-                  <img src="'.$key['img'].'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`)" alt="" width="560" height="170">
-                  <h6 class=" text-capitalize text-center d-inline-block text-truncate pt-1" title="'.$key['title'].'">'.$key['title'].'</h6>
-                </a>
-              </div>
-            </div>
-          </div>';
-        }
-      }
-    }
+  //   if (Ajax::getAllSexVideos()) {
+  //     foreach (Ajax::getAllSexVideos() as $key) {
+  //       if ($key['img']) {
+  //         $outPut .= '<div class="col-sm-6 col-xl-3">
+  //           <div class=" overflow-hidden rounded-2">
+  //             <div class="position-relative" id="testing">
+  //               <a href="video.php?ent='.$key['entity_guid'].'" class="align-middle">
+  //                 <img src="'.$key['img'].'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`)" alt="" width="560" height="170">
+  //                 <h6 class=" text-capitalize text-center d-inline-block text-truncate pt-1" title="'.$key['title'].'">'.$key['title'].'</h6>
+  //               </a>
+  //             </div>
+  //           </div>
+  //         </div>';
+  //       }
+  //     }
+  //   }
 
-      echo json_encode($outPut);
-  }
+  //     echo json_encode($outPut);
+  // }
 
   // //Sex Video Show
   // if ($_GET['ent']) {

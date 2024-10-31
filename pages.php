@@ -13,8 +13,8 @@
       <div class="container-fluid">
         <div class="row mb-5">
           <div class="col-md-3">
-            <input type="search" name="" id="" class="form-control" placeholder="Search by state, location or username">
-            <ul class="rounded p-2" style="box-shadow: 2px 2px gray;">
+            <input type="search" name="search" id="search__data" class="form-control" placeholder="Search by state, location or username">
+            <ul class="rounded p-2" style="box-shadow: 2px 2px gray; display:none;" id="search_result">
               <li class="list-items list-unstyle mb-2"><a href="" class="text-bold" style="font-weight: 600; color:#000">Lagos</a></li>
             </ul>
           </div>
@@ -68,4 +68,33 @@
     })
 
   })
+
+   //upload escort profile
+   $('#search__data').keyup(function () {
+      const formData = $(this).val();
+      const slug = '<?=$slug?>';
+      $.ajax({
+          url: 'controllers/fetchAjax.php?pg=206&esc_pg='+slug+'&data='+formData,
+          method: 'POST',
+          dataType: 'json',
+          data: {formData,slug},
+          contentType: false,
+          processData: false,
+          beforeSend: () => {
+            $('#search_result').show();
+            $('#search_result').html('Searching...');
+          },
+          success: (param) => {
+            if (param.success) {
+              $('#search_result').text(param.success);
+            }else if(param.error){
+              $('#search_result').text(param.error);
+              setInterval(() => {
+                $('#search_result').fadeOut();
+              }, 3000);
+            }
+          }
+      })
+      return false;
+  });
 </script>

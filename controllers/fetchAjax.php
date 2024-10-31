@@ -498,6 +498,34 @@ if ($pg == 205) {
     echo json_encode(['error' => $error, 'success' => $success]);
 }
 
+//search escorts
+if ($pg == 206) {
+    $error = '';
+    $success = '';
+    $outPut = '';
+    $data = $db->escape($_GET['data']);
+    $esc_pg = $db->escape($_GET['esc_pg']);
+    if (empty($data)) {
+        $error = "Search a keyword";
+    }else{
+        $result = $db->searchData(TBL_ESCORTS, "*", "category_id = '$esc_pg'", "$data", 10); var_dump($result);exit;
+
+        if ($result) {
+            foreach ($result as $key) {
+                $token = $key['entity_guid'];
+                foreach (Ajax::getEscortById($token) as $value) {
+                    $outPut .= '
+                        <li class="list-items list-unstyle mb-2"><a href="" class="text-bold" style="font-weight: 600; color:#000">'.$value['name'].'</a></li>
+                    ';
+                    $success = $outPut;
+                }
+            }
+        }
+    }
+    // var_dump($re);
+    echo json_encode(['error' => $error, 'success' => $success]);
+}
+
 //Video to GIF
 // if ($pg == 204) {
 //     try {
