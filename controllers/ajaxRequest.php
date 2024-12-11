@@ -137,6 +137,37 @@ class Ajax
         return $db->selectData(TBL_PORN_VIDEOS, "*", "sex_category = '$slug'");
     }
 
+    public static function checkActiveSubscriber($user){
+        global $db;
+
+        $result = $db->selectData(TBL_SUBSCRIPTIONS, "*", "user_id = '$user'");
+
+        if ($result) {
+            foreach ($result as $key) {
+                if ($key['sub_status'] == 'active') {
+                    return true;
+                }else {
+                    return false;
+                }
+            }
+        }else {
+            return false;
+        }
+        
+    }
+
+    public static function getSubscriptionPlans()
+    {
+        global $db;
+        return $db->selectData(TBL_SUBSCRIPTION_PLAN, "*");
+    }
+
+    public static function getSingleSubscriptionPlans($id)
+    {
+        global $db;
+        return $db->selectData(TBL_SUBSCRIPTION_PLAN, "*", "plan_guid = '$id'");
+    }
+
     // public static function checkUserIfVerified($email)
     // {
     //     global $db;

@@ -1,5 +1,17 @@
 <?php
-  require "inc/auth.php";
+
+  require_once "controllers/users.php";
+
+  $redirect = $db->redirectURI(); //echo $redirect;exit;
+  // $db->getLoginSession($redirect);
+
+  // $ip_address = Database::getClientIp();
+
+  if (isset($_SESSION['token']) && isset($_SESSION['role']) && $_SESSION['role'] == 3 || $_SESSION['role'] == 2) {
+      $token = $_SESSION['token'];
+      $role = $_SESSION['role'];
+  }
+
   if (isset($_GET['pg'])) {
     $slug = $_GET['pg'];
   }
@@ -86,9 +98,9 @@
           },
           success: (param) => {
             if (param.success) {
-              $('#search_result').text(param.success);
+              $('#search_result').html(param.success);
             }else if(param.error){
-              $('#search_result').text(param.error);
+              $('#search_result').html(param.error);
               setInterval(() => {
                 $('#search_result').fadeOut();
               }, 3000);
@@ -97,4 +109,17 @@
       })
       return false;
   });
+
+  function bookEscort(key) { //alert(key)
+    const slug = '<?=$slug?>';
+    const token = '<?=$_SESSION['token']?>';
+    const page = '<?=$redirect?>'
+
+    if (token.length == 0) {
+      window.location.href = 'login?page_url='+page;
+    }else if (token.length > 0) {
+      window.location.href='escort-profile?esc='+key+'&sg='+slug
+      // window.location.href = "escort-profile.php?esc="+key+"&sg="+slug
+    }
+  }
 </script>

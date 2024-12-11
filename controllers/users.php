@@ -52,6 +52,40 @@ class Users
          return $db->selectData(TBL_USERS, "*", "user_guid = '$token'");
      }
 
+     public static function subscriptionVerify($code, $amount, $paystackCode, $token, $plan)
+     {
+          global $db;
+
+          // check if user exist
+          $userExist = $db->selectData(TBL_USERS, "*", "user_guid = '$token'");
+
+          if ($userExist) {
+               $get = $db->selectData(TBL_SUBSCRIPTIONS, "*", "amount = '$amount' AND invoice_code = '$code'");        //var_dump($get);exit;
+
+               if ($get) {
+                    foreach ($get as $key) {
+                         // $id = $key['id'];
+                         // $expire_at = Database::expire_at($key['duration']);
+
+                         if ($key['sub_condition'] == 'successful') {
+                         } else {
+                              //update subscription log
+                              $update = $db->update(TBL_SUBSCRIPTIONS, "paystack_invoice = '$paystackCode', sub_condition = 'successful', sub_status = 'active'", "amount = '$amount' AND invoice_code = '$code' AND user_id = '$token'");
+                              if ($update) {
+                                   return true;
+                              } else {
+                                   return false;
+                              }
+                         }
+                    }
+               } else {
+                    return false;
+               }
+          } else {
+               return false;
+          }
+     }
+
      // public static function getReferrerCode($ref)
      // {
      //      global $db;

@@ -81,7 +81,8 @@ use Google\Service\Analytics\Column;
                 $fields = trim($field);
                 $where = !empty($conditions) ? "WHERE" : "";
             $result = $this->query("SELECT " . $fields . " FROM " . $table . "  $where " . $conditions . " LIKE '%".$val."%' LIMIT " . $limit);
-            $cout = $result->num_rows; 
+            $cout = $result->num_rows;
+            var_dump($result);exit;
             if($cout > 0){
                 if (!empty($result)) {
                 while ($row = $result->fetch_assoc()) {

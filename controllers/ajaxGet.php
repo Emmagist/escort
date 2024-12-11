@@ -2,185 +2,201 @@
 
     require_once "ajaxRequest.php";
 
-    // if ($_GET['nav']) {
-    //   $token = $_GET['nav'];
-    //   $outPut = '';
-  
-    //   if (Ajax::getSideBarLists()) {
-    //     foreach (Ajax::getSideBarLists() as $key) {
-    //       $outPut .= '
-    //       <li class="sidebar-item">
-    //         <a class="sidebar-link" href="pages.php?pg='.$key['token_guid'].'" aria-expanded="false">
-    //           <span>
-    //             <i class="'.$key['icon'].'"></i>
-    //           </span>
-    //           <span class="hide-menu">'.ucfirst($key['category']).'</span>
-    //         </a>
-    //       </li>
-    //       ';
-    //     }
-    //   }
-  
-    //   echo json_encode($outPut);
-    // }
+  if ($_GET['nav']) {
+    $token = $_GET['nav'];
+    $outPut = '';
 
-    if ($_GET['escorts']) {
-      $slug = $_GET['escorts'];
-      $outPut = '';
+    if (Ajax::getSideBarLists()) {
+      foreach (Ajax::getSideBarLists() as $key) {
+        $outPut .= '
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="pages.php?pg='.$key['token_guid'].'" aria-expanded="false">
+            <span>
+              <i class="'.$key['icon'].'"></i>
+            </span>
+            <span class="hide-menu">'.ucfirst($key['category']).'</span>
+          </a>
+        </li>
+        ';
+      }
+    }
 
-      if (Ajax::getAllEscortsBySlug($slug)) {
-        foreach (Ajax::getAllEscortsBySlug($slug) as $key) {
-          $outPut .= '<div class="col-sm-4 col-xl-3">
-            <div class="card overflow-hidden rounded-2" style="width:250px">
-              <div class="position-relative">
-                <a href="escort-profile.php?esc='.$key['entity_guid'].'&sg='.$slug.'">';
-                  if($key['gender'] == 'male' && empty($key['profile_image'])): 
-                    $image = 'assets/images/products/no-img-men.jpg';
-                    // $image->blurImage(5,3);
-                  $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
-                  elseif ($key['gender'] == 'female' && empty($key['profile_image'])) :
-                    $image = 'assets/images/products/no-img-women.jpg';
-                    // $image->blurImage(5,3);
-                  $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
-                  else : 
-                    $image = $key['profile_image'];
-                    // $image->blurImage(5,3);
-                  $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
-                  endif;
-                $outPut .= '</a>
-                <a href="escort-profile.php?esc='.$key['entity_guid'].'&sg='.$slug.'" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-placement="top" data-bs-title="Add To Cart">book<i class=" fs-4"></i>
-                </a>               
-              </div>
-              <div class="card-body pt-3 p-4">
-                <h6 class="fw-semibold fs-4">'.$key['username'].'</h6>
-                <div class="d-flex align-items-center justify-content-between">
-                  <h6 class="fw-semibold fs-4 mb-0">$'.$key['prices'].'/<span>'.$key['period_prices'].'</span></h6>
-                  <ul class="list-unstyled d-flex align-items-center mb-0">
-                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                    <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
-                  </ul>
-                </div>
+    echo json_encode($outPut);
+  }
+
+  if ($_GET['escorts']) {
+    $slug = $_GET['escorts'];
+    $outPut = '';
+
+    if (Ajax::getAllEscortsBySlug($slug)) {
+      foreach (Ajax::getAllEscortsBySlug($slug) as $key) {
+        $outPut .= '<div class="col-sm-4 col-xl-3">
+          <div class="card overflow-hidden rounded-2" style="width:250px">
+            <div class="position-relative">
+              <a href="escort-profile?esc='.$key['entity_guid'].'&sg='.$slug.'">';
+                if($key['gender'] == 'male' && empty($key['profile_image']) || $_SESSION['token'] == 0): 
+                  $image = 'assets/images/products/no-img-men.jpg';
+                  // $image->blurImage(5,3);
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                elseif ($key['gender'] == 'female' && empty($key['profile_image']) || $_SESSION['token'] == 0) :
+                  $image = 'assets/images/products/no-img-women.jpg';
+                  // $image->blurImage(5,3);
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                elseif ($key['profile_image'] > 0 || $_SESSION['token'] == 0) :
+                  $image = $key['profile_image'];
+                  // $image->blurImage(5,3);
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                elseif ($key['profile_image'] > 0 || $_SESSION['token'] > 0) :
+                  $image = $key['profile_image'];
+                  // $image->blurImage(5,3);
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;">';
+                endif;
+              $outPut .= '</a>
+              <a class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-placement="top" data-bs-title="Book" style="cursor:pointer" onclick=bookEscort(`'.$key['entity_guid'].'`)>book<i class=" fs-4"></i>
+              </a>               
+            </div>
+            <div class="card-body pt-3 p-4">
+              <h6 class="fw-semibold fs-4">'.$key['username'].'</h6>
+              <div class="d-flex align-items-center justify-content-between">
+                <h6 class="fw-semibold fs-4 mb-0">$'.$key['prices'].'/<span>'.$key['period_prices'].'</span></h6>
+                <ul class="list-unstyled d-flex align-items-center mb-0">
+                  <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                  <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                  <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                  <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                  <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                </ul>
               </div>
             </div>
-          </div>';
+          </div>
+        </div>';
+      }
+    }
+
+    echo json_encode($outPut);
+  }
+
+  // //   //get escort profile
+  if ($_GET['esc']) {
+      $token = $_GET['esc'];
+      $outPut = '';
+
+      if (Ajax::getEscortById($token)) { //echo $_SESSION['token'];exit;
+        foreach (Ajax::getEscortById($token) as $key) { //var_dump(Ajax::checkActiveSubscriber($_SESSION['token']));exit;
+          $outPut .= '
+            <div class="col-md-12 mb-3">';
+              if (Ajax::checkActiveSubscriber($_SESSION['token']) == true):
+                $outPut .= '<img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0" alt="..." style="width:550px;height:450px">';
+              elseif (Ajax::checkActiveSubscriber($_SESSION['token']) == false) :
+                $outPut .= '
+                  <p class=" text-danger mb-5 text-center text-bold"><marquee behavior="" direction="">Kindly subscribe to view <strong>'.ucwords($key['username']).'</strong> pictures. <a class="text-pramry" style="cursor:pointer;" onclick="subscribe(`'.$_SESSION['token'].'`)">Subscribe here</a></marquee></p>
+                  <img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0 mb-4" alt="..." style="width:550px;height:450px;filter: blur(30px); -webkit-filter: blur(30px);">
+                ';
+              endif;
+            $outPut .= '</div>
+            <div class="col-md-6">
+              <label>Username</label>
+              <input type="text" class="form-control mb-3" disabled value="'.ucwords($key['username']).'">
+            </div>
+            <div class="col-md-6">
+              <label>Age</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['age'].'">
+            </div>
+            <div class="col-md-6">
+              <label>Gender</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['gender'].'">
+            </div>
+             <div class="col-md-6">
+              <label>Price/'.ucwords($key['period_prices']).'</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['prices'].'">
+            </div>
+            <div class="col-md-6">
+              <label>Weight</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['weight'].'">
+            </div>
+            <div class="col-md-6">
+              <label>Height</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['height'].'">
+            </div>
+            <div class="col-md-6">
+              <label>Ethnicity</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['ethnicity'].'">
+            </div>
+            <div class="col-md-6">
+              <label>Hair Lenght</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['hair_long'].'">
+            </div>
+            <div class="col-md-6">
+              <label>Hair Color</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['hair_color'].'">
+            </div>
+            <div class="col-md-6">
+              <label>Bust</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['bust_size'].'">
+            </div>
+            <div class="col-md-6">
+              <label>Smoker</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['smoker'].'">
+            </div>
+            <div class="col-md-6">
+              <label>Alcohol</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['alcohol'].'">
+            </div>
+            <div class="col-md-6">
+              <label>Build</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['build'].'">
+            </div>
+            <div class="col-md-6">
+              <label>Sexual Orientation</label>
+              <input type="text" class="form-control mb-3" disabled value="'.$key['sexual_orientation'].'">
+            </div>
+            <div class="col-md-12">
+              <label>Bio</label>
+              <textarea class="form-control mb-3" disabled>'.$key['comments'].'</textarea>
+            </div>
+            <div class=" d-flex"><button class=" btn btn-warning" style="margin-right: 20px;">Cancel</button>';
+            if (Ajax::checkActiveSubscriber($_SESSION['token']) == false) :
+              $outPut .= '<button type="button" onclick="subscribe(`'.$_SESSION['token'].'`)" class="btn btn-primary">Subscribe to book escort</button></div>';
+            else :
+              $outPut .= '<button type="button" onclick="book(`'.$key['entity_guid'].'`)" class="btn btn-success">Book Now</button></div>';
+            endif;
+          
         }
       }
 
-        echo json_encode($outPut);
+      echo json_encode($outPut);
+  }
+
+  if ($_GET['esc_book']) {
+    $token = $_GET['esc_book'];
+    $slug = $_GET['slug'];
+    $outPut = '';
+
+    if (Ajax::getEscortById($token)) {
+      foreach (Ajax::getEscortById($token) as $key) {
+        $outPut .= '
+        <form action="" class="form-group" id="bookEscortPaymentForm">
+          <label>Date</label>
+          <input type="date" class="form-control mb-3" id="date">
+          <label>Time</label>
+          <input type="time" class="form-control mb-3" id="time">
+          <label>Price</label>
+          <input type="text" class="form-control mb-3" value="'.$key['prices'].'" disabled id="price">
+          <input type="hidden" class="form-control mb-3" value="'.$key['email'].'" id="email-address">
+          <input type="hidden" class="form-control mb-3" value="'.$token.'" id="escort">
+          <input type="hidden" class="form-control mb-3" value="'.$key['prices'].'" id="escortee">
+          <input type="hidden" class="form-control mb-3" value="'.$slug.'" id="slug">
+          <input type="hidden" value="'.DataBase::invoiceCode().'" id="invoice">
+          <div class="modal-footer">
+            <button type="button" onclick="SquadPay()" class="btn btn-success" id="bookEscortPaymentButton">Pay</button>
+          </div>
+        </form>
+        ';
+      }
     }
 
-  //   //get escort profile
-  // if ($_GET['esc']) {
-  //     $token = $_GET['esc'];
-  //     $outPut = '';
-
-  //     if (Ajax::getEscortById($token)) {
-  //       foreach (Ajax::getEscortById($token) as $key) {
-  //         $outPut .= '
-  //           <div class="col-md-12 mb-3">
-  //             <img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0" alt="..." style="width:350px;height:350px">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Username</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['username'].'">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Age</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['age'].'">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Gender</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['gender'].'">
-  //           </div>
-  //            <div class="col-md-6">
-  //             <label>Price/'.ucwords($key['period_prices']).'</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['prices'].'">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Weight</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['weight'].'">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Height</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['height'].'">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Ethnicity</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['ethnicity'].'">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Hair Lenght</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['hair_long'].'">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Hair Color</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['hair_color'].'">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Bust</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['bust_size'].'">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Smoker</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['smoker'].'">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Alcohol</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['alcohol'].'">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Build</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['build'].'">
-  //           </div>
-  //           <div class="col-md-6">
-  //             <label>Sexual Orientation</label>
-  //             <input type="text" class="form-control mb-3" disabled value="'.$key['sexual_orientation'].'">
-  //           </div>
-  //           <div class="col-md-12">
-  //             <label>Bio</label>
-  //             <textarea class="form-control mb-3" disabled>'.$key['comments'].'</textarea>
-  //           </div>
-  //           <div class=" d-flex"><button class=" btn btn-warning" style="margin-right: 20px;">Cancel</button><button type="button" onclick="book(`'.$key['entity_guid'].'`)" class="btn btn-primary">Book Now</button></div>
-  //         ';
-  //       }
-  //     }
-
-  //     echo json_encode($outPut);
-  // }
-
-  // if ($_GET['esc_book']) {
-  //   $token = $_GET['esc_book'];
-  //   $slug = $_GET['slug'];
-  //   $outPut = '';
-
-  //   if (Ajax::getEscortById($token)) {
-  //     foreach (Ajax::getEscortById($token) as $key) {
-  //       $outPut .= '
-  //       <form action="" class="form-group" id="bookEscortPaymentForm">
-  //         <label>Date</label>
-  //         <input type="date" class="form-control mb-3" id="date">
-  //         <label>Time</label>
-  //         <input type="time" class="form-control mb-3" id="time">
-  //         <label>Price</label>
-  //         <input type="text" class="form-control mb-3" value="'.$key['prices'].'" disabled id="price">
-  //         <input type="hidden" class="form-control mb-3" value="'.$key['email'].'" id="email-address">
-  //         <input type="hidden" class="form-control mb-3" value="'.$token.'" id="escort">
-  //         <input type="hidden" class="form-control mb-3" value="'.$key['prices'].'" id="escortee">
-  //         <input type="hidden" class="form-control mb-3" value="'.$slug.'" id="slug">
-  //         <input type="hidden" value="'.DataBase::invoiceCode().'" id="invoice">
-  //         <div class="modal-footer">
-  //           <button type="button" onclick="SquadPay()" class="btn btn-success" id="bookEscortPaymentButton">Pay</button>
-  //         </div>
-  //       </form>
-  //       ';
-  //     }
-  //   }
-
-  //   echo json_encode($outPut);
-  // }
+    echo json_encode($outPut);
+  }
 
   // if ($_GET['cat']) {
   //   $outPut = '';
@@ -379,7 +395,7 @@
   //     echo json_encode($outPut);
   // }
 
-  // Suger mummy category
+  // // Suger mummy category
   // if ($_GET['con'] && $_GET['gender']) {
   //   $con = $_GET['con'];
   //   $gender = $_GET['gender'];
@@ -415,3 +431,43 @@
   
   //     echo json_encode($outPut);
   //   }
+
+  if (isset($_GET['sub'])) {
+    $sub = $_GET['sub'];
+    $outPut = '';
+
+    if (Ajax::getSubscriptionPlans()) {
+      $outPut .= '
+        <input type="hidden" class="form-control mb-3" name="arial_token" id="arial_token" value="'.$sub.'">
+        <input type="hidden" class="form-control mb-3" name="invoice" id="invoice" value="'.Database::invoiceCode().'">
+        <input type="hidden" class="form-control mb-3" name="email-address" id="email-address" value="'.$_SESSION['email'].'">
+        <select name="plan" id="selectPlan" class="form-control mb-3" onchange=selectplan()>
+          <option value="">Select a plan</option>';
+          foreach (Ajax::getSubscriptionPlans() as $key) {
+            $outPut .= '<option value="'.$key['plan_guid'].'">'.ucfirst($key['plan']).' &#8358;'.$key['price'].' for '.$key['duration'].'Days</option>';
+          }
+        $outPut .= '</select>
+        <div class="form-group" id="price_div"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" onclick="SquadPaySUb()" id="subscription_button">Subscribe Now</button>
+        </div>
+      ';
+    }
+
+    echo json_encode($outPut);
+  }
+
+  if (isset($_GET['plan_price'])) {
+    $id = $_GET['plan_price'];
+    $outPut = '';
+
+    if (Ajax::getSingleSubscriptionPlans($id)) {
+      foreach (Ajax::getSingleSubscriptionPlans($id) as $key) {
+        $outPut .= '<input type="hidden" class="form-control mb-3" name="price" id="plan_price" value="'.$key['price'].'">';
+      }
+      
+    }
+
+    echo json_encode($outPut);
+  }

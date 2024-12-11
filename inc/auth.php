@@ -2,7 +2,7 @@
 
     require_once "controllers/users.php";
 
-    $redirect = $db->redirectURI();
+    $redirect = $db->redirectURI(); //echo $redirect;exit;
     $db->getLoginSession($redirect);
 
     $ip_address = Database::getClientIp();
@@ -11,20 +11,20 @@
         $token = $_SESSION['token'];
         $role = $_SESSION['role'];
     }else{
-        header("Location: login?page_url=".$redirect);
+        header('Location: pages?pg=67543388$re386yf32198765430op87697');
     }
 
     if (! Users::findUserByToken($token)) {
-        header("Location: login.php?page_url=".$redirect);
+        header('Location: pages?pg=67543388$re386yf32198765430op87697');
     }
 
     // if (Users::checkUserIfVerified($token) === true) {
     //     header("Location: ../check-email");
     // }
 
-    if (Users::checkRole($role) == false) {
-        header("Location: logout.php");
-    }
+    // if (Users::checkRole($role) == false) {
+    //     header("Location: logout.php");
+    // }
 
 ?>
 

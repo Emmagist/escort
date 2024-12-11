@@ -18,7 +18,7 @@ RewriteRule ^verify/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$ verify.php?ver
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
 
 # Error_display
-php_flag display_startup_errors off
+# php_flag display_startup_errors off
 # php_flag display_errors on
 
 # Error 

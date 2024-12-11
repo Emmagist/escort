@@ -501,29 +501,45 @@ if ($pg == 205) {
 //search escorts
 if ($pg == 206) {
     $error = '';
-    $success = '';
     $outPut = '';
     $data = $db->escape($_GET['data']);
-    $esc_pg = $db->escape($_GET['esc_pg']);
+    $esc_pg = '67543388$re386yf32198765430op876y$';
+    // $db->escape($_GET['esc_pg']);
     if (empty($data)) {
-        $error = "Search a keyword";
+        $error = '<li class="list-items list-unstyle mb-2"><a href="" class="text-bold text-danger" style="font-weight: 600; color:#000">Search a keyword</a></li>';
     }else{
-        $result = $db->searchData(TBL_ESCORTS, "*", "category_id = '$esc_pg'", "$data", 10); var_dump($result);exit;
+        $result = $db->searchData(TBL_USERS, "*", "user_guid = '$esc_pg'", "$data", 10); //var_dump($result);exit;
 
-        if ($result) {
+        if ($result) { echo 'edd';exit;
             foreach ($result as $key) {
-                $token = $key['entity_guid'];
+                echo $token = $key['entity_guid'];exit;
                 foreach (Ajax::getEscortById($token) as $value) {
                     $outPut .= '
                         <li class="list-items list-unstyle mb-2"><a href="" class="text-bold" style="font-weight: 600; color:#000">'.$value['name'].'</a></li>
                     ';
-                    $success = $outPut;
                 }
             }
+        }else {
+            $error .= '
+                <li class="list-items list-unstyle mb-2"><a href="" class="text-bold text-danger" style="font-weight: 600; color:#000">Data not found !</a></li>
+            ';
         }
     }
     // var_dump($re);
-    echo json_encode(['error' => $error, 'success' => $success]);
+    echo json_encode(['error' => $error, 'success' => $outPut]);
+}
+
+//payment form
+if ($pg == 207) {
+    // echo 202;
+    $arial_token = $db->escape($_POST['arial_sub_token']);
+    $plan = $db->escape($_POST['select_sub_plan']);
+    $price = $db->escape($_POST['price_plan']);
+    $invoice = $db->escape($_POST['invoice_code']);
+
+    $db->saveData(TBL_SUBSCRIPTIONS, "user_id = '$arial_token', guid = uuid(), plan_id = '$plan', amount = '$price', invoice_code = '$invoice', paystack_invoice = '', payment_channel = 'Paystack', sub_condition = 'processing', sub_status = 'inactive'");
+    // var_dump($re);
+    echo json_encode('Done');
 }
 
 //Video to GIF

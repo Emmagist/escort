@@ -30,7 +30,6 @@
   // require "modal/modal.php";
   require "inc/footer.php";
 ?>
-<script src="https://checkout.squadco.com/widget/squad.min.js"></script>
 
 <script>
     // $(document).ready(function(event) {//alert('hey')
@@ -99,11 +98,11 @@
         })
     }
 
-//   const invoice = $('#invoice').val();
-//   const amt = $('#price').val();
-//   // const key = '<?//=KEY?>';
-//   const NairapaymentForm = document.getElementById('bookEscortPaymentForm'); 
-//   NairapaymentForm.addEventListener("submit", SquadPay, false);
+    //   const invoice = $('#invoice').val();
+    //   const amt = $('#price').val();
+    //   // const key = '<?//=KEY?>';
+    //   const NairapaymentForm = document.getElementById('bookEscortPaymentForm'); 
+    //   NairapaymentForm.addEventListener("submit", SquadPay, false);
 
   function SquadPay() {
     // e.preventDefault();
