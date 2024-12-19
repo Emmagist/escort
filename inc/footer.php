@@ -18,6 +18,22 @@
   <script src="https://checkout.squadco.com/widget/squad.min.js"></script>
 
   <script>
+    $(document).ready(() => {
+      setInterval(() => {
+        $('#become_escort').attr('class', 'btn btn-danger');
+        setTimeout(() => {
+          $('#become_escort').attr('class', 'btn btn-warning');
+        }, 2000);
+        setTimeout(() => {
+          $('#become_escort').attr('class', 'btn btn-secondary');
+        }, 3000);
+        setTimeout(() => {
+          $('#become_escort').attr('class', 'btn btn-success');
+        }, 4000);
+      }, 1000);
+      
+    })
+    
     function subscribe(params) {
       $('#subscribeModal').modal('show');
       // $('#arial_token').val(params)

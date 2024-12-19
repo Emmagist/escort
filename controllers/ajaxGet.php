@@ -46,7 +46,7 @@
                   $image = $key['profile_image'];
                   // $image->blurImage(5,3);
                 $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
-                elseif ($key['profile_image'] > 0 || $_SESSION['token'] > 0) :
+                elseif ($key['profile_image'] > 0 && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true) :
                   $image = $key['profile_image'];
                   // $image->blurImage(5,3);
                 $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;">';
@@ -198,130 +198,130 @@
     echo json_encode($outPut);
   }
 
-  // if ($_GET['cat']) {
-  //   $outPut = '';
+  if ($_GET['cat']) {
+    $outPut = '';
 
-  //   if (Ajax::getSideBarLists()) {
-  //     $outPut .= '<option value="">Select category</option>';
-  //     foreach (Ajax::getSideBarLists() as $key) {
-  //       $outPut .= '<option value="'.$key['token_guid'].'">'.$key['category'].'</option>';
-  //     }
-  //   }
+    if (Ajax::getSideBarLists()) {
+      $outPut .= '<option value="">Select category</option>';
+      foreach (Ajax::getSideBarLists() as $key) {
+        $outPut .= '<option value="'.$key['token_guid'].'">'.$key['category'].'</option>';
+      }
+    }
 
-  //   echo json_encode($outPut);
-  // }
+    echo json_encode($outPut);
+  }
 
-  // if ($_GET['req_vw']) {
-  //   $token = $_GET['req_vw'];//exit;
-  //   $outPut = '';
-  //   // var_dump(Ajax::getAllEscortRequest($token));exit;
+  if ($_GET['req_vw']) {
+    $token = $_GET['req_vw'];//exit;
+    $outPut = '';
+    // var_dump(Ajax::getAllEscortRequest($token));exit;
 
-  //   if (Ajax::getAllEscortRequest($token)) {
-  //     $outPut .= '<table class="table text-nowrap mb-0 align-middle">
-  //                   <thead class="text-dark fs-4">
-  //                     <tr>
-  //                       <th class="border-bottom-0">
-  //                         <h6 class="fw-semibold mb-0">S/N</h6>
-  //                       </th>
-  //                       <th class="border-bottom-0">
-  //                         <h6 class="fw-semibold mb-0">Name</h6>
-  //                       </th>
-  //                       <th class="border-bottom-0">
-  //                         <h6 class="fw-semibold mb-0">Service</h6>
-  //                       </th>
-  //                       <th class="border-bottom-0">
-  //                         <h6 class="fw-semibold mb-0">Comment</h6>
-  //                       </th>
-  //                       <th class="border-bottom-0">
-  //                         <h6 class="fw-semibold mb-0">Date</h6>
-  //                       </th>
-  //                       <th class="border-bottom-0">
-  //                         <h6 class="fw-semibold mb-0">status</h6>
-  //                       </th>
-  //                       <th class="border-bottom-0">
-  //                         <h6 class="fw-semibold mb-0">View</h6>
-  //                       </th>
-  //                     </tr>
-  //                   </thead>
-  //                   <tbody>';
-  //                   foreach (Ajax::getAllEscortRequest($token) as $key) {
-  //                     $count = 1;
-  //                     $outPut .= '
-  //                     <tr>
-  //                       <td class="border-bottom-0"><h6 class="fw-semibold mb-0">'.$count++.'</h6></td>
-  //                       <td class="border-bottom-0">  
-  //                           <h6 class="fw-semibold mb-0 fs-4">'.ucwords($key['name']).'</h6>                         
-  //                       </td>
-  //                       <td class="border-bottom-0">
-  //                           <h6 class="fw-semibold mb-0 fs-4">'.ucwords($key['category']).'</h6>
-  //                       </td>
-  //                       <td class="border-bottom-0">
-  //                           <p class="mb-0 fw-normal">'.ucfirst($key['request_comments']).'</p>
-  //                       </td>
-  //                       <td class="border-bottom-0">
-  //                         <h6 class="fw-semibold mb-0 fs-4">'.Database::dateFormat($key['created_at']).'</h6>
-  //                       </td>
-  //                       <td class="border-bottom-0">
-  //                         <select name="" id="" class="form-control">
-  //                           <option value="">'.ucfirst($key['request_status']).'</option>
-  //                         </select>
-  //                       </td>
-  //                       <td class="border-bottom-0">
-  //                         <div class="d-flex">
-  //                           <a data-id="`" class="ti ti-pencil text-warning view_request" style="padding-right: 6px; font-size:18px;" onclick=viewRequest(`'.$key['entity'].'`)></a>
-  //                           <a class="ti ti-article text-success" style="font-size:18px;"></a>
-  //                       </div>
-  //                       </td>
-  //                     </tr>'; 
-  //                   }                 
-  //                   $outPut .= '</tbody>
-  //                 </table>';
+    if (Ajax::getAllEscortRequest($token)) {
+      $outPut .= '<table class="table text-nowrap mb-0 align-middle">
+                    <thead class="text-dark fs-4">
+                      <tr>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">S/N</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Name</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Service</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Comment</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Date</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">status</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">View</h6>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>';
+                    foreach (Ajax::getAllEscortRequest($token) as $key) {
+                      $count = 1;
+                      $outPut .= '
+                      <tr>
+                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0">'.$count++.'</h6></td>
+                        <td class="border-bottom-0">  
+                            <h6 class="fw-semibold mb-0 fs-4">'.ucwords($key['name']).'</h6>                         
+                        </td>
+                        <td class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0 fs-4">'.ucwords($key['category']).'</h6>
+                        </td>
+                        <td class="border-bottom-0">
+                            <p class="mb-0 fw-normal">'.ucfirst($key['request_comments']).'</p>
+                        </td>
+                        <td class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0 fs-4">'.Database::dateFormat($key['created_at']).'</h6>
+                        </td>
+                        <td class="border-bottom-0">
+                          <select name="" id="" class="form-control">
+                            <option value="">'.ucfirst($key['request_status']).'</option>
+                          </select>
+                        </td>
+                        <td class="border-bottom-0">
+                          <div class="d-flex">
+                            <a data-id="`" class="ti ti-pencil text-warning view_request" style="padding-right: 6px; font-size:18px;" onclick=viewRequest(`'.$key['entity'].'`)></a>
+                            <a class="ti ti-article text-success" style="font-size:18px;"></a>
+                        </div>
+                        </td>
+                      </tr>'; 
+                    }                 
+                    $outPut .= '</tbody>
+                  </table>';
       
-  //   }
+    }
 
-  //   echo json_encode($outPut);
-  // }
+    echo json_encode($outPut);
+  }
 
-  // if ($_GET['view_req']) {
-  //   $token = $_GET['view_req'];
-  //   $outPut = '';
+  if ($_GET['view_req']) {
+    $token = $_GET['view_req'];
+    $outPut = '';
 
-  //   if (Ajax::getRequestById($token)) {
-  //     foreach (Ajax::getRequestById($token) as $key) {
-  //       $outPut .= '
-  //       <form action="" class="form-group" id="acceptForm">
-  //         <label>Name</label>
-  //         <input type="text" class="form-control mb-3" id="date" value="'.$key['name'].'" disabled>
-  //         <label>Service</label>
-  //         <input type="text" class="form-control mb-3" id="time" value="'.$key['category'].'" disabled>
-  //         <label>Click the box to Accept/Decline the service</label>
-  //         <select name="" id="request_status" class="form-control mb-3">
-  //           <option value="'.$key['request_status'].'">'.ucfirst($key['request_status']).'</option>
-  //           <option value="accept">Accept</option>
-  //           <option value="decline">Decline</option>
-  //         </select>
-  //         <label for="start">Service Start At</label>
-  //         <input type="text" class="form-control mb-3" value="'.$key['service_time_start'].'" id="start" disabled>
-  //         <label for="end">Service End At</label>
-  //         <input type="text" class="form-control mb-3" value="'.$key['service_time_end'].'" id="end" disabled>
-  //         <input type="hidden" class="form-control mb-3" value="'.$key['escorter'].'" name="escortr" disabled>
-  //         <input type="hidden" class="form-control mb-3" value="'.$key['escortee'].'" name="escortee" disabled>';
-  //         if($key['request_comments']):
-  //         $outPut .= ' <label for="req_com">Note</label>
-  //         <textarea class="form-control mb-3" id="req_com" value="'.$key['request_comments'].'" disabled>'.$key['request_comments'].'</textarea>';
-  //         endif;
-  //         $outPut .= '<label for="comment">Do you have any request for your meet-up? Feel free to tell the person here</label>
-  //         <textarea class="form-control mb-3" id="comment" placeholder="Your request here"></textarea>
-  //         <div class="modal-footer">
-  //           <button type="submit" class="btn btn-success" id="send-request">Send</button>
-  //         </div>
-  //       </form>
-  //       ';
-  //     }
-  //   }
+    if (Ajax::getRequestById($token)) {
+      foreach (Ajax::getRequestById($token) as $key) {
+        $outPut .= '
+        <form action="" class="form-group" id="acceptForm">
+          <label>Name</label>
+          <input type="text" class="form-control mb-3" id="date" value="'.$key['name'].'" disabled>
+          <label>Service</label>
+          <input type="text" class="form-control mb-3" id="time" value="'.$key['category'].'" disabled>
+          <label>Click the box to Accept/Decline the service</label>
+          <select name="" id="request_status" class="form-control mb-3">
+            <option value="'.$key['request_status'].'">'.ucfirst($key['request_status']).'</option>
+            <option value="accept">Accept</option>
+            <option value="decline">Decline</option>
+          </select>
+          <label for="start">Service Start At</label>
+          <input type="text" class="form-control mb-3" value="'.Database::time($key['service_time_start']).'" id="start" disabled>
+          <label for="end">Service End At</label>
+          <input type="text" class="form-control mb-3" value="'.Database::time($key['service_time_end']).'" id="end" disabled>
+          <input type="hidden" class="form-control mb-3" value="'.$key['escorter'].'" name="escortr" disabled>
+          <input type="hidden" class="form-control mb-3" value="'.$key['escortee'].'" name="escortee" disabled>';
+          if($key['request_comments']):
+          $outPut .= ' <label for="req_com">Note</label>
+          <textarea class="form-control mb-3" id="req_com" value="'.$key['request_comments'].'" disabled>'.$key['request_comments'].'</textarea>';
+          endif;
+          $outPut .= '<label for="comment">Do you have any request for your meet-up? Feel free to tell the person here</label>
+          <textarea class="form-control mb-3" id="comment" placeholder="Your request here"></textarea>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success" id="send-request">Send</button>
+          </div>
+        </form>
+        ';
+      }
+    }
 
-  //   echo json_encode($outPut);
-  // }
+    echo json_encode($outPut);
+  }
 
   // //Get all Sex Videos
   // if ($_GET['svd']) {
@@ -396,24 +396,24 @@
   // }
 
   // // Suger mummy category
-  // if ($_GET['con'] && $_GET['gender']) {
-  //   $con = $_GET['con'];
-  //   $gender = $_GET['gender'];
-  //   $outPut = '';
+  if ($_GET['con'] && $_GET['gender']) {
+    $con = $_GET['con'];
+    $gender = $_GET['gender'];
+    $outPut = '';
 
-  //   $outPut .= '<option value="">Select category</option>';
-  //   if ($con == 's_mummy' && $gender == 'female') {
-  //     $outPut .= '<option value="sugar_boy">Sugar Boy</option>';
-  //   }elseif ($con == 'none' && $gender == 'female') {
-  //     $outPut .= '<option value="sugar_daddy">Sugar Daddy</option>';
-  //   }elseif ($con == 's_daddy' && $gender == 'male') {
-  //     $outPut .= '<option value="sugar_girl">Sugar Girl</option>';
-  //   }elseif ($con == 'none' && $gender == 'male') {
-  //     $outPut .= '<option value="sugar_mummy">Sugar Mommy</option>';
-  //   }
+    $outPut .= '<option value="">Select category</option>';
+    if ($con == 's_mummy' && $gender == 'female') {
+      $outPut .= '<option value="sugar_boy">Sugar Boy</option>';
+    }elseif ($con == 'none' && $gender == 'female') {
+      $outPut .= '<option value="sugar_daddy">Sugar Daddy</option>';
+    }elseif ($con == 's_daddy' && $gender == 'male') {
+      $outPut .= '<option value="sugar_girl">Sugar Girl</option>';
+    }elseif ($con == 'none' && $gender == 'male') {
+      $outPut .= '<option value="sugar_mummy">Sugar Mummy</option>';
+    }
 
-  //   echo json_encode($outPut);
-  // }
+    echo json_encode($outPut);
+  }
 
   // get sex cat on upload
   // if ($_GET['built_cat']) {

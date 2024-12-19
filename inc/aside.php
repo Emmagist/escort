@@ -55,7 +55,15 @@
                 <span>
                   <i class="ti ti-typography"></i>
                 </span>
-                <span class="hide-menu">Request Sugar Boy</span>
+                <?php if($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 's_daddy') : ?>
+                  <span class="hide-menu">Request Sugar Girl</span>
+                <?php elseif($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 's_mummy') : ?>
+                      <span class="hide-menu">Request Sugar Boy</span>
+                <?php elseif($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 'none') : ?>
+                      <span class="hide-menu">Request Sugar Mummy</span>
+                <?php elseif($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 'none') : ?>
+                      <span class="hide-menu">Request Sugar Daddy</span>
+                <?php endif; ?>
               </a>
             </li>
             <li class="nav-small-cap">

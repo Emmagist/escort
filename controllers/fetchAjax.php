@@ -542,6 +542,89 @@ if ($pg == 207) {
     echo json_encode('Done');
 }
 
+//upload escort profile
+if ($pg == 208) {
+    $error = '';
+    $success = '';
+    $username = $db->escape($_POST['username']);
+    $address = $db->escape($_POST['address']);
+    $token = $db->escape($_POST['token']);
+    $gender = $db->escape($_POST['gender']);
+    $nin = $db->escape($_POST['nin']);
+
+    if (empty($username)) {
+        $error = "Username is required!";
+    }
+
+    if (empty($address)) {
+        $error = "Address is required!";
+    }
+
+    if (empty($token)) {
+        $error = "Something went wrong!";
+    }
+
+    if (empty($gender)) {
+        $error = "Gender is required!";
+    }
+
+    if (empty($nin)) {
+        $error = "NIN is required!";
+    }
+
+    if (strlen($nin) > 11 || strlen($nin) < 11) {
+        $error = "NIN must be 11 digits";
+    }
+
+    // File upload
+    $target_dir = "../nin_slip/";
+    $target_dir2 = "../passport/";
+    $target_file  = $target_dir . basename($_FILES["nin_slip"]["name"]);
+    $target_file2  = $target_dir2 . basename($_FILES["passport"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $imageFileType2 = strtolower(pathinfo($target_file2, PATHINFO_EXTENSION));
+    $check = getimagesize($_FILES["nin_slip"]["tmp_name"]);
+    $check2 = getimagesize($_FILES["passport"]["tmp_name"]);
+    if ($check == false && $check2 == false) {
+        $error =  "Files is not an image";
+        $uploadOk = 0;
+    }
+
+    if (file_exists($target_file && $target_file2)) {
+        $error = "Sorry, files already exists.";
+        $uploadOk = 0;
+    }
+
+    if ($_FILES["nin_slip"]["size"] > 500000 && $_FILES["passport"]["size"] > 500000) {
+        $error = "Sorry, your files is too large.";
+        $uploadOk = 0;
+    }
+
+    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType2 != "jpg" && $imageFileType != "png") {
+        $error = "Sorry, only JPG, JPEG, PNG files are allowed.";
+        $uploadOk = 0;
+    }
+
+    if ($uploadOk == 1 && empty($error)) {
+        $move_file = move_uploaded_file($_FILES["nin_slip"]["tmp_name"], $target_file);
+        $move_file2 = move_uploaded_file($_FILES["passport"]["tmp_name"], $target_file2);
+        if ($move_file && $move_file2) {
+            $result = $db->update(TBL_USERS, "username = '$username', gender = $gender, nin_number = '$nin', nin_slip = '$target_file', recent_passport = '$target_file2', address = '$address', escort_approval = 'waiting'", "user_guid = '$token'");
+            // var_dump($re);
+            if ($result) {
+                $success = "Successfully uploaded...";
+            }else {
+                $error = "Something went wrong";
+            }
+        }else {
+            $error = "Files not uploaded! Something went wrong";
+        }
+    }
+
+    echo json_encode(['error' => $error, 'success' => $success]);
+}
+
 //Video to GIF
 // if ($pg == 204) {
 //     try {
