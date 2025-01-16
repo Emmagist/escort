@@ -56,6 +56,7 @@
                   <input type="number" class="form-control mb-3" name="age" id="age">
                 </div>
                 <input type="hidden" class="form-control mb-3" name="token" value="'<?=$_SESSION['token']?>'">
+                <input type="hidden" class="form-control mb-3" name="gender" value="'<?=$_SESSION['gender']== 'female'?'male':'female'?>'">
                 <div class="col-md-6">
                   <label for="currency">Currency</label>
                   <select name="currency" id="currency" class="form-control mb-3">
@@ -64,10 +65,24 @@
                     <option value="usd">USD</option>
                   </select>
                 </div>
+                <?php if($_SESSION['connect'] != 'none'): ?>
                 <div class="col-md-6">
                   <label for="prices">Offering Price</label>
                   <input type="number" class="form-control mb-3" name="prices" id="prices">
                 </div>
+                <?php else: ''; endif; ?>
+                <?php if($_SESSION['connect'] == 'none'): ?>
+                <div class="col-md-6">
+                  <label for="weight">Weight</label>
+                  <input type="number" class="form-control mb-3" name="weight" id="weight">
+                </div>
+                <?php else: ''; endif; ?>
+                <?php if($_SESSION['connect'] == 'none'): ?>
+                <div class="col-md-6">
+                  <label for="height">Height</label>
+                  <input type="number" class="form-control mb-3" name="height" id="height">
+                </div>
+                <?php else: ''; endif; ?>
                 <div class="col-md-6">
                   <label for="business">Your Business Type</label>
                   <input type="text" class="form-control mb-3" name="business" id="business">
@@ -97,10 +112,6 @@
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label for="sexual_orientation">Sexual Orientation</label>
-                  <input type="text" class="form-control mb-3" name="sexual_orientation" id="sexual_orientation">
-                </div>
-                <div class="col-md-6">
                   <label for="weight_request">Weight Requesting For:</label>
                   <input type="text" class="form-control mb-3" name="weight_request" id="weight_request">
                 </div>
@@ -116,6 +127,10 @@
                     <option value="light_skin">Light Skin</option>
                     <option value="chocolate_skin">Chocolate Skin</option>
                   </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="location">Location</label>
+                  <input type="text" class="form-control mb-3" name="location" id="location">
                 </div>
                 <div class="col-md-6">
                   <label for="fileUpload">Upload Your Picture</label>

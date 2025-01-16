@@ -28,7 +28,7 @@
             </ul>
           </div>
         </div>
-        <div class="row escort_ro">
+        <div class="row sugar__row">
           <div class="col-sm-6 col-xl-3">
             <div class="card overflow-hidden rounded-2">
               <div class="position-relative">
@@ -57,21 +57,19 @@
 ?>
 <script>
   $(document).ready(function(event) {
-    // event.preventDefault(); 
-    const slug = '<?=$slug?>';
     $.ajax({
-        url: 'controllers/ajaxGet.php?escorts='+slug,
+        url: 'controllers/ajaxGet.php?get_sugar=get_sugar',
         method: 'GET',
         dataType: 'json',
-        data: slug,
+        data: 'get_sugar',
         contentType: false,
         processData: false,
         beforeSend: () => {
-            $('.escort_row').html('Loading contents...');
+            $('.sugar__row').html('Loading contents...');
         },
         success: (param) => {
             if (param) {
-                $('.escort_row').html(param);
+                $('.sugar__row').html(param);
             }
         }
     })

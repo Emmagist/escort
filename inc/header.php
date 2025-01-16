@@ -18,7 +18,11 @@
           </ul>
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-              <a href="become-escort" target="_blank" class="btn btn-primary" id="become_escort">Become an Escort</a>
+              <?php if (! $_SESSION['escort_approval']) : ?>
+                <a href="become-escort" target="_blank" class="btn btn-primary" id="become_escort">Become an Escort</a>
+              <?php elseif($_SESSION['escort_approval'] && $_SESSION['escort_approval'] != 'accept'): ?>
+                <a href="become-escort" target="_blank" class="btn btn-primary" id="become_escort">Become an Escort</a>
+              <?php endif; ?>
               <li class="nav-item dropdown">
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                   aria-expanded="false">

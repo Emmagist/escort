@@ -168,6 +168,40 @@ class Ajax
         return $db->selectData(TBL_SUBSCRIPTION_PLAN, "*", "plan_guid = '$id'");
     }
 
+    public static function getAllSugarConnectBySlug($slug, $gender)
+    {
+        global $db;
+        $rows = [];
+        $result = $db->query("SELECT * FROM " . TBL_SUGAR_CONNECT . "
+                 INNER JOIN " . TBL_USERS . " 
+                 ON " . TBL_USERS . ".user_guid = " . TBL_SUGAR_CONNECT . ".user_id 
+                 WHERE " . TBL_SUGAR_CONNECT . ".gender_request = '$gender'
+            ");
+        if (!empty($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            return $rows;
+        }
+    }
+
+    public static function getAllSugarConnect($slug)
+    {
+        global $db;
+        $rows = [];
+        $result = $db->query("SELECT * FROM " . TBL_SUGAR_CONNECT . "
+                 INNER JOIN " . TBL_USERS . " 
+                 ON " . TBL_USERS . ".user_guid = " . TBL_SUGAR_CONNECT . ".user_id 
+                 WHERE " . TBL_SUGAR_CONNECT . ".user_id = '$slug'
+            ");
+        if (!empty($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            return $rows;
+        }
+    }
+
     // public static function checkUserIfVerified($email)
     // {
     //     global $db;

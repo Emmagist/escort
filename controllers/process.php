@@ -44,6 +44,7 @@
                         $_SESSION['username'] = $userInfo['username'];
                         $_SESSION['gender'] = $userInfo['gender'];
                         $_SESSION['connect'] = $userInfo['connect'];
+                        $_SESSION['escort_approval'] = $userInfo['escort_approval'];
                         $db->set('login', true);
                         $redirect = $_REQUEST['page_url'];
                         if ($redirect == '') {

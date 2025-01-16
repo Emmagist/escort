@@ -17,8 +17,8 @@
             
         </div>
         <form action="" method="post" class="form-group" id="orderForm" style="display: none;">
-          <input type="hidden" class="form-control mb-3" disabled id="escotee_date" name=" escortee_date">
-          <input type="hidden" class="form-control mb-3" disabled id="escotee_time" name="escortee_time">
+          <input type="date" class="form-control mb-3" disabled id="escotee_date" name=" escortee_date">
+          <input type="time" class="form-control mb-3" disabled id="escotee_time" name="escortee_time">
           <input type="hidden" class="form-control mb-3" disabled id="esc_price" name="esc_price">
           <input type="hidden" class="form-control mb-3" name="escort" id="escort_id">
           <input type="hidden" class="form-control mb-3" name="escortee" id="escortee_id">
@@ -112,8 +112,8 @@
     const price = document.getElementById("price").value;
     const date = document.getElementById("date").value;
     const time = document.getElementById("time").value;
-    const slug = document.getElementById("slug").value;
-    passable(date,time,escort,escortee,trn_invoice,price,slug);
+    const slug = document.getElementById("slug").value; //console.log('date:'+date, 'time:'+time, 'escort:'+escort, 'escortee:'+escortee, 'trn:'+trn_invoice, 'price:'+price, 'slug:'+slug);
+    passable(date,time,escort,escortee,trn_invoice,price,slug); 
     const squadInstance = new squad({
     onLoad: () => console.log("Widget loaded successfully"),
     key: 'sandbox_pk_2812061280c862064951d1ace69f69213cbe2d1f2f07',
@@ -139,7 +139,7 @@
 
     function passable(date,time,escort,escortee,trn_invoice,price,slug) {
         const escotee_date = $('#escotee_date').val(date);
-        const escotee_time = $('#escotee_time').val(time);
+        const escotee_time = $('#escotee_time').val(time); console.log('date=>'+escotee_date, 'escotee_time=>'+escotee_time);
         const escort_id = $('#escort_id').val(escort);
         const escortee_id = $('#escortee_id').val(escortee);
         const invoiceGen = $('#ref_invoice').val(trn_invoice);

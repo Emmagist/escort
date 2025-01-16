@@ -74,6 +74,7 @@ define("TBL_PORN_VIDEOS",            "porn_videos");
 define("TBL_SEX_VIDEO_CATEGORY",    "sex_categories");
 define("TBL_SUBSCRIPTIONS",          "subscriptions");
 define("TBL_SUBSCRIPTION_PLAN",     "subscription_plans");
+define("TBL_SUGAR_CONNECT",     "sugar_request");
 define("TBL_CONTACT",               "contact");
 define("TBL_SUBSCRIB",             "news_letter");
 define("TBL_CATEGORY",              "category");

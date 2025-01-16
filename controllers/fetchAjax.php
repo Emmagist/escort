@@ -128,14 +128,14 @@ if ($pg == 201) {
 
 //payment form
 if ($pg == 202) {
-    echo 202;
-    echo $escort_id = $db->escape($_POST['escort']);
-    echo $amount = $db->escape($_POST['esc_price']);
-    echo $escortee_id = $db->escape($_POST['escortee']);
-    echo $escortee_date = $db->escape($_POST['escortee_date']);
-    echo $escortee_time = $db->escape($_POST['escortee_time']);
-    echo $invoice = $db->escape($_POST['ref_invoice']);
-    echo $invoice = $db->escape($_POST['page']); exit;
+    202;
+    $escort_id = $db->escape($_POST['escort']);
+    $amount = $db->escape($_POST['esc_price']);
+    $escortee_id = $db->escape($_POST['escortee']);
+    $escortee_date = $_POST['escortee_date'];
+    $escortee_time = $_POST['escortee_time'];
+    $invoice = $db->escape($_POST['ref_invoice']);
+    $page = $db->escape($_POST['page']);
 
     $db->saveData(TBL_PAYMENTS_LOG, "user_guid = '$token', investment_plan_id = '$plan', invoice_code = '$invoice', paystack_invoice = '', amount = '$amount', payment_channel = 'FlutterWave', conditions = 'processing'");
     // var_dump($re);
@@ -375,13 +375,16 @@ if ($pg == 204) {
     echo json_encode(['error' => $error, 'success' => $success]);
 }
 
-//upload escort profile
+//request connect
 if ($pg == 205) {
     $error = '';
     $success = '';
     $category = $db->escape($_POST['category']);
     $age = $db->escape($_POST['age']);
     $token = $db->escape($_POST['token']);
+    $gender = $db->escape($_POST['gender']);
+    $weight = $db->escape($_POST['weight']);
+    $height = $db->escape($_POST['height']);
     $currency = $db->escape($_POST['currency']);
     $prices = $db->escape($_POST['prices']);
     $business = $db->escape($_POST['business']);
@@ -389,10 +392,10 @@ if ($pg == 205) {
     $ethnicity = $db->escape($_POST['ethnicity']);
     $smoker = $db->escape($_POST['smoker']);
     $alcohol = $db->escape($_POST['alcohol']);
-    $sexual_orientation = $db->escape($_POST['sexual_orientation']);
     $weight_request = $db->escape($_POST['weight_request']);
     $height_request = $db->escape($_POST['height_request']);
     $complexion = $db->escape($_POST['complexion']);
+    $location = $db->escape($_POST['location']);
     $note = $_POST['note'];
 
     if (empty($category)) {
@@ -409,9 +412,6 @@ if ($pg == 205) {
 
     if (empty($currency)) {
         $error = "Currency is required!";
-    }
-    if (empty($prices)) {
-        $error = "Prices is required!";
     }
 
     if (empty($business)) {
@@ -434,8 +434,8 @@ if ($pg == 205) {
         $error = "Alcohol is required!";
     }
 
-    if (empty($sexual_orientation)) {
-        $error = "Sexual orientation is required!";
+    if (empty($location)) {
+        $error = "Location is required!";
     }
 
     if (empty($weight_request)) {
@@ -456,7 +456,7 @@ if ($pg == 205) {
 
     // File upload
     $target_dir = "../sugar_mum_dad_boy_girl/";
-    $target_file  = $target_dir . basename($_FILES["fileUpload"]["name"]);
+    $target_file  = $target_dir . basename($_FILES["fileUpload"]["name"]); //var_dump($target_file);exit;
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
     $check = getimagesize($_FILES["fileUpload"]["tmp_name"]);
@@ -481,10 +481,10 @@ if ($pg == 205) {
     }
 
     if ($uploadOk == 1 && empty($error)) {
-        $move_file = move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file);
+        $move_file = move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file); //var_dump($move_file);exit;
         if ($move_file) {
-            $result = $db->saveData(TBL_ESCORTS, "user_id = '$token', category_id = '$category', entity_guid = uuid(), age = '$age', currency = '$currency', prices = '$prices', occupation = '$business', age_request = '$age_request', ethnicity = '$ethnicity', smoker = '$smoker', alcohol = '$alcohol', weight_request = '$weight_request', height_request = '$height_request', complexion = '$complexion', upload_file = '$target_file', description = '$note'");
-            // var_dump($re);
+            $result = $db->saveData(TBL_SUGAR_CONNECT, "user_id = '$token', category_id = '$category', enti_guid = uuid(), gender_request = '$gender', age = '$age', price = '$prices', weight = '$weight', height = '$height', currency = '$currency', business = '$business', age_request = '$age_request', ethnicity = '$ethnicity', smoker = '$smoker', alcohol = '$alcohol', weight_request = '$weight_request', height_request = '$height_request', complexion = '$complexion', location = '$location', upload_file = '$target_file', description = '$note'");
+            var_dump($result);
             if ($result) {
                 $success = "Successfully uploaded...";
             }else {
@@ -601,7 +601,7 @@ if ($pg == 208) {
         $uploadOk = 0;
     }
 
-    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType2 != "jpg" && $imageFileType != "png") {
+    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType2 != "jpg" && $imageFileType2 != "png" && $imageFileType2 != "jpeg") {
         $error = "Sorry, only JPG, JPEG, PNG files are allowed.";
         $uploadOk = 0;
     }

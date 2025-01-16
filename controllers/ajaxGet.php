@@ -183,8 +183,8 @@
           <label>Price</label>
           <input type="text" class="form-control mb-3" value="'.$key['prices'].'" disabled id="price">
           <input type="hidden" class="form-control mb-3" value="'.$key['email'].'" id="email-address">
-          <input type="hidden" class="form-control mb-3" value="'.$token.'" id="escort">
-          <input type="hidden" class="form-control mb-3" value="'.$key['prices'].'" id="escortee">
+          <input type="hidden" class="form-control mb-3" value="'.$_SESSION['token'].'" id="escort">
+          <input type="hidden" class="form-control mb-3" value="'.$token.'" id="escortee">
           <input type="hidden" class="form-control mb-3" value="'.$slug.'" id="slug">
           <input type="hidden" value="'.DataBase::invoiceCode().'" id="invoice">
           <div class="modal-footer">
@@ -324,51 +324,53 @@
   }
 
   // //Get all Sex Videos
-  // if ($_GET['svd']) {
-  //   // $slug = $_GET['escorts'];
-  //   $outPut = '';
+  if ($_GET['svd']) {
+    // $slug = $_GET['escorts'];
+    $outPut = '';
 
-  //   if (Ajax::getAllSexVideos()) {
-  //     foreach (Ajax::getAllSexVideos() as $key) {
-  //       if ($key['img']) {
-  //         $outPut .= '<div class="col-sm-6 col-xl-3">
-  //           <div class=" overflow-hidden rounded-2">
-  //             <div class="position-relative" id="testing">
-  //               <a href="video.php?ent='.$key['entity_guid'].'" class="align-middle">
-  //                 <img src="'.$key['img'].'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`)" alt="" width="560" height="170">
-  //                 <h6 class=" text-capitalize text-center d-inline-block text-truncate pt-1" title="'.$key['title'].'">'.$key['title'].'</h6>
-  //               </a>
-  //             </div>
-  //           </div>
-  //         </div>';
-  //       }
-  //     }
-  //   }
+    if (Ajax::getAllSexVideos()) {
+      foreach (Ajax::getAllSexVideos() as $key) {
+        if ($key['img']) {
+          $outPut .= '<div class="col-sm-6 col-xl-3">
+            <div class=" overflow-hidden rounded-2">
+              <div class="position-relative" id="testing">
+                <a href="video.php?ent='.$key['entity_guid'].'" class="align-middle">
+                  <img src="'.$key['img'].'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`)" alt="" width="560" height="170">
+                  <h6 class=" text-capitalize text-center d-inline-block text-truncate pt-1" title="'.$key['title'].'">'.$key['title'].'</h6>
+                </a>
+              </div>
+            </div>
+          </div>';
+        }
+      }
+    }else {
+      $outPut = '<h6 class="text-danger mt-5">XXvideos not available at the moment</h6>';
+    }
 
-  //     echo json_encode($outPut);
-  // }
+      echo json_encode($outPut);
+  }
 
   // //Sex Video Show
-  // if ($_GET['ent']) {
-  //   $slug = $_GET['ent'];
-  //   $outPut = '';
+  if ($_GET['ent']) {
+    $slug = $_GET['ent'];
+    $outPut = '';
 
-  //   if (Ajax::getSingleSexVideos($slug)) {
-  //     foreach (Ajax::getSingleSexVideos($slug) as $key) {
-  //       if ($key['porn_video']) {
-  //         $outPut .= '<div id="carouselExampleSlidesOnly" class="sex-videos-related" data-id="`'.$key['user_id'].'`" data-cat="`'.$key['sex_cat_id'].'`">
-  //           <div class="">
-  //             <div class="">
-  //               <video src="'.str_replace('../','',$key['porn_video']).'" style="height: 450px;"        class="d-block w-100 rounded-2" controls></video>
-  //             </div>
-  //           </div>
-  //         </div>';
-  //       }
-  //     }
-  //   }
+    if (Ajax::getSingleSexVideos($slug)) {
+      foreach (Ajax::getSingleSexVideos($slug) as $key) {
+        if ($key['porn_video']) {
+          $outPut .= '<div id="carouselExampleSlidesOnly" class="sex-videos-related" data-id="`'.$key['user_id'].'`" data-cat="`'.$key['sex_cat_id'].'`">
+            <div class="">
+              <div class="">
+                <video src="'.str_replace('../','',$key['porn_video']).'" style="height: 450px;"        class="d-block w-100 rounded-2" controls></video>
+              </div>
+            </div>
+          </div>';
+        }
+      }
+    }
 
-  //     echo json_encode($outPut);
-  // }
+      echo json_encode($outPut);
+  }
 
   // if ($_GET['rel'] && $_GET['cat']) {
   //   $slug = $_GET['rel'];
@@ -416,21 +418,21 @@
   }
 
   // get sex cat on upload
-  // if ($_GET['built_cat']) {
-  //     $token = $_GET['built_cat'];
-  //     $outPut = '';
+  if ($_GET['built_cat']) {
+      $token = $_GET['built_cat'];
+      $outPut = '';
   
-  //     if (Ajax::getSexVideosCategory()) {
-  //       foreach (Ajax::getSexVideosCategory() as $key) {
-  //         $outPut .= '
-  //           <option value="">Choose Option</option>
-  //           <option value="'.$key['identity_guid'].'">'.$key['sex_category'].'</option>
-  //         ';
-  //       }
-  //     }
+      if (Ajax::getSexVideosCategory()) {
+        foreach (Ajax::getSexVideosCategory() as $key) {
+          $outPut .= '
+            <option value="">Choose Option</option>
+            <option value="'.$key['identity_guid'].'">'.$key['sex_category'].'</option>
+          ';
+        }
+      }
   
-  //     echo json_encode($outPut);
-  //   }
+      echo json_encode($outPut);
+    }
 
   if (isset($_GET['sub'])) {
     $sub = $_GET['sub'];
@@ -467,6 +469,59 @@
         $outPut .= '<input type="hidden" class="form-control mb-3" name="price" id="plan_price" value="'.$key['price'].'">';
       }
       
+    }
+
+    echo json_encode($outPut);
+  }
+
+  if ($_GET['get_sugar']) { echo "jkj";exit;
+    echo $slug = $_SESSION['token'];exit;
+    echo $gender = $_SESSION['gender'];exit;
+    $outPut = '';
+    var_dump(Ajax::getAllSugarConnectBySlug($slug, $gender));exit;
+
+    if (Ajax::getAllSugarConnectBySlug($slug, $gender)) {
+      foreach (Ajax::getAllSugarConnectBySlug($slug, $gender) as $key) {
+        $outPut .= '<div class="col-sm-4 col-xl-3">
+          <div class="card overflow-hidden rounded-2" style="width:250px">
+            <div class="position-relative">
+              <a href="escort-profile?esc='.$key['entity_guid'].'&sg='.$slug.'">';
+                if($key['gender'] == 'male' && empty($key['upload_file']) || $_SESSION['token'] == 0): 
+                  $image = 'assets/images/products/no-img-men.jpg';
+                  // $image->blurImage(5,3);
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                elseif ($key['gender'] == 'female' && empty($key['upload_file']) || $_SESSION['token'] == 0) :
+                  $image = 'assets/images/products/no-img-women.jpg';
+                  // $image->blurImage(5,3);
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                elseif ($key['upload_file'] > 0 || $_SESSION['token'] == 0) :
+                  $image = $key['upload_file'];
+                  // $image->blurImage(5,3);
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                elseif ($key['upload_file'] > 0 && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true) :
+                  $image = $key['upload_file'];
+                  // $image->blurImage(5,3);
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;">';
+                endif;
+              $outPut .= '</div>
+              <div class="card-body pt-3 p-4">
+                <h6 class="fw-semibold fs-4">'.$key['username'].'</h6>
+                <div class="d-flex align-items-center justify-content-between">
+                  <h6 class="fw-semibold fs-4 mb-0">$'.$key['location'].'</h6>
+                  <ul class="list-unstyled d-flex align-items-center mb-0">
+                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                    <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                  </ul>
+                </div>
+              </div>
+          </div>
+        </div>';
+      }
+    }else {
+      $outPut = '<h6 class="text-danger mt-5">XXvideos not available at the moment</h6>';
     }
 
     echo json_encode($outPut);
