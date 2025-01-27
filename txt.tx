@@ -1,0 +1,82 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost
+-- Generation Time: Jan 27, 2025 at 12:19 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `escorts`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments_log`
+--
+
+CREATE TABLE `payments_log` (
+  `id` int(11) NOT NULL,
+  `payment_entity` varchar(50) NOT NULL,
+  `escortee_id` varchar(70) NOT NULL,
+  `escorte_id` varchar(70) NOT NULL,
+  `category_id` varchar(50) NOT NULL,
+  `invoice_code` varchar(12) NOT NULL,
+  `paystack_invoice` varchar(12) DEFAULT NULL,
+  `amount` float NOT NULL,
+  `payment_channel` varchar(20) NOT NULL,
+  `conditions` enum('processing','cancelled','successful') NOT NULL DEFAULT 'processing',
+  `escortee_date` date NOT NULL,
+  `escortee_time` time NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `payments_log`
+--
+
+INSERT INTO `payments_log` (`id`, `payment_entity`, `escortee_id`, `escorte_id`, `category_id`, `invoice_code`, `paystack_invoice`, `amount`, `payment_channel`, `conditions`, `escortee_date`, `escortee_time`, `created_at`, `updated_at`) VALUES
+(1, '6b164aaa-dbea-11ef-9176-00bb60976a80', '67543388-re386yf321-8765430-p8760', 'f35d8ccbc687bddd023fe180e83fd935e77f8dc5a3a3b924be', '67543388$re386yf32198765430op87697', 'sanm_771739', '', 10000, 'FlutterWave', 'processing', '2025-01-28', '21:12:00', '2025-01-26 07:35:33', '2025-01-26 13:35:33'),
+(2, '23b5e9fa-dc3d-11ef-a544-00bb60976a80', '67543388-re386yf321-8765430-p8760', 'f35d8ccbc687bddd023fe180e83fd935e77f8dc5a3a3b924be', '67543388$re386yf32198765430op87697', 'sanm_833640', '', 10000, 'FlutterWave', 'processing', '2025-01-28', '06:27:00', '2025-01-26 17:27:42', '2025-01-26 23:27:42'),
+(3, '9c4706d7-dc3d-11ef-a544-00bb60976a80', '67543388-re386yf321-8765430-p8760', 'f35d8ccbc687bddd023fe180e83fd935e77f8dc5a3a3b924be', '67543388$re386yf32198765430op87697', 'sanm_495644', '', 10000, 'FlutterWave', 'processing', '2025-01-31', '07:32:00', '2025-01-26 17:31:04', '2025-01-26 23:31:04'),
+(4, '5812981f-dc9e-11ef-a0bc-00bb60976a80', '67543388-re386yf321-8765430-p8760', 'f35d8ccbc687bddd023fe180e83fd935e77f8dc5a3a3b924be', '67543388$re386yf32198765430op87697', 'sanm_041782', '', 10000, 'FlutterWave', 'processing', '2025-01-30', '20:01:00', '2025-01-27 05:03:31', '2025-01-27 11:03:31');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `payments_log`
+--
+ALTER TABLE `payments_log`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `invoice_code` (`invoice_code`),
+  ADD UNIQUE KEY `payment_entity` (`payment_entity`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `payments_log`
+--
+ALTER TABLE `payments_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

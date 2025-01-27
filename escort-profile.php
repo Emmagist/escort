@@ -16,17 +16,19 @@
         <div class="row escort_profile" id="escort_profile" data-id="<?=$token?>" data-slug="<?=$slug?>">
             
         </div>
-        <form action="" method="post" class="form-group" id="orderForm" style="display: none;">
-          <input type="date" class="form-control mb-3" disabled id="escotee_date" name=" escortee_date">
-          <input type="time" class="form-control mb-3" disabled id="escotee_time" name="escortee_time">
-          <input type="hidden" class="form-control mb-3" disabled id="esc_price" name="esc_price">
-          <input type="hidden" class="form-control mb-3" name="escort" id="escort_id">
-          <input type="hidden" class="form-control mb-3" name="escortee" id="escortee_id">
-          <input type="hidden" class="form-control mb-3" name="page" id="page">
-          <input type="hidden" name="ref_invoice" id="ref_invoice">
-          <button type="submit" class="btn btn-success" id="paymentButton"></button>
+
+        <form action="" method="post" id="orderForm" class="form-group" style="display: none;">
+            <input type="hidden" class="form-control" id="escotee_date" name="escortee_date">
+            <input type="hidden" class="form-control" id="escotee_time" name="escortee_time">
+            <input type="hidden" class="form-control" id="esc_price" name="esc_price">
+            <input type="hidden" class="form-control" id="escort_id" name="escort">
+            <input type="hidden" class="form-control" id="page" name="page">
+            <input type="hidden" class="form-control" id="ref_invoice" name="ref_invoice">
+            <input type="hidden" class="form-control" id="escortee_id" name="escortee">
+            <button type="submit" class="form-control" id="paymentButton"></button>
         </form>
-<?php 
+
+        <?php 
   // require "modal/modal.php";
   require "inc/footer.php";
 ?>
@@ -129,7 +131,7 @@
         let message = 'Payment complete! Reference: ' + response.transaction_ref ;
         // alert(message);
         const amt = document.getElementById("price").value;
-        location.href = "verify?verify="+response.transaction_ref+'&inv='+invoice+'&amt='+amt+'&pd='+plan_id;
+        location.href = "verify?verify="+response.transaction_ref+"&inv="+trn_invoice+"&amt="+amt+"&slug="+slug;
     }
     });
     squadInstance.setup();

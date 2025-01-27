@@ -34,7 +34,7 @@
               <span class="hide-menu text-capitalization">activities</span>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="upload-escort.php" aria-expanded="false">
+              <a class="sidebar-link" href="upload-escort" aria-expanded="false">
                 <span>
                   <i class="ti ti-typography"></i>
                 </span>
@@ -42,7 +42,7 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="upload-porn-video.php" aria-expanded="false">
+              <a class="sidebar-link" href="upload-porn-video" aria-expanded="false">
                 <span>
                   <i class="ti ti-typography"></i>
                 </span>
@@ -51,7 +51,7 @@
             </li>
             <?php endif?>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="request-connect.php" aria-expanded="false">
+              <a class="sidebar-link" href="request-connect" aria-expanded="false">
                 <span>
                   <i class="ti ti-typography"></i>
                 </span>
@@ -71,45 +71,24 @@
               <span class="hide-menu text-capitalization">services</span>
             </li>
             <li id="navigation_lists"></li>
-            <?php if($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 's_daddy') : ?>
               <li class="sidebar-item">
-                <a class="sidebar-link" href="connect.php" aria-expanded="false">
+                <a class="sidebar-link" href="connect" aria-expanded="false">
                   <span>
                     <i class="ti ti-typography"></i>
                   </span>
+                  <?php if($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 's_daddy') : ?>
                   <span class="hide-menu">Sugar Girl</span>
+                  <?php elseif($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 's_mummy') : ?>
+                        <span class="hide-menu">Sugar Boy</span>
+                  <?php elseif($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 'none') : ?>
+                        <span class="hide-menu">Sugar Mummy</span>
+                  <?php elseif($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 'none') : ?>
+                        <span class="hide-menu">Sugar Daddy</span>
+                  <?php endif; ?>
                 </a>
               </li>
-            <?php elseif($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 's_mummy') : ?>
-              <li class="sidebar-item">
-                <a class="sidebar-link" href="connect.php" aria-expanded="false">
-                  <span>
-                    <i class="ti ti-typography"></i>
-                  </span>
-                  <span class="hide-menu">Sugar Boy</span>
-                </a>
-              </li>
-            <?php elseif($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 'none') : ?>
-              <li class="sidebar-item">
-                <a class="sidebar-link" href="connect.php" aria-expanded="false">
-                  <span>
-                    <i class="ti ti-typography"></i>
-                  </span>
-                  <span class="hide-menu">Sugar Mummy</span>
-                </a>
-              </li>
-            <?php elseif($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 'none') : ?>
-              <li class="sidebar-item">
-                <a class="sidebar-link" href="connect.php" aria-expanded="false">
-                  <span>
-                    <i class="ti ti-typography"></i>
-                  </span>
-                  <span class="hide-menu">Sugar Daddy</span>
-                </a>
-              </li>
-            <?php endif; ?>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="sex-videos.php" aria-expanded="false">
+              <a class="sidebar-link" href="sex-videos" aria-expanded="false">
                 <span>
                   <i class="ti ti-user-circle"></i>
                 </span>

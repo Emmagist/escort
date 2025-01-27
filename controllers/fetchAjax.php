@@ -137,8 +137,8 @@ if ($pg == 202) {
     $invoice = $db->escape($_POST['ref_invoice']);
     $page = $db->escape($_POST['page']);
 
-    $db->saveData(TBL_PAYMENTS_LOG, "user_guid = '$token', investment_plan_id = '$plan', invoice_code = '$invoice', paystack_invoice = '', amount = '$amount', payment_channel = 'FlutterWave', conditions = 'processing'");
-    // var_dump($re);
+    $db->saveData(TBL_PAYMENTS_LOG, "payment_entity = uuid(), escortee_id = '$escortee_id', escorte_id = '$escort_id', category_id = '$page', invoice_code = '$invoice', paystack_invoice = '', amount = '$amount', payment_channel = 'FlutterWave', conditions = 'processing', escortee_date = '$escortee_date', escortee_time = '$escortee_time'");
+    var_dump($re);
     echo json_encode('Done');
 }
 

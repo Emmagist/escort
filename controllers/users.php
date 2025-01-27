@@ -86,6 +86,40 @@ class Users
           }
      }
 
+     public static function orderVerification($code, $amount, $paystackCode, $token)
+     {
+          global $db;
+
+          // check if user exist
+          $userExist = $db->selectData(TBL_USERS, "*", "user_guid = '$token'");
+          // var_dump($paystackCode);exit;
+          if ($userExist) {
+               $get = $db->selectData(TBL_PAYMENTS_LOG, "*", "amount = '$amount' AND invoice_code = '$code'");        //var_dump($get);exit;
+
+               if ($get) {
+                    // foreach ($get as $key) {
+                         // $id = $key['id'];
+                         // $expire_at = Database::expire_at($key['duration']);
+
+                         // if ($key['sub_condition'] == 'successful') {
+                         // } else {
+                              //update subscription log
+                              $update = $db->update(TBL_PAYMENTS_LOG, "paystack_invoice = '$paystackCode', conditions = 'successful'", "amount = '$amount' AND invoice_code = '$code' AND escortee_id = '$token'");
+                              if ($update) {var_dump($update);exit;
+                                   return true;
+                              } else {
+                                   return false;
+                              }
+                         // }
+                    // }
+               } else {
+                    return false;
+               }
+          } else {
+               return false;
+          }
+     }
+
      // public static function getReferrerCode($ref)
      // {
      //      global $db;
