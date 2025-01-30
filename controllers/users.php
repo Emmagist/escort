@@ -104,8 +104,8 @@ class Users
                          // if ($key['sub_condition'] == 'successful') {
                          // } else {
                               //update subscription log
-                              $update = $db->update(TBL_PAYMENTS_LOG, "paystack_invoice = '$paystackCode', conditions = 'successful'", "amount = '$amount' AND invoice_code = '$code' AND escortee_id = '$token'");
-                              if ($update) {var_dump($update);exit;
+                              $update = $db->update(TBL_PAYMENTS_LOG, "paystack_invoice = '$paystackCode', conditions = 'successful'", "amount = '$amount' AND invoice_code = '$code'");
+                              if ($update) {
                                    return true;
                               } else {
                                    return false;

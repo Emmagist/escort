@@ -176,17 +176,23 @@
       foreach (Ajax::getEscortById($token) as $key) {
         $outPut .= '
         <form action="" class="form-group" id="bookEscortPaymentForm">
-          <label>Date</label>
+          <label for="date">Date <span class="text-danger">*</span></label>
           <input type="date" class="form-control mb-3" id="date">
-          <label>Time</label>
+          <label for="time">Time <span class="text-danger">*</span></label>
           <input type="time" class="form-control mb-3" id="time">
-          <label>Price</label>
+          <label for="phone_number">Active Phone Number <span class="text-danger">*</span></label>
+          <input type="number" class="form-control mb-3" id="phone_number">
+          <label for="price">Price</label>
           <input type="text" class="form-control mb-3" value="'.$key['prices'].'" disabled id="price">
           <input type="hidden" class="form-control mb-3" value="'.$key['email'].'" id="email-address">
           <input type="hidden" class="form-control mb-3" value="'.$_SESSION['token'].'" id="escort">
           <input type="hidden" class="form-control mb-3" value="'.$token.'" id="escortee">
           <input type="hidden" class="form-control mb-3" value="'.$slug.'" id="slug">
           <input type="hidden" value="'.DataBase::invoiceCode().'" id="invoice">
+          <label for="location">Meetup Location <span class="text-danger">*</span></label>
+          <input type="text" class="form-control mb-3" id="location">
+          <label for="note">Any message for your escort?</label>
+          <textarea class="form-control mb-3" id="note" placeholder="Any message for your escort? Drop it here"></textarea>
           <div class="modal-footer">
             <button type="button" onclick="SquadPay()" class="btn btn-success" id="bookEscortPaymentButton">Pay</button>
           </div>
@@ -419,20 +425,20 @@
 
   // get sex cat on upload
   if ($_GET['built_cat']) {
-      $token = $_GET['built_cat'];
-      $outPut = '';
-  
-      if (Ajax::getSexVideosCategory()) {
-        foreach (Ajax::getSexVideosCategory() as $key) {
-          $outPut .= '
-            <option value="">Choose Option</option>
-            <option value="'.$key['identity_guid'].'">'.$key['sex_category'].'</option>
-          ';
-        }
+    $token = $_GET['built_cat'];
+    $outPut = '';
+
+    if (Ajax::getSexVideosCategory()) {
+      foreach (Ajax::getSexVideosCategory() as $key) {
+        $outPut .= '
+          <option value="">Choose Option</option>
+          <option value="'.$key['identity_guid'].'">'.$key['sex_category'].'</option>
+        ';
       }
-  
-      echo json_encode($outPut);
     }
+
+    echo json_encode($outPut);
+  }
 
   if (isset($_GET['sub'])) {
     $sub = $_GET['sub'];
@@ -474,7 +480,7 @@
     echo json_encode($outPut);
   }
 
-  if ($_GET['get_sugar']) { echo "jkj";exit;
+  if (isset($_GET['get_sugar'])) { echo "jkj";exit;
     echo $slug = $_SESSION['token'];exit;
     echo $gender = $_SESSION['gender'];exit;
     $outPut = '';
@@ -525,4 +531,43 @@
     }
 
     echo json_encode($outPut);
+  }
+
+  if (isset($_GET['task'])) {
+    $token = $_GET['task'];
+    $outPut = '';
+
+    if (Ajax::getMyTasks($token)) {
+      $count = 0;
+      foreach (Ajax::getMyTasks($token) as $key) {
+        $outPut = '
+          <tr>
+            <td class="border-bottom-0"><h6 class="fw-semibold mb-0">'.$count++.'</h6></td>
+            <td class="border-bottom-0">
+                <h6 class="fw-semibold mb-1">'.$key['username']?$key['username']:$key['name'].'</h6>
+                <span class="fw-normal">'.$key['contact_number'].'</span>                       
+            </td>
+            <td class="border-bottom-0">
+              <p class="mb-0 fw-normal">'.$key['location'].'</p>
+            </td>
+            <td class="border-bottom-0">
+              <h6 class="fw-semibold mb-0 fs-4">'.Database::dateFormat($key['escortee_date']).'</h6>
+            </td>
+            <td class="border-bottom-0">
+              <h6 class="fw-semibold mb-0 fs-4">'.Database::time($key['escortee_time']).'</h6>
+            </td>
+            <td class="border-bottom-0">
+              <h6 class="fw-semibold mb-0 fs-4">'.$key['order_status'].'</h6>
+            </td>
+            <td class="border-bottom-0">
+              <h6 class="fw-semibold mb-0 fs-4">'.$key['location'].'</h6>
+            </td>
+            <td class="border-bottom-0">
+              <a class="fw-semibold mb-0 fs-4 ti ti-eye task-view" onclick="viewTask('.$key['order_entity'].')"></a>
+              <a class="fw-semibold mb-0 fs-4 ti ti-pencil task-edit" onclick="editTask('.$key['order_entity'].')"></a>
+            </td>
+          </tr> 
+        ';
+      }
+    }
   }

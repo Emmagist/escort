@@ -202,6 +202,24 @@ class Ajax
         }
     }
 
+    public static function getMyTasks($token){
+        global $db;
+        $rows = [];
+        $result = $db->query("SELECT * FROM " . TBL_ORDERS . "
+            INNER JOIN " . TBL_PAYMENTS_LOG . "
+            ON " . TBL_ORDERS . ".payments_log_id = " . TBL_PAYMENTS_LOG . ".payment_entity
+            INNER JOIN " . TBL_USERS . " 
+            ON " . TBL_USERS . ".user_guid = " . TBL_PAYMENTS_LOG . ".escortee_id 
+            WHERE " . TBL_PAYMENTS_LOG . ".escorte_id = '$token'
+        ");
+        if (!empty($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            return $rows;
+        }
+    }
+
     // public static function checkUserIfVerified($email)
     // {
     //     global $db;

@@ -25,6 +25,9 @@
             <input type="hidden" class="form-control" id="page" name="page">
             <input type="hidden" class="form-control" id="ref_invoice" name="ref_invoice">
             <input type="hidden" class="form-control" id="escortee_id" name="escortee">
+            <input type="hidden" class="form-control" id="phone" name="phone_number">
+            <input type="hidden" class="form-control" id="meet_location" name="location">
+            <input type="hidden" class="form-control" id="message" name="note">
             <button type="submit" class="form-control" id="paymentButton"></button>
         </form>
 
@@ -115,7 +118,10 @@
     const date = document.getElementById("date").value;
     const time = document.getElementById("time").value;
     const slug = document.getElementById("slug").value; //console.log('date:'+date, 'time:'+time, 'escort:'+escort, 'escortee:'+escortee, 'trn:'+trn_invoice, 'price:'+price, 'slug:'+slug);
-    passable(date,time,escort,escortee,trn_invoice,price,slug); 
+    const phone_number = document.getElementById("phone_number").value;
+    const location = document.getElementById("location").value;
+    const note = document.getElementById("note").value;
+    passable(date,time,escort,escortee,trn_invoice,price,slug,phone_number,location,note); 
     const squadInstance = new squad({
     onLoad: () => console.log("Widget loaded successfully"),
     key: 'sandbox_pk_2812061280c862064951d1ace69f69213cbe2d1f2f07',
@@ -139,16 +145,19 @@
 
   }
 
-    function passable(date,time,escort,escortee,trn_invoice,price,slug) {
+    function passable(date,time,escort,escortee,trn_invoice,price,slug,phone_number,location,note) {
         const escotee_date = $('#escotee_date').val(date);
-        const escotee_time = $('#escotee_time').val(time); console.log('date=>'+escotee_date, 'escotee_time=>'+escotee_time);
+        const escotee_time = $('#escotee_time').val(time);
         const escort_id = $('#escort_id').val(escort);
         const escortee_id = $('#escortee_id').val(escortee);
         const invoiceGen = $('#ref_invoice').val(trn_invoice);
         const amount_pay = $('#esc_price').val(price);
         const page = $('#page').val(slug);
+        const phone = $('#phone').val(phone_number);
+        const meet_location = $('#meet_location').val(location);
+        const message = $('#message').val(note);
 
-        if (amount_pay != '' && invoiceGen != '' && escort_id != '' && escortee_id != '' && escotee_date != '' && escotee_time != '') {
+        if (amount_pay != '' && invoiceGen != '' && escort_id != '' && escortee_id != '' && escotee_date != '' && escotee_time != '' && phone != '' && meet_location != '') {
             $('#paymentButton').click();
         }
     }

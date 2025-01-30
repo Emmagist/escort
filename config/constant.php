@@ -67,18 +67,19 @@ define("TINYMCE_API",          "q58ijkmcbq6dxanncj4qbnzrfjyxbwa9sis4pib7uakjsgbj
 define("CLOUD_MERSIVE", "e8a88038-123e-46d9-8f60-3693c4ad2bee");
 
 // Tables
-define("TBL_USERS",           "users");
-define("TBL_ESCORTS",         "escorts");
-define("TBL_REQUESTS",         "requests");
-define("TBL_PORN_VIDEOS",            "porn_videos");
+define("TBL_USERS",                 "users");
+define("TBL_ESCORTS",               "escorts");
+define("TBL_REQUESTS",              "requests");
+define("TBL_PORN_VIDEOS",           "porn_videos");
 define("TBL_SEX_VIDEO_CATEGORY",    "sex_categories");
-define("TBL_SUBSCRIPTIONS",          "subscriptions");
+define("TBL_SUBSCRIPTIONS",         "subscriptions");
 define("TBL_SUBSCRIPTION_PLAN",     "subscription_plans");
-define("TBL_SUGAR_CONNECT",     "sugar_request");
+define("TBL_SUGAR_CONNECT",         "sugar_request");
 define("TBL_CONTACT",               "contact");
-define("TBL_SUBSCRIB",             "news_letter");
+define("TBL_SUBSCRIB",              "news_letter");
 define("TBL_CATEGORY",              "category");
 define("TBL_PAYMENTS_LOG",          "payments_log");
+define("TBL_ORDERS",                "orders");
 define("TBL_WITHDRAWAL",            "withdrawal");
 define("TBL_WITHDRAWAL_CODE",       "withdrawal_code");
 define("TBL_TRANSACTION_LOG",       "transaction_logs");
