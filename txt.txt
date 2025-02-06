@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 27, 2025 at 12:19 PM
+-- Generation Time: Feb 06, 2025 at 10:45 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,6 +40,9 @@ CREATE TABLE `payments_log` (
   `conditions` enum('processing','cancelled','successful') NOT NULL DEFAULT 'processing',
   `escortee_date` date NOT NULL,
   `escortee_time` time NOT NULL,
+  `contact_number` bigint(15) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `messages` text DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -48,11 +51,9 @@ CREATE TABLE `payments_log` (
 -- Dumping data for table `payments_log`
 --
 
-INSERT INTO `payments_log` (`id`, `payment_entity`, `escortee_id`, `escorte_id`, `category_id`, `invoice_code`, `paystack_invoice`, `amount`, `payment_channel`, `conditions`, `escortee_date`, `escortee_time`, `created_at`, `updated_at`) VALUES
-(1, '6b164aaa-dbea-11ef-9176-00bb60976a80', '67543388-re386yf321-8765430-p8760', 'f35d8ccbc687bddd023fe180e83fd935e77f8dc5a3a3b924be', '67543388$re386yf32198765430op87697', 'sanm_771739', '', 10000, 'FlutterWave', 'processing', '2025-01-28', '21:12:00', '2025-01-26 07:35:33', '2025-01-26 13:35:33'),
-(2, '23b5e9fa-dc3d-11ef-a544-00bb60976a80', '67543388-re386yf321-8765430-p8760', 'f35d8ccbc687bddd023fe180e83fd935e77f8dc5a3a3b924be', '67543388$re386yf32198765430op87697', 'sanm_833640', '', 10000, 'FlutterWave', 'processing', '2025-01-28', '06:27:00', '2025-01-26 17:27:42', '2025-01-26 23:27:42'),
-(3, '9c4706d7-dc3d-11ef-a544-00bb60976a80', '67543388-re386yf321-8765430-p8760', 'f35d8ccbc687bddd023fe180e83fd935e77f8dc5a3a3b924be', '67543388$re386yf32198765430op87697', 'sanm_495644', '', 10000, 'FlutterWave', 'processing', '2025-01-31', '07:32:00', '2025-01-26 17:31:04', '2025-01-26 23:31:04'),
-(4, '5812981f-dc9e-11ef-a0bc-00bb60976a80', '67543388-re386yf321-8765430-p8760', 'f35d8ccbc687bddd023fe180e83fd935e77f8dc5a3a3b924be', '67543388$re386yf32198765430op87697', 'sanm_041782', '', 10000, 'FlutterWave', 'processing', '2025-01-30', '20:01:00', '2025-01-27 05:03:31', '2025-01-27 11:03:31');
+INSERT INTO `payments_log` (`id`, `payment_entity`, `escortee_id`, `escorte_id`, `category_id`, `invoice_code`, `paystack_invoice`, `amount`, `payment_channel`, `conditions`, `escortee_date`, `escortee_time`, `contact_number`, `location`, `messages`, `created_at`, `updated_at`) VALUES
+(1, '36392808-e46a-11ef-98b4-00bb60976a80', 'f35d8ccbc687bddd023fe180e83fd935e77f8dc5a3a3b924be', '67543388$re386yf32198765430op876y$', '67543388$re386yf32198765430op87697', 'sanm_347753', '', 10000, 'Squade', 'processing', '2025-02-06', '09:09:00', 9031985816, 'coker road', 'nice', '2025-02-06 03:10:29', '2025-02-06 09:14:56'),
+(2, 'c6c7fe0c-e46a-11ef-98b4-00bb60976a80', 'f35d8ccbc687bddd023fe180e83fd935e77f8dc5a3a3b924be', '67543388$re386yf32198765430op876y$', '67543388$re386yf32198765430op87697', 'sanm_862749', '', 10000, 'Squade', 'processing', '2025-02-08', '18:14:00', 9031985816, 'coker road', 'nice', '2025-02-06 03:14:32', '2025-02-06 09:14:32');
 
 --
 -- Indexes for dumped tables
@@ -74,7 +75,7 @@ ALTER TABLE `payments_log`
 -- AUTO_INCREMENT for table `payments_log`
 --
 ALTER TABLE `payments_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
@@ -92,7 +93,7 @@ COMMIT;
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 30, 2025 at 09:19 AM
+-- Generation Time: Feb 06, 2025 at 10:45 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -126,6 +127,14 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `order_entity`, `payments_log_id`, `order_status`, `created_at`, `updated_at`) VALUES
+(1, '3ed78616-e397-11ef-a945-91b6dc2c79e0', '36392808-e46a-11ef-98b4-00bb60976a80', 'accept', '2025-02-06 02:49:22', '2025-02-06 03:18:52'),
+(2, 'c6c7fe0c-e46a-11ef-98b4-00bb60976a80', '3ed78616-e397-11ef-a945-91b6dc2c49e9', 'waiting', '2025-02-06 02:49:22', '2025-02-06 03:19:14');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -144,7 +153,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
