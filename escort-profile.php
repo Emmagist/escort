@@ -132,13 +132,14 @@
     //Enter amount in Naira or Dollar (Base value Kobo/cent already multiplied by 100)
     transaction_ref: 'Inv'+Math.floor((Math.random() * 1000000000) + 1),
     currency_code: "NGN",
-    onClose: () => alert("Transaction Cancelled"),
+    
     onSuccess: function(response){
-        let message = 'Payment complete! Reference: ' + response.transaction_ref ;
+        // let message = 'Payment complete! Reference: ' + response.transaction_ref ;
         // alert(message);
         const amt = document.getElementById("price").value;
         location.href = "verify?verify="+response.transaction_ref+"&inv="+trn_invoice+"&amt="+amt+"&slug="+slug;
-    }
+    },
+    onClose: () => alert("Transaction Cancelled")
     });
     squadInstance.setup();
     squadInstance.open();

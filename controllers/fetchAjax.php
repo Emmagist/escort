@@ -140,7 +140,7 @@ if ($pg == 202) {
     $location = $db->escape($_POST['location']);
     $note = $_POST['note'];
 
-    $db->saveData(TBL_PAYMENTS_LOG, "payment_entity = uuid(), escortee_id = '$escortee_id', escorte_id = '$escort_id', category_id = '$page', invoice_code = '$invoice', paystack_invoice = '', amount = '$amount', payment_channel = 'FlutterWave', conditions = 'processing', escortee_date = '$escortee_date', escortee_time = '$escortee_time', contact_number = '$phone_number', location = '$location', messages = '$note'");
+    $db->saveData(TBL_PAYMENTS_LOG, "payment_entity = uuid(), escortee_id = '$escortee_id', escorte_id = '$escort_id', category_id = '$page', invoice_code = '$invoice', paystack_invoice = '', amount = '$amount', payment_channel = 'Squade', conditions = 'processing', escortee_date = '$escortee_date', escortee_time = '$escortee_time', contact_number = '$phone_number', location = '$location', messages = '$note'");
     echo json_encode('Done');
 }
 

@@ -185,8 +185,8 @@
           <label for="price">Price</label>
           <input type="text" class="form-control mb-3" value="'.$key['prices'].'" disabled id="price">
           <input type="hidden" class="form-control mb-3" value="'.$key['email'].'" id="email-address">
-          <input type="hidden" class="form-control mb-3" value="'.$_SESSION['token'].'" id="escort">
-          <input type="hidden" class="form-control mb-3" value="'.$token.'" id="escortee">
+          <input type="hidden" class="form-control mb-3" value="'.$key['user_guid'].'" id="escort">
+          <input type="hidden" class="form-control mb-3" value="'.$_SESSION['token'].'" id="escortee">
           <input type="hidden" class="form-control mb-3" value="'.$slug.'" id="slug">
           <input type="hidden" value="'.DataBase::invoiceCode().'" id="invoice">
           <label for="location">Meetup Location <span class="text-danger">*</span></label>
@@ -540,6 +540,7 @@
     if (Ajax::getMyTasks($token)) {
       $count = 0;
       foreach (Ajax::getMyTasks($token) as $key) {
+        // $data = ['name'=>$key['name'],'contact_number'=>$key['contact_number'],'escortee_date'=>Database::dateFormat($key['escortee_date']),'escortee_time'=>Database::time($key['escortee_time']),'order_status'=>$key['order_status'],'location'=>$key['location']]; var_dump($data);exit;
         $outPut = '
           <tr>
             <td class="border-bottom-0"><h6 class="fw-semibold mb-0">'.$count++.'</h6></td>
@@ -560,14 +561,18 @@
               <h6 class="fw-semibold mb-0 fs-4">'.$key['order_status'].'</h6>
             </td>
             <td class="border-bottom-0">
-              <h6 class="fw-semibold mb-0 fs-4">'.$key['location'].'</h6>
-            </td>
-            <td class="border-bottom-0">
               <a class="fw-semibold mb-0 fs-4 ti ti-eye task-view" onclick="viewTask('.$key['order_entity'].')"></a>
               <a class="fw-semibold mb-0 fs-4 ti ti-pencil task-edit" onclick="editTask('.$key['order_entity'].')"></a>
             </td>
           </tr> 
         ';
       }
+    }else {
+      $outPut = '<td class="border-bottom-0">
+        <h6 class="fw-semibold mb-0 fs-4 text-danger mt-3">No Data Found</h6>
+      </td>';
     }
+
+    echo json_encode($outPut);
+    
   }

@@ -205,11 +205,11 @@ class Ajax
     public static function getMyTasks($token){
         global $db;
         $rows = [];
-        $result = $db->query("SELECT * FROM " . TBL_ORDERS . "
-            INNER JOIN " . TBL_PAYMENTS_LOG . "
-            ON " . TBL_ORDERS . ".payments_log_id = " . TBL_PAYMENTS_LOG . ".payment_entity
+        $result = $db->query("SELECT * FROM " . TBL_PAYMENTS_LOG . "
+            INNER JOIN " . TBL_ORDERS . "
+            ON " . TBL_PAYMENTS_LOG . ".payment_entity = " . TBL_ORDERS . ".payments_log_id
             INNER JOIN " . TBL_USERS . " 
-            ON " . TBL_USERS . ".user_guid = " . TBL_PAYMENTS_LOG . ".escortee_id 
+            ON " . TBL_PAYMENTS_LOG . ".escortee_id = " . TBL_USERS . ".user_guid 
             WHERE " . TBL_PAYMENTS_LOG . ".escorte_id = '$token'
         ");
         if (!empty($result)) {

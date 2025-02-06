@@ -97,24 +97,33 @@ class Users
                $get = $db->selectData(TBL_PAYMENTS_LOG, "*", "amount = '$amount' AND invoice_code = '$code'");        //var_dump($get);exit;
 
                if ($get) {
-                    // foreach ($get as $key) {
-                         // $id = $key['id'];
-                         // $expire_at = Database::expire_at($key['duration']);
+                    $update = $db->update(TBL_PAYMENTS_LOG, "paystack_invoice = '$paystackCode', conditions = 'successful'", "amount = '$amount' AND invoice_code = '$code'");
 
-                         // if ($key['sub_condition'] == 'successful') {
-                         // } else {
-                              //update subscription log
-                              $update = $db->update(TBL_PAYMENTS_LOG, "paystack_invoice = '$paystackCode', conditions = 'successful'", "amount = '$amount' AND invoice_code = '$code'");
-                              if ($update) {
-                                   return true;
-                              } else {
-                                   return false;
-                              }
+                    if ($update) {
+                         // $success_payment = $db->selectData(TBL_PAYMENTS_LOG, "*", "amount = '$amount' AND paystack_invoice = '$paystackCode' AND conditions = 'successful'");
+
+                         // foreach ($success_payment as $key) {
+                         //      $id = $key['payment_entity'];
+
+                         //      $order = $db->saveData(TBL_ORDERS, "order_entity = uuid(), payments_log_id = '$id', order_status = 'waiting'");
+
+                         //      if ($order) {
+                         //           return true;
+                         //      }else {
+                         //           return false;
+                         //      }
                          // }
-                    // }
+
+                         return true;
+                           
+                    } else {
+                         return false;
+                    }
+
                } else {
                     return false;
                }
+
           } else {
                return false;
           }
