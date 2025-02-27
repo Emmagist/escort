@@ -299,5 +299,26 @@
         }
       }
     })
-  })
+  });
+
+  function viewTask(params) {
+    $('#viewTaskModal').modal('show');
+
+    $.ajax({
+      url: 'controllers/ajaxGet.php?vt='+params,
+      method: 'GET',
+      dataType: 'json',
+      data: params,
+      contentType: false,
+      processData: false,
+      beforeSend: () => {
+          $('#view_task_modal_body').html('Loading contents...');
+      },
+      success: (param) => {
+        if (param) {
+            $('#view_task_modal_body').html(param);
+        }
+      }
+    })
+  }
 </script>

@@ -538,18 +538,20 @@
     $outPut = '';
 
     if (Ajax::getMyTasks($token)) {
-      $count = 0;
+      $count = 1;
       foreach (Ajax::getMyTasks($token) as $key) {
         // $data = ['name'=>$key['name'],'contact_number'=>$key['contact_number'],'escortee_date'=>Database::dateFormat($key['escortee_date']),'escortee_time'=>Database::time($key['escortee_time']),'order_status'=>$key['order_status'],'location'=>$key['location']]; var_dump($data);exit;
         $outPut = '
           <tr>
             <td class="border-bottom-0"><h6 class="fw-semibold mb-0">'.$count++.'</h6></td>
             <td class="border-bottom-0">
-                <h6 class="fw-semibold mb-1">'.$key['username']?$key['username']:$key['name'].'</h6>
-                <span class="fw-normal">'.$key['contact_number'].'</span>                       
+                <h6 class="fw-semibold mb-1">'.$key['name'].'</h6>
             </td>
             <td class="border-bottom-0">
-              <p class="mb-0 fw-normal">'.$key['location'].'</p>
+              <p class="mb-0 fw-semibold fs-4">'.$key['contact_number'].'</p>
+            </td>
+            <td class="border-bottom-0">
+              <p class="mb-0 fw-semibold fs-4">'.$key['location'].'</p>
             </td>
             <td class="border-bottom-0">
               <h6 class="fw-semibold mb-0 fs-4">'.Database::dateFormat($key['escortee_date']).'</h6>
@@ -561,8 +563,8 @@
               <h6 class="fw-semibold mb-0 fs-4">'.$key['order_status'].'</h6>
             </td>
             <td class="border-bottom-0">
-              <a class="fw-semibold mb-0 fs-4 ti ti-eye task-view" onclick="viewTask('.$key['order_entity'].')"></a>
-              <a class="fw-semibold mb-0 fs-4 ti ti-pencil task-edit" onclick="editTask('.$key['order_entity'].')"></a>
+              <a class="fw-bold mb-0 ti ti-eye task-view text-success" onclick="viewTask(`'.$key['payment_entity'].'`)" style="font-size:24px;"></a>
+              <a class="fw-bold mb-0 ti ti-pencil task-edit text-warning" onclick="editTask('.$key['payment_entity'].')" style="font-size:24px;"></a>
             </td>
           </tr> 
         ';
@@ -571,6 +573,34 @@
       $outPut = '<td class="border-bottom-0">
         <h6 class="fw-semibold mb-0 fs-4 text-danger mt-3">No Data Found</h6>
       </td>';
+    }
+
+    echo json_encode($outPut);
+    
+  }
+
+  // View task modal
+  if (isset($_GET['vt'])) {
+    $id = $_GET['vt'];
+    $outPut = '';
+
+    if (Ajax::getMySingleTasks($id)()) { echo 'hello';exit;
+      foreach (Ajax::getMySingleTasks($id) as $key) {
+        $outPut .= '
+          <input type="hidden" class="form-control mb-3" name="arial_token" id="arial_token" value="'.$key['name'].'">
+          <input type="hidden" class="form-control mb-3" name="email-address" id="email-address" value="'.$key['amount'].'">
+          <input type="hidden" class="form-control mb-3" name="invoice" id="invoice" value="'.$key['contact_number'].'">
+          <input type="hidden" class="form-control mb-3" name="email-address" id="email-address" value="'.$key['location'].'">
+          <input type="hidden" class="form-control mb-3" name="email-address" id="email-address" value="'.Database::dateFormat($key['escortee_date']).'">
+          <input type="hidden" class="form-control mb-3" name="email-address" id="email-address" value="'.Database::time($key['escortee_time']).'">
+          <input type="hidden" class="form-control mb-3" name="email-address" id="email-address" value="'.$key['order_status'].'">
+          
+          <textarea class="form-control mb-3" name="email-address" id="email-address">'.$key['name'].'</textarea>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        ';
+      }
     }
 
     echo json_encode($outPut);
