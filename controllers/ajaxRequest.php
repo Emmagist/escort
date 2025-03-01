@@ -199,7 +199,7 @@ class Ajax
                 $rows[] = $row;
             }
             return $rows;
-        }
+        }//testing
     }
 
     public static function getMyTasks($token){
