@@ -66,6 +66,9 @@ define("TINYMCE_API",          "q58ijkmcbq6dxanncj4qbnzrfjyxbwa9sis4pib7uakjsgbj
 //CloudMersive key
 define("CLOUD_MERSIVE", "e8a88038-123e-46d9-8f60-3693c4ad2bee");
 
+//Mailer Host
+define("MAILER_HOST",  "premium155.web-hosting.com");
+
 // Tables
 define("TBL_USERS",                 "users");
 define("TBL_ESCORTS",               "escorts");
@@ -75,6 +78,7 @@ define("TBL_SEX_VIDEO_CATEGORY",    "sex_categories");
 define("TBL_SUBSCRIPTIONS",         "subscriptions");
 define("TBL_SUBSCRIPTION_PLAN",     "subscription_plans");
 define("TBL_SUGAR_CONNECT",         "sugar_request");
+define("TBL_SUGAR_CONNECTION",      "sugar_connect");
 define("TBL_CONTACT",               "contact");
 define("TBL_SUBSCRIB",              "news_letter");
 define("TBL_CATEGORY",              "category");

@@ -111,6 +111,7 @@
 
   function SquadPay() {
     // e.preventDefault();
+    const key = '<?=KEY?>';
     const escort = document.getElementById("escort").value;
     const escortee = document.getElementById("escortee").value;
     const trn_invoice = document.getElementById("invoice").value;
@@ -124,7 +125,7 @@
     passable(date,time,escort,escortee,trn_invoice,price,slug,phone_number,location,note); 
     const squadInstance = new squad({
     onLoad: () => console.log("Widget loaded successfully"),
-    key: 'sandbox_pk_2812061280c862064951d1ace69f69213cbe2d1f2f07',
+    key: key,
     // "test_pk_sample-public-key-1"
     //Change key (test_pk_sample-public-key-1) to the key on your Squad Dashboard
     email: document.getElementById("email-address").value,

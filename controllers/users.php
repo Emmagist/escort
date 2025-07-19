@@ -1,6 +1,6 @@
 <?php
 
-require_once "config/db.php";
+require_once "config/phpMailer.php";
 // require_once "emailVerification.php";
 
 class Users
@@ -12,16 +12,16 @@ class Users
      }
 
      public static function getUserByEmail($email)
-    {
-        global $db;
-        return $db->selectData(TBL_USERS, "*", "email = '$email'");
-    }
+     {
+          global $db;
+          return $db->selectData(TBL_USERS, "*", "email = '$email'");
+     }
 
-    public static function getSingleSexVideos($slug)
-    {
-        global $db;
-        return $db->selectData(TBL_PORN_VIDEOS, "*", "entity_guid = '$slug'");
-    }
+     public static function getSingleSexVideos($slug)
+     {
+          global $db;
+          return $db->selectData(TBL_PORN_VIDEOS, "*", "entity_guid = '$slug'");
+     }
 
      // public static function getInvestorByUsername($username)
      // {
@@ -47,9 +47,10 @@ class Users
           }
      }
 
-     public static function findUserByToken($token){
-         global $db;
-         return $db->selectData(TBL_USERS, "*", "user_guid = '$token'");
+     public static function findUserByToken($token)
+     {
+          global $db;
+          return $db->selectData(TBL_USERS, "*", "user_guid = '$token'");
      }
 
      public static function subscriptionVerify($code, $amount, $paystackCode, $token, $plan)
@@ -88,7 +89,7 @@ class Users
 
      public static function orderVerification($code, $amount, $paystackCode, $token)
      {
-          global $db;
+          global $db, $mailer;
 
           // check if user exist
           $userExist = $db->selectData(TBL_USERS, "*", "user_guid = '$token'");
@@ -100,33 +101,81 @@ class Users
                     $update = $db->update(TBL_PAYMENTS_LOG, "paystack_invoice = '$paystackCode', conditions = 'successful'", "amount = '$amount' AND invoice_code = '$code'");
 
                     if ($update) {
-                         // $success_payment = $db->selectData(TBL_PAYMENTS_LOG, "*", "amount = '$amount' AND paystack_invoice = '$paystackCode' AND conditions = 'successful'");
+                         $success_payment = $db->selectData(TBL_PAYMENTS_LOG, "*", "amount = '$amount' AND paystack_invoice = '$paystackCode' AND conditions = 'successful'");
 
-                         // foreach ($success_payment as $key) {
-                         //      $id = $key['payment_entity'];
+                         foreach ($success_payment as $key) {
+                              $id = $key['payment_entity'];
 
-                         //      $order = $db->saveData(TBL_ORDERS, "order_entity = uuid(), payments_log_id = '$id', order_status = 'waiting'");
+                              $order = $db->saveData(TBL_ORDERS, "order_entity = uuid(), payments_log_id = '$id', order_status = 'waiting'");
 
-                         //      if ($order) {
-                         //           return true;
-                         //      }else {
-                         //           return false;
-                         //      }
-                         // }
+                              if ($order) {
+                                   $result = $db->query("SELECT * FROM " . TBL_PAYMENTS_LOG . "
+                                        INNER JOIN " . TBL_ESCORTS . "
+                                        ON " . TBL_ESCORTS . ".user_id = " . TBL_PAYMENTS_LOG . ".escorte_id
+                                        INNER JOIN " . TBL_USERS . " 
+                                        ON " . TBL_USERS . ".user_guid = " . TBL_PAYMENTS_LOG . ".escorte_id 
+                                        WHERE " . TBL_PAYMENTS_LOG . ".invoice_code = '$code'
+                                   ");
+                                   if (!empty($result)) {
+                                        while ($row = $result->fetch_assoc()) {
+                                             $email = $row['email'];
+                                             $username = $row['username'];
+                                             $mail = $mailer->sendEscortRequestMessage($email, $username);
+                                             if ($mail) {
+                                                  return true;
+                                             } else {
+                                                  return false;
+                                             }
+                                        }
+                                   }
+                              } else {
+                                   return false;
+                              }
+                         }
 
                          return true;
-                           
                     } else {
                          return false;
                     }
-
                } else {
                     return false;
                }
-
           } else {
                return false;
           }
+     }
+
+     public static function sugarRequestServiceChargeVerification($code, $amount, $paystackCode, $token)
+     {
+          global $db;
+
+          // check if user exist
+          $userExist = $db->selectData(TBL_USERS, "*", "user_guid = '$token'");
+          // var_dump($paystackCode);exit;
+          if ($userExist) {
+               $get = $db->selectData(TBL_SUGAR_CONNECTION, "*", "sugar_service_charge = '$amount' AND sugar_invoice = '$code'");        //var_dump($get);exit;
+
+               if ($get) {
+                    $update = $db->update(TBL_SUGAR_CONNECTION, "sug_payment_invoice = '$paystackCode', sug_payment_cond = 'successful'", "sugar_service_charge = '$amount' AND sugar_invoice = '$code'");
+
+                    if ($update) {
+
+                         return true;
+                    } else {
+                         return false;
+                    }
+               } else {
+                    return false;
+               }
+          } else {
+               return false;
+          }
+     }
+
+     public static function getAllSexVideos()
+     {
+         global $db;
+         return $db->selectData(TBL_PORN_VIDEOS, "*");
      }
 
      // public static function getReferrerCode($ref)
@@ -290,7 +339,7 @@ class Users
      //     global $db;
      //     return $db->selectData(TBL_SYSTEM_USER, "*");
      // }
-     
+
      // public static function getAdminRoles()
      // {
      //     global $db;

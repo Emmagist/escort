@@ -42,6 +42,9 @@
                         $_SESSION['email'] = $userInfo['email'];
                         $_SESSION['role'] = $userInfo['role_id'];
                         $_SESSION['username'] = $userInfo['username'];
+                        $_SESSION['name'] = $userInfo['name'];
+                        $_SESSION['phone'] = $userInfo['phone_number'];
+                        $_SESSION['address'] = $userInfo['address'];
                         $_SESSION['gender'] = $userInfo['gender'];
                         $_SESSION['connect'] = $userInfo['connect'];
                         $_SESSION['escort_approval'] = $userInfo['escort_approval'];

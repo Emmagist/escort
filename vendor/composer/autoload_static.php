@@ -36,6 +36,7 @@ class ComposerStaticIniteafa45729b72cc8dee70284bf9a4c104
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
             'PhpVideoToGif\\' => 14,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'G' => 
         array (
@@ -113,6 +114,10 @@ class ComposerStaticIniteafa45729b72cc8dee70284bf9a4c104
         'PhpVideoToGif\\' => 
         array (
             0 => __DIR__ . '/..' . '/teamcoltra/php-video-to-gif/src/PhpVideoToGif',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

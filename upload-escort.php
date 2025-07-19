@@ -32,7 +32,7 @@
                 <input type="hidden" class="form-control mb-3" name="token" value="<?=$_SESSION['token']?>">
                 <div class="col-md-6">
                   <label for="gender">Gender</label>
-                  <select name="gender" id="gender" class="form-control">
+                  <select name="gender" id="gender" class="form-control mb-3">
                     <option value="">Select Gender</option>
                     <option value="female">Female</option>
                     <option value="male">Male</option>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-md-6">
                   <label for="period">Period</label>
-                  <select name="period" id="period" class="form-control">
+                  <select name="period" id="period" class="form-control mb-3">
                     <option value="">Select Period</option>
                     <option value="hour">Hour</option>
                     <option value="day">Day</option>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="col-md-6">
                   <label for="currency">Currency</label>
-                  <select name="currency" id="currency" class="form-control">
+                  <select name="currency" id="currency" class="form-control mb-3">
                     <option value="">Select Currency</option>
                     <option value="ngn">NGN</option>
                     <option value="usd">USD</option>

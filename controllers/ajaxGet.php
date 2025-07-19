@@ -10,7 +10,7 @@
       foreach (Ajax::getSideBarLists() as $key) {
         $outPut .= '
         <li class="sidebar-item">
-          <a class="sidebar-link" href="pages.php?pg='.$key['token_guid'].'" aria-expanded="false">
+          <a class="sidebar-link" href="pages?pg='.$key['token_guid'].'" aria-expanded="false">
             <span>
               <i class="'.$key['icon'].'"></i>
             </span>
@@ -30,26 +30,31 @@
 
     if (Ajax::getAllEscortsBySlug($slug)) {
       foreach (Ajax::getAllEscortsBySlug($slug) as $key) {
-        $outPut .= '<div class="col-sm-4 col-xl-3">
-          <div class="card overflow-hidden rounded-2" style="width:250px">
+        $outPut .= '<div class="col-md-3">
+          <div class="card rounded-2">
             <div class="position-relative">
               <a href="escort-profile?esc='.$key['entity_guid'].'&sg='.$slug.'">';
-                if($key['gender'] == 'male' && empty($key['profile_image']) || $_SESSION['token'] == 0): 
+                if($key['gender'] == 'male' && empty($key['profile_image']) && Ajax::checkActiveSubscriber($_SESSION['token']) == false || $_SESSION['token'] == 0): 
                   $image = 'assets/images/products/no-img-men.jpg';
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
-                elseif ($key['gender'] == 'female' && empty($key['profile_image']) || $_SESSION['token'] == 0) :
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 350px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);">';
+                elseif ($key['gender'] == 'female' && empty($key['profile_image']) && Ajax::checkActiveSubscriber($_SESSION['token']) == false || $_SESSION['token'] == 0) :
                   $image = 'assets/images/products/no-img-women.jpg';
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 350px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);">';
                 elseif ($key['profile_image'] > 0 || $_SESSION['token'] == 0) :
                   $image = $key['profile_image'];
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
-                elseif ($key['profile_image'] > 0 && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true) :
-                  $image = $key['profile_image'];
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 350px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);">';
+                elseif (empty($key['profile_image']) && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true && $key['gender'] == 'male') :
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;">';
+                  $outPut .='<img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 350px; object-fit: cover;">';
+                elseif (empty($key['profile_image']) && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true && $key['gender'] == 'female') :
+                  // $image->blurImage(5,3);
+                  $outPut .='<img src="assets/images/products/no-img-women.jpg" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 350px; object-fit: cover;">';
+                elseif (!empty($key['profile_image']) && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true) :
+                  // $image->blurImage(5,3);
+                $outPut .='<img src="'.str_replace('../','',$key['profile_image']).'" class="card-img-top rounded-0" alt="'.$key['username'].'" style="width:100%; max-height: 350px;">';
                 endif;
               $outPut .= '</a>
               <a class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-placement="top" data-bs-title="Book" style="cursor:pointer" onclick=bookEscort(`'.$key['entity_guid'].'`)>book<i class=" fs-4"></i>
@@ -78,82 +83,74 @@
 
   // //   //get escort profile
   if ($_GET['esc']) {
-      $token = $_GET['esc'];
-      $outPut = '';
+    $token = $_GET['esc'];
+    $outPut = '';
 
-      if (Ajax::getEscortById($token)) { //echo $_SESSION['token'];exit;
-        foreach (Ajax::getEscortById($token) as $key) { //var_dump(Ajax::checkActiveSubscriber($_SESSION['token']));exit;
-          $outPut .= '
-            <div class="col-md-12 mb-3">';
-              if (Ajax::checkActiveSubscriber($_SESSION['token']) == true):
-                $outPut .= '<img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0" alt="..." style="width:550px;height:450px">';
-              elseif (Ajax::checkActiveSubscriber($_SESSION['token']) == false) :
-                $outPut .= '
-                  <p class=" text-danger mb-5 text-center text-bold"><marquee behavior="" direction="">Kindly subscribe to view <strong>'.ucwords($key['username']).'</strong> pictures. <a class="text-pramry" style="cursor:pointer;" onclick="subscribe(`'.$_SESSION['token'].'`)">Subscribe here</a></marquee></p>
-                  <img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0 mb-4" alt="..." style="width:550px;height:450px;filter: blur(30px); -webkit-filter: blur(30px);">
-                ';
-              endif;
-            $outPut .= '</div>
-            <div class="col-md-6">
-              <label>Username</label>
-              <input type="text" class="form-control mb-3" disabled value="'.ucwords($key['username']).'">
-            </div>
-            <div class="col-md-6">
-              <label>Age</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['age'].'">
-            </div>
-            <div class="col-md-6">
-              <label>Gender</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['gender'].'">
-            </div>
-             <div class="col-md-6">
-              <label>Price/'.ucwords($key['period_prices']).'</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['prices'].'">
-            </div>
-            <div class="col-md-6">
-              <label>Weight</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['weight'].'">
-            </div>
-            <div class="col-md-6">
-              <label>Height</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['height'].'">
-            </div>
-            <div class="col-md-6">
-              <label>Ethnicity</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['ethnicity'].'">
-            </div>
-            <div class="col-md-6">
-              <label>Hair Lenght</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['hair_long'].'">
-            </div>
-            <div class="col-md-6">
-              <label>Hair Color</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['hair_color'].'">
-            </div>
-            <div class="col-md-6">
-              <label>Bust</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['bust_size'].'">
-            </div>
-            <div class="col-md-6">
-              <label>Smoker</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['smoker'].'">
-            </div>
-            <div class="col-md-6">
-              <label>Alcohol</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['alcohol'].'">
-            </div>
-            <div class="col-md-6">
-              <label>Build</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['build'].'">
-            </div>
-            <div class="col-md-6">
-              <label>Sexual Orientation</label>
-              <input type="text" class="form-control mb-3" disabled value="'.$key['sexual_orientation'].'">
-            </div>
-            <div class="col-md-12">
-              <label>Bio</label>
-              <textarea class="form-control mb-3" disabled>'.$key['comments'].'</textarea>
-            </div>
+    if (Ajax::getEscortById($token)) {
+      foreach (Ajax::getEscortById($token) as $key) { //var_dump(Ajax::checkActiveSubscriber($_SESSION['token']));exit;
+        $outPut .= '
+          <div class="col-md-12 mb-3">';
+            if (Ajax::checkActiveSubscriber($_SESSION['token']) == true && $key['profile_image']):
+              $outPut .= '<img src="'.str_replace('../','',$key['profile_image']).'" class="card-img-top rounded-0" alt="..." style="width:378px;height:378px">';
+            elseif (Ajax::checkActiveSubscriber($_SESSION['token']) == true || empty($key['profile_image'])):
+              $outPut .= '<img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0" alt="..." style="width:378px;height:378px">';
+            elseif (Ajax::checkActiveSubscriber($_SESSION['token']) == false) :
+              $outPut .= '
+                <p class=" text-danger mb-5 text-center text-bold"><marquee behavior="" direction="">Kindly subscribe to view <strong>'.ucwords($key['username']).'</strong> pictures. <a class="text-pramry" style="cursor:pointer;" onclick="subscribe(`'.$_SESSION['token'].'`)">Subscribe here</a></marquee></p>
+                <img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0 mb-4" alt="..." style="width:378px;height:378px;filter: blur(30px); -webkit-filter: blur(30px);">
+              ';
+            endif;
+          $outPut .= '</div>
+          <div class="col-md-12 mb-5">
+            <label style="font-size:24px;font-weight:bolder;color:#000;">'.ucwords($key['username']).' <span>('.$key['age'].')</span></label>
+          </div>
+          <div class="col-md-12 mb-5 text-center" style="background:#ff801a;height:30px;font-size:18px;font-weight:bold;color:#fff;width:890px;"><label>Biography</label></div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Age:</strong> '.$key['age'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Gender: </strong>'.ucwords($key['gender']).'</label>
+          </div>
+          <div class="col-md-4 mb-5">
+            <label><strong>Price/'.ucwords($key['period_prices']).': </strong>'.ucwords($key['prices']).'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Weight:</strong> '.$key['weight'].'kg</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Height:</strong> '.$key['height'].'cm</label>
+          </div>
+          <div class="col-md-4 mb-5">
+            <label><strong>Ethnicity:</strong> '.$key['ethnicity'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Hair Lenght:</strong> '.$key['hair_long'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Hair Color:</strong> '.$key['hair_color'].'</label>
+          </div>
+          <div class="col-md-4 mb-5">
+            <label><strong>Size Bust:</strong> '.$key['bust_size'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Smoker:</strong> '.$key['smoker'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Alcohol:</strong> '.$key['alcohol'].'</label>
+          </div>
+          <div class="col-md-4 mb-5">
+            <label><strong>Body Build:</strong> '.$key['build'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Sexual Orientation:</strong> '.$key['sexual_orientation'].'</label>
+          </div>
+          <div class="col-md-12 mb-5 text-center" style="background:#ff801a;height:30px;font-size:18px;font-weight:bold;color:#fff;width:890px;"><label>About</label></div>
+          <div class="col-md-5 mb-5">
+            <label><strong>Service Offering:</strong> '.ucwords($key['category']).'</label>
+          </div>
+            <div class="col-md-9 mb-5">
+            <label><strong>About:</strong> '.$key['comments'].'</label>
+          </div>
             <div class=" d-flex"><button class=" btn btn-warning" style="margin-right: 20px;">Cancel</button>';
             if (Ajax::checkActiveSubscriber($_SESSION['token']) == false) :
               $outPut .= '<button type="button" onclick="subscribe(`'.$_SESSION['token'].'`)" class="btn btn-primary">Subscribe to book escort</button></div>';
@@ -161,10 +158,10 @@
               $outPut .= '<button type="button" onclick="book(`'.$key['entity_guid'].'`)" class="btn btn-success">Book Now</button></div>';
             endif;
           
-        }
       }
+    }
 
-      echo json_encode($outPut);
+    echo json_encode($outPut);
   }
 
   if ($_GET['esc_book']) {
@@ -337,11 +334,11 @@
     if (Ajax::getAllSexVideos()) {
       foreach (Ajax::getAllSexVideos() as $key) {
         if ($key['img']) {
-          $outPut .= '<div class="col-sm-6 col-xl-3">
-            <div class=" overflow-hidden rounded-2">
-              <div class="position-relative" id="testing">
-                <a href="video.php?ent='.$key['entity_guid'].'" class="align-middle">
-                  <img src="'.$key['img'].'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`)" alt="" width="560" height="170">
+          $outPut .= '<div class="col-md-3">
+            <div class="rounded-2">
+              <div class="position-relative " id="testing">
+                <a href="video?ent='.$key['entity_guid'].'" class="align-middle">
+                  <img src="'.str_replace('../', '', $key['img']).'" data-img="'.str_replace('../', '', $key['img']).'" data-gif="'.str_replace('../', '', $key['gif']).'" class="show-not align-middle sex__change__'.$key['entity_guid'].'" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`, `'.$key['entity_guid'].'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`, `'.$key['entity_guid'].'`)" alt="" width="260" height="170">
                   <h6 class=" text-capitalize text-center d-inline-block text-truncate pt-1" title="'.$key['title'].'">'.$key['title'].'</h6>
                 </a>
               </div>
@@ -364,12 +361,25 @@
     if (Ajax::getSingleSexVideos($slug)) {
       foreach (Ajax::getSingleSexVideos($slug) as $key) {
         if ($key['porn_video']) {
-          $outPut .= '<div id="carouselExampleSlidesOnly" class="sex-videos-related" data-id="`'.$key['user_id'].'`" data-cat="`'.$key['sex_cat_id'].'`">
-            <div class="">
-              <div class="">
-                <video src="'.str_replace('../','',$key['porn_video']).'" style="height: 450px;"        class="d-block w-100 rounded-2" controls></video>
+          $videoSrc = str_replace('../','',$key['porn_video']);
+          $title = ucfirst($key['title']);
+          $videoID = $key['user_id'];
+          $catID = $key['sex_cat_id'];
+      
+          $outPut .= '
+          <div class="video-card" data-id="'.$videoID.'" data-cat="'.$catID.'">
+              <div class="video-thumb-container">
+                  <video 
+                      class="video-player" 
+                      src="'.$videoSrc.'" 
+                      poster="poster.jpg" 
+                      controls 
+                      preload="none">
+                  </video>
               </div>
-            </div>
+              <div class="video-info">
+                  <h4 class="video-title">'.$title.'</h4>
+              </div>
           </div>';
         }
       }
@@ -378,30 +388,31 @@
       echo json_encode($outPut);
   }
 
-  // if ($_GET['rel'] && $_GET['cat']) {
-  //   $slug = $_GET['rel'];
-  //   $cat = $_GET['cat'];
-  //   $outPut = '';
+  //Related video
+  if ($_GET['rel'] && $_GET['cate']) {
+    $slug = $_GET['rel'];
+    $cat = $_GET['cate'];
+    $outPut = '';
 
-  //   if (Ajax::getRelatedSexVideos($slug, $cat)) {
-  //     foreach (Ajax::getRelatedSexVideos($slug, $cat) as $key) {
-  //       if ($key['img']) {
-  //         $outPut .= '<div class="col-sm-6 col-xl-3">
-  //           <div class=" overflow-hidden rounded-2">
-  //             <div class="position-relative" id="testing">
-  //             <a href="video.php?ent='.$key['entity_guid'].'" class="align-middle">
-  //               <img src="'.$key['img'].'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`)" alt="" width="560" height="170">
-  //               <h5 class=" text-capitalize text-center">'.$key['title'].'</h5>
-  //             </a>
-  //             </div>
-  //           </div>
-  //         </div>';
-  //       }
-  //     }
-  //   }
+    if (Ajax::getRelatedSexVideos($slug, $cat)) {
+      foreach (Ajax::getRelatedSexVideos($slug, $cat) as $key) {
+        if ($key['img']) {
+          $outPut .= '<div class="col-md-3">
+            <div class="rounded-2">
+              <div class="position-relative" id="testing">
+              <a href="video?ent='.$key['entity_guid'].'" class="align-middle">
+                <img src="'.str_replace('../', '', $key['img']).'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change__'.$key['entity_guid'].'" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`, `'.$key['entity_guid'].'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`, `'.$key['entity_guid'].'`)" alt="" width="260" height="170">
+                <h5 class=" text-capitalize text-left">'.$key['title'].'</h5>
+              </a>
+              </div>
+            </div>
+          </div>';
+        }
+      }
+    }
 
-  //     echo json_encode($outPut);
-  // }
+    echo json_encode($outPut);
+  }
 
   // // Suger mummy category
   if ($_GET['con'] && $_GET['gender']) {
@@ -480,40 +491,40 @@
     echo json_encode($outPut);
   }
 
-  if (isset($_GET['get_sugar'])) { echo "jkj";exit;
-    echo $slug = $_SESSION['token'];exit;
-    echo $gender = $_SESSION['gender'];exit;
+  //sugar connect
+  if (isset($_GET['get_sugar'])) {
+    $slug = $_SESSION['token'];
+    $gender = $_SESSION['gender'];
     $outPut = '';
-    var_dump(Ajax::getAllSugarConnectBySlug($slug, $gender));exit;
 
     if (Ajax::getAllSugarConnectBySlug($slug, $gender)) {
       foreach (Ajax::getAllSugarConnectBySlug($slug, $gender) as $key) {
         $outPut .= '<div class="col-sm-4 col-xl-3">
-          <div class="card overflow-hidden rounded-2" style="width:250px">
+          <div class="card rounded-2" style="width:250px">
             <div class="position-relative">
-              <a href="escort-profile?esc='.$key['entity_guid'].'&sg='.$slug.'">';
-                if($key['gender'] == 'male' && empty($key['upload_file']) || $_SESSION['token'] == 0): 
-                  $image = 'assets/images/products/no-img-men.jpg';
+              <a href="sugar-profile?esc='.$key['enti_guid'].'&sg='.$slug.'">';
+                if($key['gender'] == 'male' && empty($key['upload_file']) && Ajax::checkActiveSubscriber($_SESSION['token']) == false): 
+                  // $image = 'assets/images/products/no-img-men.jpg';
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
-                elseif ($key['gender'] == 'female' && empty($key['upload_file']) || $_SESSION['token'] == 0) :
-                  $image = 'assets/images/products/no-img-women.jpg';
+                $outPut .='<img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                elseif ($key['gender'] == 'female' && empty($key['upload_file']) && Ajax::checkActiveSubscriber($_SESSION['token']) == false) :
+                  // $image = 'assets/images/products/no-img-women.jpg';
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
-                elseif ($key['upload_file'] > 0 || $_SESSION['token'] == 0) :
-                  $image = $key['upload_file'];
+                $outPut .='<img src="assets/images/products/no-img-women.jpg" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                elseif (!empty($key['upload_file']) && Ajax::checkActiveSubscriber($_SESSION['token']) == false || $_SESSION['token'] == 0) :
+                  // $image = $key['upload_file'];
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
-                elseif ($key['upload_file'] > 0 && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true) :
-                  $image = $key['upload_file'];
+                $outPut .='<img src="'.str_replace('../','',$key['upload_file']).'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;filter: blur(15px); -webkit-filter: blur(15px);">';
+                elseif (!empty($key['upload_file']) && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true) :
+                  // $image = $key['upload_file'];
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:250px;height:250px;">';
+                $outPut .='<img src="'.str_replace('../','',$key['upload_file']).'" class="card-img-top rounded-0" alt="..." style="width:100%;max-height:250px;">';
                 endif;
               $outPut .= '</div>
               <div class="card-body pt-3 p-4">
                 <h6 class="fw-semibold fs-4">'.$key['username'].'</h6>
                 <div class="d-flex align-items-center justify-content-between">
-                  <h6 class="fw-semibold fs-4 mb-0">$'.$key['location'].'</h6>
+                  <h6 class="fw-semibold fs-4 mb-0">'.$key['location'].'</h6>
                   <ul class="list-unstyled d-flex align-items-center mb-0">
                     <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
                     <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
@@ -527,12 +538,105 @@
         </div>';
       }
     }else {
-      $outPut = '<h6 class="text-danger mt-5">XXvideos not available at the moment</h6>';
+      if ($gender == 'male') {
+        $outPut = '<h6 class="text-danger mt-5">Sugar mummy or girl is not available at the moment !!</h6>';
+      }elseif ($gender == 'female') {
+        $outPut = '<h6 class="text-danger mt-5">Sugar daddy or boy is not available at the moment !!</h6>';
+      }
     }
 
     echo json_encode($outPut);
   }
 
+  //get sugar profile
+  if ($_GET['sug_pro']) {
+    $token = $_GET['sug_pro'];
+    $outPut = '';
+
+    if (Ajax::getSugarById($token)) { //echo $_SESSION['token'];exit;
+      foreach (Ajax::getSugarById($token) as $key) { //var_dump(Ajax::checkActiveSubscriber($_SESSION['token']));exit;
+        $outPut .= '
+          <div class="col-md-12 mb-3">';
+            if (Ajax::checkActiveSubscriber($_SESSION['token']) == true):
+              $outPut .= '<img src="'.str_replace('../','',$key['upload_file']).'" class="card-img-top rounded-0" alt="..." style="width:650px;height:550px">';
+            elseif (Ajax::checkActiveSubscriber($_SESSION['token']) == false && !empty($key['upload_file'])):
+              $outPut .= '
+                <p class=" text-danger mb-5 text-center text-bold"><marquee behavior="" direction="">Kindly subscribe to view <strong>'.ucwords($key['username']).'</strong> pictures. <a class="text-pramry" style="cursor:pointer;" onclick="subscribe(`'.$_SESSION['token'].'`)">Subscribe here</a></marquee></p>
+                <img src="'.str_replace('../','',$key['upload_file']).'" class="card-img-top rounded-0" alt="..." style="width:650px;height:550px" filter: blur(30px); -webkit-filter: blur(30px);">
+              ';
+            elseif (Ajax::checkActiveSubscriber($_SESSION['token']) == false) :
+              $outPut .= '
+                <p class=" text-danger mb-5 text-center text-bold"><marquee behavior="" direction="">Kindly subscribe to view <strong>'.ucwords($key['username']).'</strong> pictures. <a class="text-pramry" style="cursor:pointer;" onclick="subscribe(`'.$_SESSION['token'].'`)">Subscribe here</a></marquee></p>
+                <img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0 mb-4" alt="..." style="width:650px;height:550px;filter: blur(30px); -webkit-filter: blur(30px);">
+              ';
+            endif;
+          $outPut .= '</div>
+          <div class="col-md-12 mb-5">
+            <label style="font-size:24px;font-weight:bolder;color:#000;">'.ucwords($key['name']).'  <span>('.$key['age'].')</span></label></div>
+          <div class="col-md-12 mb-5 text-center" style="background:#ff801a;height:30px;font-size:18px;font-weight:bold;color:#fff;width:890px;"><label>Biography</label></div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Age:</strong> '.ucwords($key['age']).'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Gender: '.$key['gender'].'</strong></label>
+          </div>
+          <div class="col-md-4 mb-5">
+            <label><strong>Business Type:</strong> '.$key['business'].'</label>
+          </div>
+           <div class="col-md-3 mb-5">
+            <label><strong>Price offering:</strong> '.$key['price'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Weight:</strong> '.$key['weight'].'</label>
+          </div>
+          <div class="col-md-4 mb-5">
+            <label><strong>Height:</strong> '.$key['height'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Complexion:</strong> '.$key['complexion'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Smoker:</strong> '.$key['smoker'].'</label>
+          </div>
+          <div class="col-md-4 mb-5">
+            <label><strong>Ethnicity:</strong> '.$key['ethnicity'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Alcohol:</strong> '.$key['alcohol'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Means of COmmunication:</strong> '.$key['means_communication'].'</label>
+          </div>
+          <div class="col-md-4 mb-5">
+            <label><strong>Location:</strong> '.$key['location'].'</label>
+          </div>
+          <div class="col-md-12 mb-5 text-center" style="background:#ff801a;height:30px;font-size:18px;font-weight:bold;color:#fff;width:890px;"><label>Requests</label></div>
+          <div class="col-md-4 mb-5">
+            <label><strong>Weight Requesting:</strong> '.$key['weight_request'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Height Requesting:</strong> '.$key['height_request'].'</label>
+          </div>
+          <div class="col-md-3 mb-5">
+            <label><strong>Age Requesting:</strong> '.$key['age_request'].'</label>
+          </div>
+          <div class="col-md-8 mb-5">
+            <label><strong>Messages:</strong> '.$key['description'].'</label>
+          </div>
+          <div class=" d-flex"></button>';
+          if (Ajax::checkActiveSubscriber($_SESSION['token']) == false) :
+            $outPut .= '<button type="button" onclick="subscribe(`'.$_SESSION['token'].'`)" class="btn btn-primary">Subscribe to connect</button></div>';
+          else :
+            $outPut .= '<button type="button" onclick="book(`'.$key['enti_guid'].'`)" class="btn btn-success">Connect With ';if($key['gender']=='female'):$outPut .= 'Her';else:$outPut .= 'Him';endif;$outPut .= '</button></div>';
+          endif;
+        
+      }
+    }
+
+    echo json_encode($outPut);
+  }
+
+  //Show task table
   if (isset($_GET['task'])) {
     $token = $_GET['task'];
     $outPut = '';
@@ -540,7 +644,6 @@
     if (Ajax::getMyTasks($token)) {
       $count = 1;
       foreach (Ajax::getMyTasks($token) as $key) {
-        // $data = ['name'=>$key['name'],'contact_number'=>$key['contact_number'],'escortee_date'=>Database::dateFormat($key['escortee_date']),'escortee_time'=>Database::time($key['escortee_time']),'order_status'=>$key['order_status'],'location'=>$key['location']]; var_dump($data);exit;
         $outPut = '
           <tr>
             <td class="border-bottom-0"><h6 class="fw-semibold mb-0">'.$count++.'</h6></td>
@@ -560,11 +663,20 @@
               <h6 class="fw-semibold mb-0 fs-4">'.Database::time($key['escortee_time']).'</h6>
             </td>
             <td class="border-bottom-0">
-              <h6 class="fw-semibold mb-0 fs-4">'.$key['order_status'].'</h6>
+              <h6 class="fw-semibold mb-0 fs-4 ';if($key['order_status']=='waiting'):
+                $outPut .= 'text-warning';
+                elseif($key['order_status']=='accept'):
+                  $outPut .= 'text-success';
+                elseif($key['order_status']=='decline'):
+                  $outPut .= 'text-muted';
+                elseif($key['order_status']=='done'):
+                  $outPut .= 'text-dark';
+                endif;$outPut .= '
+              ">'.$key['order_status'].'</h6>
             </td>
             <td class="border-bottom-0">
               <a class="fw-bold mb-0 ti ti-eye task-view text-success" onclick="viewTask(`'.$key['payment_entity'].'`)" style="font-size:24px;"></a>
-              <a class="fw-bold mb-0 ti ti-pencil task-edit text-warning" onclick="editTask('.$key['payment_entity'].')" style="font-size:24px;"></a>
+              <a class="fw-bold mb-0 ti ti-pencil task-edit text-warning" onclick="editTask(`'.$key['payment_entity'].'`)" style="font-size:24px;"></a>
             </td>
           </tr> 
         ';
@@ -584,21 +696,174 @@
     $id = $_GET['vt'];
     $outPut = '';
 
-    if (Ajax::getMySingleTasks($id)()) { echo 'hello';exit;
+    if (Ajax::getMySingleTasks($id)) {
       foreach (Ajax::getMySingleTasks($id) as $key) {
         $outPut .= '
-          <input type="hidden" class="form-control mb-3" name="arial_token" id="arial_token" value="'.$key['name'].'">
-          <input type="hidden" class="form-control mb-3" name="email-address" id="email-address" value="'.$key['amount'].'">
-          <input type="hidden" class="form-control mb-3" name="invoice" id="invoice" value="'.$key['contact_number'].'">
-          <input type="hidden" class="form-control mb-3" name="email-address" id="email-address" value="'.$key['location'].'">
-          <input type="hidden" class="form-control mb-3" name="email-address" id="email-address" value="'.Database::dateFormat($key['escortee_date']).'">
-          <input type="hidden" class="form-control mb-3" name="email-address" id="email-address" value="'.Database::time($key['escortee_time']).'">
-          <input type="hidden" class="form-control mb-3" name="email-address" id="email-address" value="'.$key['order_status'].'">
-          
-          <textarea class="form-control mb-3" name="email-address" id="email-address">'.$key['name'].'</textarea>
+          <div class="row">
+            <!-- <div class="col-md-12">
+            <img src="">
+            </div> -->
+            <div class="col-md-6">
+            <label for="name">Escortee Name</label>
+            <input type="text" class="form-control mb-3" name="arial_token" id="name" value="'.$key['name'].'" readonly>
+            </div>
+            <div class="col-md-6">
+            <label for="category">Category</label>
+            <input type="text" class="form-control mb-3" name="category" id="category" value="'.$key['category'].'" readonly>
+            </div>
+            <div class="col-md-6">
+            <label for="amount">Amount</label>
+            <input type="text" class="form-control mb-3" name="amount" id="amount" value="'.$key['amount'].'" readonly>
+            </div>
+            <div class="col-md-6">
+            <label for="contact_number">Contact Number</label>
+            <input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.$key['contact_number'].'" readonly>
+            </div>
+            <div class="col-md-6">
+            <label for="location">Meeting Location</label>
+            <input type="text" class="form-control mb-3" name="location" id="location" value="'.$key['location'].'" readonly>
+            </div>
+            <div class="col-md-6">
+            <label for="escortee_date">Booking Date</label>
+            <input type="text" class="form-control mb-3" name="escortee_date" id="escortee_date" value="'.Database::dateFormat($key['escortee_date']).'" readonly>
+            </div>
+            <div class="col-md-6">
+            <label for="escortee_time">Booking Time</label>
+            <input type="text" class="form-control mb-3" name="email-address" id="escortee_time" value="'.Database::time($key['escortee_time']).'" readonly>
+            </div>
+            <div class="col-md-6">
+            <label for="order_status">Booking Status</label>
+            <input type="text" class="form-control mb-3" name="order_status" id="order_status" value="'.$key['order_status'].'" readonly>
+            </div>
+            <div class="col-md-12">
+            <label for="messages">Messages</label>
+            <textarea class="form-control mb-3" name="messages" id="messages" readonly>'.$key['messages'].'</textarea>
+          </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
           </div>
+        ';
+      }
+    }
+
+    echo json_encode($outPut);
+    
+  }
+
+  // edit task modal
+  if (isset($_GET['et'])) {
+    $id = $_GET['et'];
+    $outPut = '';
+
+    if (Ajax::getMySingleTasks($id)) {
+      foreach (Ajax::getMySingleTasks($id) as $key) {
+        $outPut .= '
+          <div class="row">
+            <div class="col-md-6">
+            <label for="name">Escortee Name</label>
+            <input type="text" class="form-control mb-3" name="arial_token" id="name" value="'.$key['name'].'" disabled>
+            </div>
+            <div class="col-md-6">
+            <label for="category">Category</label>
+            <input type="text" class="form-control mb-3" name="category" id="category" value="'.$key['category'].'" disabled>
+            </div>
+            <div class="col-md-6">
+            <label for="amount">Amount</label>
+            <input type="text" class="form-control mb-3" name="amount" id="amount" value="'.$key['amount'].'" disabled>
+            </div>
+            <div class="col-md-6">
+            <label for="contact_number">Contact Number</label>
+            <input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.$key['contact_number'].'" disabled>
+            </div>
+            <div class="col-md-6">
+            <label for="location">Meeting Location</label>
+            <input type="text" class="form-control mb-3" name="location" id="location" value="'.$key['location'].'" disabled>
+            </div>
+            <div class="col-md-6">
+            <label for="escortee_date">Booking Date</label>
+            <input type="text" class="form-control mb-3" name="escortee_date" id="escortee_date" value="'.Database::dateFormat($key['escortee_date']).'" disabled>
+            </div>
+            <div class="col-md-6">
+            <label for="escortee_time">Booking Time</label>
+            <input type="text" class="form-control mb-3" name="email-address" id="escortee_time" value="'.Database::time($key['escortee_time']).'" disabled>
+            </div>
+            <div class="col-md-6">
+            <label for="order_status">Booking Status<span class="text-danger" style="font-size:16px;font-weight:bold;">*</span></label>
+            <select class="form-control mb-3" name="order_status">';
+              if($key['order_status'] == 'waiting'):
+              $outPut .= '<option>'.$key['order_status'].'</option>
+              <option>accept</option>
+              <option>decline</option>';
+              elseif($key['order_status'] == 'accept'):
+                $outPut .= '<option>'.$key['order_status'].'</option>
+                <option>decline</option>
+                <option>done</option>
+                <option></option>';
+              elseif($key['order_status'] == 'decline'):
+                $outPut .= '<option>'.$key['order_status'].'</option>';
+              elseif($key['order_status'] == 'done'):
+                $outPut .= '<option>'.$key['order_status'].'</option>';
+              endif;
+            $outPut .= '</select>
+            </div>
+            <div class="col-md-12">
+              <input type="hidden" class="form-control" name="order_csrf" value="'.$key['order_entity'].'" >
+            </div>
+            <div class="col-md-12">
+            <label for="messages">Messages</label>
+            <textarea class="form-control mb-3" name="messages" id="messages" disabled>'.$key['messages'].'</textarea>
+          </div>
+          <div class="modal-footer">';
+            if($key['order_status'] == 'decline' || $key['order_status'] == 'done'):
+            else:
+              $outPut .= '<button type="submit" class="btn btn-success">Update Task</button>';
+            endif;
+            $outPut .= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        ';
+      }
+    }
+
+    echo json_encode($outPut);
+    
+  }
+
+  //get user profile
+  if (isset($_GET['pf_fm'])) {
+    $token = $_GET['pf_fm'];
+    $outPut = '';
+
+    $users = Ajax::getUserByToken($token);
+
+    if ($users) {
+      foreach ($users as $user) {
+        $outPut .= '
+          <div class="col-md-6">
+            <label>Full Name</label>
+            <input type="text" class="form-control mb-3" name="full_name" value="'.$user['name'].'">
+          </div>
+          <div class="col-md-6">
+            <label>Username</label>
+            <input type="text" class="form-control mb-3" name="username" value="'.$user['username'].'">
+          </div>
+          <input type="hidden" class="form-control mb-3" name="token" value="'.$_SESSION['token'].'">
+          <div class="col-md-6">
+            <label for="email">Phone Number</label>
+            <input type="email" class="form-control mb-3" name="email"  id="email" value="'.$user['email'].'">
+          </div>
+          <div class="col-md-6">
+            <label for="gender">Gender</label>
+            <input type="text" class="form-control mb-3" name="gender" id="gender" value="'.$user['gender'].'" readonly>
+          </div>
+          <div class="col-md-6">
+            <label for="weight">Phone Number</label>
+            <input type="number" class="form-control mb-3" name="phone_number" id="weight" value="'.$user['phone_number'].'">
+          </div>
+          <div class="col-md-6">
+            <label for="address">Address</label>
+            <input type="text" class="form-control mb-3" name="address" id="address" value="'.$user['address'].'">
+          </div>
+          <div class="col-md-6"><button type="submit" class="btn btn-success p-3" id="post_button">Edit Profile</button></div>
         ';
       }
     }

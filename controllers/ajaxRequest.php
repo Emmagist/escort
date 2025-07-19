@@ -55,8 +55,28 @@ class Ajax
         $rows = [];
         $result = $db->query("SELECT * FROM " . TBL_ESCORTS . "
                  INNER JOIN " . TBL_USERS . " 
-                 ON " . TBL_USERS . ".user_guid = " . TBL_ESCORTS . ".user_id 
+                 ON " . TBL_USERS . ".user_guid = " . TBL_ESCORTS . ".user_id
+                 INNER JOIN " . TBL_CATEGORY . "
+                 ON " . TBL_CATEGORY . ".token_guid = " . TBL_ESCORTS . ".category_id 
                  WHERE " . TBL_ESCORTS . ".entity_guid = '$token'
+            ");
+        if (!empty($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            return $rows;
+        }
+    }
+
+    public static function getSugarById($token)
+    {
+        global $db;
+
+        $rows = [];
+        $result = $db->query("SELECT * FROM " . TBL_SUGAR_CONNECT . "
+                 INNER JOIN " . TBL_USERS . " 
+                 ON " . TBL_USERS . ".user_guid = " . TBL_SUGAR_CONNECT . ".user_id 
+                 WHERE " . TBL_SUGAR_CONNECT . ".enti_guid = '$token'
             ");
         if (!empty($result)) {
             while ($row = $result->fetch_assoc()) {
@@ -134,7 +154,7 @@ class Ajax
     public static function getSingleSexVideosCategory($slug)
     {
         global $db;
-        return $db->selectData(TBL_PORN_VIDEOS, "*", "sex_category = '$slug'");
+        return $db->selectData(TBL_SEX_VIDEO_CATEGORY, "*", "slugs = '$slug'");
     }
 
     public static function checkActiveSubscriber($user){
@@ -171,11 +191,12 @@ class Ajax
     public static function getAllSugarConnectBySlug($slug, $gender)
     {
         global $db;
+        // $genders = $gender == 'female' ? 'male' : 'female'; return $genders;exit;
         $rows = [];
         $result = $db->query("SELECT * FROM " . TBL_SUGAR_CONNECT . "
                  INNER JOIN " . TBL_USERS . " 
                  ON " . TBL_USERS . ".user_guid = " . TBL_SUGAR_CONNECT . ".user_id 
-                 WHERE " . TBL_SUGAR_CONNECT . ".gender_request = '$gender'
+                 WHERE " . TBL_SUGAR_CONNECT . ".gender_request = '$gender' AND payment_status = 'successful'
             ");
         if (!empty($result)) {
             while ($row = $result->fetch_assoc()) {
@@ -210,7 +231,7 @@ class Ajax
             ON " . TBL_PAYMENTS_LOG . ".payment_entity = " . TBL_ORDERS . ".payments_log_id
             INNER JOIN " . TBL_USERS . " 
             ON " . TBL_PAYMENTS_LOG . ".escortee_id = " . TBL_USERS . ".user_guid 
-            WHERE " . TBL_PAYMENTS_LOG . ".escorte_id = '$token'
+            WHERE " . TBL_PAYMENTS_LOG . ".escorte_id = '$token' AND conditions = 'successful'
         ");
         if (!empty($result)) {
             while ($row = $result->fetch_assoc()) {
@@ -223,12 +244,14 @@ class Ajax
     public static function getMySingleTasks($id){
         global $db;
         $rows = [];
-        $$result = $db->query("SELECT * FROM " . TBL_PAYMENTS_LOG . "
-        INNER JOIN " . TBL_ORDERS . "
-        ON " . TBL_PAYMENTS_LOG . ".payment_entity = " . TBL_ORDERS . ".payments_log_id
-        INNER JOIN " . TBL_USERS . " 
-        ON " . TBL_PAYMENTS_LOG . ".escortee_id = " . TBL_USERS . ".user_guid 
-        WHERE " . TBL_PAYMENTS_LOG . ".payment_entity = '$id'
+        $result = $db->query("SELECT * FROM " . TBL_PAYMENTS_LOG . "
+            INNER JOIN " . TBL_ORDERS . "
+            ON " . TBL_PAYMENTS_LOG . ".payment_entity = " . TBL_ORDERS . ".payments_log_id
+            INNER JOIN " . TBL_CATEGORY . "
+            ON " . TBL_PAYMENTS_LOG . ".category_id = " . TBL_CATEGORY . ".token_guid
+            INNER JOIN " . TBL_USERS . " 
+            ON " . TBL_PAYMENTS_LOG . ".escortee_id = " . TBL_USERS . ".user_guid 
+            WHERE " . TBL_PAYMENTS_LOG . ".payment_entity = '$id'
         ");
         if (!empty($result)) {
             while ($row = $result->fetch_assoc()) {
@@ -237,6 +260,26 @@ class Ajax
             return $rows;
         }
     }
+
+    public static function checkPassword($token, $password)
+    {
+        global $db;
+
+        $user = $db->singleData(TBL_USERS, "password", "user_guid = '$token'");
+
+        if ($user && password_verify($password, $user['password'])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function getUserByToken($token){
+        global $db;
+
+        return $db->selectData(TBL_USERS, "*", "user_guid = '$token'");
+    }
+
 
     // public static function checkUserIfVerified($email)
     // {

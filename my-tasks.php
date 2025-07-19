@@ -75,7 +75,7 @@
           <div class="col-lg-12 d-flex align-items-stretch">
             <div class="card w-100">
               <div class="card-body p-4">
-                <h5 class="card-title fw-semibold mb-4">Recent Transactions</h5>
+                <h5 class="card-title fw-semibold mb-4">My Task(s)</h5>
                 <div class="table-responsive">
                   <table class="table text-nowrap mb-0 align-middle">
                     <thead class="text-dark fs-4">
@@ -321,4 +321,53 @@
       }
     })
   }
+
+  //edit task
+  function editTask(params) {
+    $('#editTaskModal').modal('show');
+
+    $.ajax({
+      url: 'controllers/ajaxGet.php?et='+params,
+      method: 'GET',
+      dataType: 'json',
+      data: params,
+      contentType: false,
+      processData: false,
+      beforeSend: () => {
+          $('#edit_task_modal_body').html('Loading contents...');
+      },
+      success: (param) => {
+        if (param) {
+            $('#edit_task_modal_body').html(param);
+        }
+      }
+    })
+  }
+
+  // update task form
+  $('#edit_task_modal_body').submit(function () {
+      const formData = new FormData(this); //alert(formData);
+      $.ajax({
+          url: 'controllers/fetchAjax.php?pg=209',
+          method: 'POST',
+          dataType: 'json',
+          data: formData,
+          contentType: false,
+          processData: false,
+          // beforeSend: () => {
+          //     $('#send-request').html('Sending...');
+          // },
+          success: (param) => {
+              if (param.success) {
+                $('.alert-success').show();
+                $('.alert-success').html(param.success);
+                setInterval(() => {
+                $('.alert-success').fadeOut();
+                location.reload();
+              }, 2000);
+              }
+          }
+      })
+      return false;
+  })
 </script>

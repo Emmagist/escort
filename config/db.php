@@ -47,19 +47,20 @@ use Google\Service\Analytics\Column;
             }
         }
 
-        public function singleData($table, $column = "", $conditions = ""){
+        public function singleData($table, $column = "*", $conditions = "")
+        {
             $rows = [];
-            $where = !empty($conditions) ? "WHERE" : "";
-            $result = $this->query("SELECT " . $column . " FROM " . $table . "  $where " . $conditions);
-            // var_dump($result);exit;
-            $count = $result->num_rows;
-            if ($count > 0) {
-              while ($row = $result->fetch_assoc()) {
-                $rows[] = $row;
-              }
-              return $rows;
+            $where = !empty($conditions) ? "WHERE $conditions" : "";
+
+            $result = $this->query("SELECT $column FROM $table $where");
+
+            if ($result && $result->num_rows > 0) {
+                return $result->fetch_assoc();
             }
+
+            return null;
         }
+
 
         public function activeUsers($table, $field = '*', $conditions = ""){
             $rows = [];
@@ -76,25 +77,43 @@ use Google\Service\Analytics\Column;
             }
         }
 
-        public function searchData($table, $field = "*", $conditions = "", $val = '', $limit = ''){
+        public function searchData($table, $field = "*", $conditions = "", $columns = [], $val = '', $limit = '') {
             $rows = [];
-                $fields = trim($field);
-                $where = !empty($conditions) ? "WHERE" : "";
-            $result = $this->query("SELECT " . $fields . " FROM " . $table . "  $where " . $conditions . " LIKE '%".$val."%' LIMIT " . $limit);
-            $cout = $result->num_rows;
-            var_dump($result);exit;
-            if($cout > 0){
-                if (!empty($result)) {
+            $fields = trim($field);
+            $where = "";
+
+            if (is_array($columns) && !empty($columns)) {
+                $searchParts = array_map(function ($col) use ($val) {
+                    $col = preg_replace('/[^a-zA-Z0-9_]/', '', $col); 
+                    return "$col LIKE '%$val%'";
+                }, $columns);
+                $searchClause = implode(" OR ", $searchParts);
+            } else {
+                return 0; 
+            }
+
+            if (!empty($conditions)) {
+                $where = "WHERE $conditions AND ($searchClause)";
+            } else {
+                $where = "WHERE $searchClause";
+            }
+
+            $limitClause = !empty($limit) ? "LIMIT $limit" : "";
+            $sql = "SELECT $fields FROM $table $where $limitClause";
+
+            $result = $this->query($sql);
+            if ($result && $result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $rows[] = $row;
                 }
                 return $rows;
-                }
             }
-            else{
-                return 0;
-            }
+
+            return 0;
         }
+
+
+
 
         public function saveData($table, $sql){
             return $this->query("INSERT INTO " . $table . "  SET " . $sql);
@@ -427,7 +446,7 @@ use Google\Service\Analytics\Column;
 
         public static function invoiceCode(){
             $code = mt_rand(100000,999999);
-            return 'sanm_'.substr(str_shuffle($code),0,8);
+            return 'kzone_'.substr(str_shuffle($code),0,8);
         }
 
         public static function timeCountDown2($expire_time){ 
@@ -520,7 +539,7 @@ use Google\Service\Analytics\Column;
             return openssl_decrypt($decrypt, $method, $key, 0, $iv);
         }
 
-        public static function slug($str) { 
+        public static function slug($str) {
     
             // Convert string to lowercase 
             $str = strtolower($str); 

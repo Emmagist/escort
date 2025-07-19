@@ -51,7 +51,7 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Subscribe For Premium</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body" id="view_task_modal_body">
+      <div class="modal-body" id="view_task_modal">
         <form action="" method="post" class="form-group" id="subscribe_contents"></form>
       </div>
     </div>
@@ -66,8 +66,22 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">View Task</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body" id="modal-body">
-        <form action="" method="post" class="form-group" id="subscribe_contents"></form>
+      <div class="modal-body" id="view_task_modal_body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit task -->
+<div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Update Task</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <li class="alert alert-success list-unstyled text-center text-capitalize" style="display: none;"></li>
+        <form action="" method="post" id="edit_task_modal_body"></form>
       </div>
     </div>
   </div>

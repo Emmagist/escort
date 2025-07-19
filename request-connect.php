@@ -55,8 +55,14 @@
                   <label for="age">Age</label>
                   <input type="number" class="form-control mb-3" name="age" id="age">
                 </div>
-                <input type="hidden" class="form-control mb-3" name="token" value="'<?=$_SESSION['token']?>'">
-                <input type="hidden" class="form-control mb-3" name="gender" value="'<?=$_SESSION['gender']== 'female'?'male':'female'?>'">
+                <input type="hidden" class="form-control mb-3" name="token" value="<?=$_SESSION['token']?>">
+                <input type="hidden" class="form-control mb-3" name="invoice" id="invoice" value="<?=Database::invoiceCode();?>">
+                <input type="hidden" class="form-control mb-3" name="email"  id="email" value="<?=$_SESSION['email']?>">
+                <?php if($_SESSION['gender'] == 'female'): ?>
+                  <input type="hidden" class="form-control mb-3" name="gender" value="female">
+                <?php else : ?>
+                  <input type="hidden" class="form-control mb-3" name="gender" value="male">
+                <?php endif; ?>
                 <div class="col-md-6">
                   <label for="currency">Currency</label>
                   <select name="currency" id="currency" class="form-control mb-3">
@@ -71,18 +77,14 @@
                   <input type="number" class="form-control mb-3" name="prices" id="prices">
                 </div>
                 <?php else: ''; endif; ?>
-                <?php if($_SESSION['connect'] == 'none'): ?>
                 <div class="col-md-6">
                   <label for="weight">Weight</label>
                   <input type="number" class="form-control mb-3" name="weight" id="weight">
                 </div>
-                <?php else: ''; endif; ?>
-                <?php if($_SESSION['connect'] == 'none'): ?>
                 <div class="col-md-6">
                   <label for="height">Height</label>
                   <input type="number" class="form-control mb-3" name="height" id="height">
                 </div>
-                <?php else: ''; endif; ?>
                 <div class="col-md-6">
                   <label for="business">Your Business Type</label>
                   <input type="text" class="form-control mb-3" name="business" id="business">
@@ -95,6 +97,15 @@
                   <label for="ethnicity">Ethnicity</label>
                   <input type="text" class="form-control mb-3" name="ethnicity" id="ethnicity">
                 </div>
+                <?php if ($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 's_mummy') : ?>
+                  <input type="hidden" class="form-control mb-3" name="service_charge" value="50000" id="service_charge">
+                <?php elseif ($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 'none') : ?>
+                  <input type="hidden" class="form-control mb-3" name="service_charge" value="35000" id="service_charge">
+                <?php elseif ($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 's_daddy') : ?>
+                  <input type="hidden" class="form-control mb-3" name="service_charge" value="50000" id="service_charge">
+                <?php elseif ($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 'none') : ?>
+                  <input type="hidden" class="form-control mb-3" name="service_charge" value="35000" id="service_charge">
+                <?php endif; ?>
                 <div class="col-md-6">
                   <label for="smoker">Smoker</label>
                   <select name="smoker" id="smoker" class="form-control mb-3">
@@ -128,8 +139,29 @@
                     <option value="chocolate_skin">Chocolate Skin</option>
                   </select>
                 </div>
+                <div class="col-md-12" id="com_div">
+                  <label for="communication">Means of Communication</label>
+                  <select name="communication" id="communication" class="form-control mb-3">
+                    <option value="">Means of Communication</option>
+                    <option value="phone">Phone call</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="email">Email</option>
+                  </select>
+                </div>
+                <div class="col-md-6" style="display: none;" id="div-input1">
+                  <label for="calling_number">Calling Number</label>
+                  <input type="text" class="form-control mb-3" name="calling_number" id="calling_number"  placeholder="+23488888888888">
+                </div>
+                <div class="col-md-6" style="display: none;" id="div-input2">
+                  <label for="whatsapp_number">WhatsApp Number</label>
+                  <input type="text" class="form-control mb-3" name="whatsapp_number" id="whatsapp_number" placeholder="+23488888888888">
+                </div>
+                <div class="col-md-6" style="display: none;" id="div-input3">
+                  <label for="email_address">Emmail Address</label>
+                  <input type="email" class="form-control mb-3" name="email_address" id="email_address" placeholder="example@gmail.com">
+                </div>
                 <div class="col-md-6">
-                  <label for="location">Location</label>
+                  <label for="location">State</label>
                   <input type="text" class="form-control mb-3" name="location" id="location">
                 </div>
                 <div class="col-md-6">
@@ -142,6 +174,12 @@
                 </div>
                 <div class="col-md-6"><button type="submit" class="btn btn-primary p-3" id="post_button">Request</button></div>
               </div>
+            </form>
+            <form action="" method="post" style="display: none;">
+              <input type="hidden" name="email" id="user_email">
+              <input type="hidden" name="service_charged" id="service_charged">
+              <input type="hidden" name="trn_invoice" id="trn_invoice">
+              <button type="button" id="charges_payment_button" onclick="SquadPay()">pay</button>
             </form>
         </div>
 <?php 
@@ -171,11 +209,40 @@
         }
       }
     })
+  });
+
+  const communication = $('#communication');
+  communication.change(()=>{
+    if (communication.val() == 'phone') {
+      $('#com_div').removeClass('col-md-12');
+      $('#com_div').addClass('col-md-6');
+      $('#div-input2').hide();
+      $('#div-input3').hide();
+      $('#div-input1').show();
+    }else if (communication.val() == 'whatsapp') {
+      $('#com_div').removeClass('col-md-12');
+      $('#com_div').addClass('col-md-6');
+      $('#div-input3').hide();
+      $('#div-input1').hide();
+      $('#div-input2').show();
+    }else if (communication.val() == 'email') {
+      $('#com_div').removeClass('col-md-12');
+      $('#com_div').addClass('col-md-6');
+      $('#div-input1').hide();
+      $('#div-input2').hide();
+      $('#div-input3').show();
+    }else if (communication.val() == '') {
+      $('#com_div').removeClass('col-md-6');
+      $('#com_div').addClass('col-md-12');
+    }
   })
 
   //upload escort profile
   $('#request_sugar').submit(function () {
       const formData = new FormData(this); //alert(formData);
+      $('#user_email').val($('#email').val());
+      $('#service_charged').val($('#service_charge').val());
+      $('#trn_invoice').val($('#invoice').val());
       $.ajax({
           url: 'controllers/fetchAjax.php?pg=205',
           method: 'POST',
@@ -191,20 +258,48 @@
               $('#post_button').html('Uploaded');
               $('#reg_success').fadeIn()
               $('#reg_success').text(param.success);
-              setInterval(() => {
+              setTimeout(() => {
                 $('#reg_success').fadeOut();
-                location.reload();
+                $('#charges_payment_button').click();
               }, 5000);
             }else if(param.error){
               $('#post_button').html('Upload');
               $('#reg_danger').fadeIn()
               $('#reg_danger').text(param.error);
-              setInterval(() => {
+              setTimeout(() => {
                 $('#reg_danger').fadeOut();
               }, 5000);
             }
           }
       })
       return false;
-  })
+  });
+
+  // payment
+  function SquadPay() {
+    // e.preventDefault();
+    const squadInstance = new squad({
+    onLoad: () => console.log("Widget loaded successfully"),
+    key: 'sandbox_pk_2812061280c862064951d1ace69f69213cbe2d1f2f07',
+    // "test_pk_sample-public-key-1"
+    //Change key (test_pk_sample-public-key-1) to the key on your Squad Dashboard
+    email: document.getElementById("user_email").value,
+    amount: document.getElementById("service_charged").value * 100,
+    //Enter amount in Naira or Dollar (Base value Kobo/cent already multiplied by 100)
+    transaction_ref: 'Inv'+Math.floor((Math.random() * 1000000000) + 1),
+    currency_code: "NGN",
+    
+    onSuccess: function(response){
+        // let message = 'Payment complete! Reference: ' + response.transaction_ref ;
+        // alert(message);
+        const amt = document.getElementById("service_charged").value;
+        const trn_invoice = document.getElementById("trn_invoice").value;
+        location.href = "verify-request-service?verify="+response.transaction_ref+"&inv="+trn_invoice+"&amt="+amt;
+    },
+    onClose: () => alert("Transaction Cancelled")
+    });
+    squadInstance.setup();
+    squadInstance.open();
+
+  }
 </script>

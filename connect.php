@@ -6,6 +6,8 @@
   // $db->getLoginSession($redirect);
 
   // $ip_address = Database::getClientIp();
+  
+  require "inc/auth.php";
 
   if (isset($_SESSION['token']) && isset($_SESSION['role']) && $_SESSION['role'] == 3 || $_SESSION['role'] == 2) {
       $token = $_SESSION['token'];
@@ -29,7 +31,7 @@
           </div>
         </div>
         <div class="row sugar__row">
-          <div class="col-sm-6 col-xl-3">
+          <!-- <div class="col-sm-6 col-xl-3">
             <div class="card overflow-hidden rounded-2">
               <div class="position-relative">
                 <a href="javascript:void(0)"><img src="assets/images/products/s4.jpg" class="card-img-top rounded-0" alt="..."></a>
@@ -50,7 +52,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
 <?php 
   require "inc/footer.php";

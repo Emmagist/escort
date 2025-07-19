@@ -7,7 +7,8 @@
       <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
           <a href="/" class="text-nowrap logo-img">
-            <img src="assets/images/logos/dark-logo.svg" width="180" alt="" />
+            <!-- <img src="assets/images/logos/dark-logo.svg" width="180" alt="" /> -->
+             <strong style="font-size: 36px;font-weight:bold;color:blueviolet;">Gescort</strong>
           </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             <i class="ti ti-x fs-8"></i>
@@ -16,6 +17,7 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">
+            <?php if($_SESSION['role'] == 2):?>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Home</span>
@@ -28,11 +30,12 @@
                 <span class="hide-menu">Dashboard</span>
               </a>
             </li>
-            <?php if($_SESSION['role'] == 2):?>
+            <?php endif;?>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu text-capitalization">activities</span>
             </li>
+            <?php if($_SESSION['role'] == 2):?>
             <li class="sidebar-item">
               <a class="sidebar-link" href="upload-escort" aria-expanded="false">
                 <span>
@@ -49,11 +52,11 @@
                 <span class="hide-menu">Upload Porn Vidoe</span>
               </a>
             </li>
-            <?php endif?>
+            <?php endif; if($_SESSION['token']):?>
             <li class="sidebar-item">
               <a class="sidebar-link" href="request-connect" aria-expanded="false">
                 <span>
-                  <i class="ti ti-typography"></i>
+                  <i class="ti ti-article"></i>
                 </span>
                 <?php if($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 's_daddy') : ?>
                   <span class="hide-menu">Request Sugar Girl</span>
@@ -66,6 +69,7 @@
                 <?php endif; ?>
               </a>
             </li>
+            <?php endif;?>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu text-capitalization">services</span>
@@ -74,29 +78,31 @@
               <li class="sidebar-item">
                 <a class="sidebar-link" href="connect" aria-expanded="false">
                   <span>
-                    <i class="ti ti-typography"></i>
+                    <i class="ti ti-user"></i>
                   </span>
                   <?php if($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 's_daddy') : ?>
-                  <span class="hide-menu">Sugar Girl</span>
+                    <span class="hide-menu">Sugar Girl</span>
                   <?php elseif($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 's_mummy') : ?>
-                        <span class="hide-menu">Sugar Boy</span>
+                    <span class="hide-menu">Sugar Boy</span>
                   <?php elseif($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 'none') : ?>
-                        <span class="hide-menu">Sugar Mummy</span>
+                    <span class="hide-menu">Sugar Mummy</span>
                   <?php elseif($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 'none') : ?>
-                        <span class="hide-menu">Sugar Daddy</span>
+                    <span class="hide-menu">Sugar Daddy</span>
+                  <?php else : ?>
+                    <span class="hide-menu">Sugar Daddy&Mummy</span>
                   <?php endif; ?>
                 </a>
               </li>
             <li class="sidebar-item">
               <a class="sidebar-link" href="sex-videos" aria-expanded="false">
                 <span>
-                  <i class="ti ti-user-circle"></i>
+                  <i class="ti ti-mood-happy"></i>
                 </span>
                 <span class="hide-menu">Sex Videos</span>
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+              <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
                   <i class="ti ti-user-circle"></i>
                 </span>
@@ -104,7 +110,7 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+              <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
                   <i class="ti ti-typography"></i>
                 </span>
@@ -152,11 +158,11 @@
               </a>
             </li> -->
           </ul>
-          <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
+          <div class="unlimited-access hide-menu bg-light-primary position-relative mb-5 mt-5 rounded">
             <div class="d-flex">
               <div class="unlimited-access-title me-3">
-                <h6 class="fw-semibold fs-4 mb-6 text-dark w-85">Upgrade to pro</h6>
-                <a href="https://adminmart.com/product/modernize-bootstrap-5-admin-template/" target="_blank" class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
+                <h6 class="fw-semibold fs-4 mb-6 text-dark w-85">Place Your Ads Here</h6>
+                <a href="#" target="_blank" class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
               </div>
               <div class="unlimited-access-img">
                 <img src="assets/images/backgrounds/rocket.png" alt="" class="img-fluid">

@@ -1,5 +1,16 @@
 <?php
-  require "inc/auth.php";
+  require_once "controllers/users.php";
+
+  $redirect = $db->redirectURI(); //echo $redirect;exit;
+  // $db->getLoginSession($redirect);
+
+  // $ip_address = Database::getClientIp();
+
+  if (isset($_SESSION['token']) && isset($_SESSION['role']) && $_SESSION['role'] == 3 || $_SESSION['role'] == 2) {
+      $token = $_SESSION['token'];
+      $role = $_SESSION['role'];
+  }
+
   if (isset($_GET['pg'])) {
     $slug = $_GET['pg'];
   }
@@ -12,6 +23,7 @@
       <!--  Header End -->
       <div class="container-fluid">
         <div class="row sex_videos">
+          
           <!-- <div class="col-sm-6 col-xl-3">
             <div class="card overflow-hidden rounded-2">
               <div class="position-relative" id="testing">
@@ -45,11 +57,11 @@
   require "inc/footer.php";
 ?>
 <script>
-  function changein(params){ //alert(params)
-    $('.sex__change').attr("src", params);
+  function changein(params, id){ //alert(id)
+    $('.sex__change__'+id).attr("src", params);
   }
-  function changeout(params){
-    $('.sex__change').attr("src", params);
+  function changeout(params, id){
+    $('.sex__change__'+id).attr("src", params);
   }
   
   $(document).ready(function(event) {//alert('hey')

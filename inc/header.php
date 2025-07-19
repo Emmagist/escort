@@ -31,17 +31,23 @@
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
                     <?php if($_SESSION['token']):?>
-                      <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <a href="profile" class="d-flex align-items-center gap-2 dropdown-item">
                         <i class="ti ti-user fs-6"></i>
                         <p class="mb-0 fs-3">My Profile</p>
                       </a>
-                      <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                        <i class="ti ti-mail fs-6"></i>
-                        <p class="mb-0 fs-3">My Account</p>
-                      </a>
-                      <a href="my-tasks" class="d-flex align-items-center gap-2 dropdown-item">
-                        <i class="ti ti-list-check fs-6"></i>
-                        <p class="mb-0 fs-3">My Task</p>
+                      <?php if($_SESSION['role'] == 2):?>
+                        <a href="/" class="d-flex align-items-center gap-2 dropdown-item">
+                          <i class="ti ti-mail fs-6"></i>
+                          <p class="mb-0 fs-3">My Account</p>
+                        </a>
+                        <a href="my-tasks" class="d-flex align-items-center gap-2 dropdown-item">
+                          <i class="ti ti-list-check fs-6"></i>
+                          <p class="mb-0 fs-3">My Task</p>
+                        </a>
+                      <?php endif;?>
+                      <a href="change-password" class="d-flex align-items-center gap-2 dropdown-item">
+                        <i class="ti ti-lock fs-6"></i>
+                        <p class="mb-0 fs-3">Change Password</p>
                       </a>
                       <a href="logout" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                     <?php else :?>

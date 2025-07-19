@@ -24,12 +24,20 @@
       <!--  Header End -->
       <div class="container-fluid">
         <div class="row mb-5">
-          <div class="col-md-3">
+          <!-- <div class="col-md-3">
             <input type="search" name="search" id="search__data" class="form-control" placeholder="Search by state, location or username">
             <ul class="rounded p-2" style="box-shadow: 2px 2px gray; display:none;" id="search_result">
               <li class="list-items list-unstyle mb-2"><a href="" class="text-bold" style="font-weight: 600; color:#000">Lagos</a></li>
             </ul>
+          </div> -->
+          <div class="position-relative col-md-9">
+            <input type="search" name="search" id="search__data" class="form-control ps-5" placeholder="Search by state, location or username">
+            <i class="fa fa-search text-black" style="position: absolute;top: 50%;left: 15px;transform: translateY(-50%);font-size: 18px;color: #888;pointer-events: none; padding-left:10px;"></i>
+            
+            <ul class="list-group position-absolute w-100 z-3 bg-white" id="search_result" style="display:none; max-height: 250px; overflow-y: auto;"></ul>
           </div>
+
+
         </div>
         <div class="row escort_row">
           <!-- <div class="col-sm-6 col-xl-3">
@@ -81,34 +89,32 @@
 
   })
 
-   //upload escort profile
-   $('#search__data').keyup(function () {
-      const formData = $(this).val();
-      const slug = '<?=$slug?>';
-      $.ajax({
-          url: 'controllers/fetchAjax.php?pg=206&esc_pg='+slug+'&data='+formData,
-          method: 'POST',
-          dataType: 'json',
-          data: {formData,slug},
-          contentType: false,
-          processData: false,
-          beforeSend: () => {
-            $('#search_result').show();
-            $('#search_result').html('Searching...');
-          },
-          success: (param) => {
-            if (param.success) {
-              $('#search_result').html(param.success);
-            }else if(param.error){
-              $('#search_result').html(param.error);
-              setInterval(() => {
-                $('#search_result').fadeOut();
-              }, 3000);
-            }
+  //search
+  $('#search__data').keyup(function () {
+    const formData = $(this).val();
+    const slug = '<?=$slug?>';
+    $.ajax({
+        url: 'controllers/fetchAjax.php?pg=206&esc_pg=' + slug + '&data=' + encodeURIComponent(formData),
+        method: 'GET',
+        dataType: 'json',
+        beforeSend: () => {
+          $('#search_result').show();
+          $('#search_result').html('Searching...');
+        },
+        success: (param) => {
+          if (param.success) {
+            $('#search_result').html(param.success);
+          } else if (param.error) {
+            $('#search_result').html(param.error);
+            setTimeout(() => {
+              $('#search_result').fadeOut();
+            }, 3000);
           }
-      })
-      return false;
+        }
+    });
+    return false;
   });
+
 
   function bookEscort(key) { //alert(key)
     const slug = '<?=$slug?>';

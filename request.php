@@ -26,28 +26,28 @@
 
 <script>
     $(document).ready(function(event) {
-    // event.preventDefault(); 
-    const token = '<?=$token?>';
-    $.ajax({
-        url: 'controllers/ajaxGet.php?req_vw='+token,
-        method: 'GET',
-        dataType: 'json',
-        data: token,
-        contentType: false,
-        processData: false,
-        beforeSend: () => {
-            $('#table-responsive').html('Loading contents...');
-        },
-        success: (param) => {
-            if (param) {
-                $('#table-responsive').html(param);
+        // event.preventDefault(); 
+        const token = '<?=$token?>';
+        $.ajax({
+            url: 'controllers/ajaxGet.php?req_vw='+token,
+            method: 'GET',
+            dataType: 'json',
+            data: token,
+            contentType: false,
+            processData: false,
+            beforeSend: () => {
+                $('#table-responsive').html('Loading contents...');
+            },
+            success: (param) => {
+                if (param) {
+                    $('#table-responsive').html(param);
+                }
             }
-        }
+        })
+
     })
 
-  })
-
-  function viewRequest(params) {
+    function viewRequest(params) {
       $('#view-request').modal('show');
 
       $.ajax({
@@ -66,9 +66,9 @@
               }
           }
       })
-  }
+    }
 
-  $('#acceptForm').submit(function () {
+    $('#acceptForm').submit(function () {
       const formData = new FormData(this); //alert(formData);
       $.ajax({
           url: 'controllers/fetchAjax.php?pg=205',
@@ -86,5 +86,5 @@
           }
       })
       return false;
-  })
+    })
 </script>

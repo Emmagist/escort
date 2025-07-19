@@ -1,12 +1,14 @@
 <?php
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL); 
 use Egulias\EmailValidator\EmailValidator;
 
 require_once "ajaxRequest.php";
 
 // Configure API key authorization: Apikey
-$config = Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Apikey', CLOUD_MERSIVE);
-$apiInstance = new Swagger\Client\Api\VideoApi(new GuzzleHttp\Client(), $config);
+// $config = Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Apikey', CLOUD_MERSIVE);
+// $apiInstance = new Swagger\Client\Api\VideoApi(new GuzzleHttp\Client(), $config);
 
 if (isset($_GET['pg'])) {
     $pg = $_GET['pg'];
@@ -343,11 +345,11 @@ if ($pg == 204) {
         if ($move_file) {
             // $gif= $apiInstance->videoConvertToGif($target_file, $target_file, '560', '170', );
             // $target_gif_file  = $target_gif . basename($gif);
-            // $move_file = move_uploaded_file($git, $target_gif_file);
+            // $move_file = move_uploaded_file($gif, $target_gif_file);
             if (empty($category) && ! empty($custom_cat)) {
                 $slug = Database::slug($custom_cat);
-                $cat_result = $db->saveData(TBL_SEX_VIDEO_CATEGORY, "identity_guid = uuid(), sex_category = '$custom_cat', slugs = '$slugs'");
-                if ($cat_result) {
+                $cat_result = $db->saveData(TBL_SEX_VIDEO_CATEGORY, "identity_guid = uuid(), custom_category = '$custom_cat', user_id = '$token', slugs = '$slug'");
+                if ($cat_result && Ajax::getSingleSexVideosCategory($slug)) {
                     foreach (Ajax::getSingleSexVideosCategory($slug) as $key) {
                         $identity_guid = $key['identity_guid'];
                         $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', sex_cat_id = '$identity_guid', entity_guid = uuid(), title = '$title', contents = '$content', porn_video = '$target_file'");
@@ -399,6 +401,12 @@ if ($pg == 205) {
     $complexion = $db->escape($_POST['complexion']);
     $location = $db->escape($_POST['location']);
     $note = $_POST['note'];
+    $communication = $db->escape($_POST['communication']);
+    $calling_number = $db->escape($_POST['calling_number']);
+    $whatsapp_number = $db->escape($_POST['whatsapp_number']);
+    $service_charge = $db->escape($_POST['service_charge']);
+    $email_address = $db->escape($_POST['email_address']);
+    $invoice = $db->escape($_POST['invoice']);
 
     if (empty($category)) {
         $error = "Category is required!";
@@ -451,6 +459,9 @@ if ($pg == 205) {
     if (empty($complexion)) {
         $error = "All field is required!";
     }
+    if (empty($communication)) {
+        $error = "Communication is required!";
+    }
 
     if (empty($note)) {
         $error = "All field is required!";
@@ -485,10 +496,27 @@ if ($pg == 205) {
     if ($uploadOk == 1 && empty($error)) {
         $move_file = move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file); //var_dump($move_file);exit;
         if ($move_file) {
-            $result = $db->saveData(TBL_SUGAR_CONNECT, "user_id = '$token', category_id = '$category', enti_guid = uuid(), gender_request = '$gender', age = '$age', price = '$prices', weight = '$weight', height = '$height', currency = '$currency', business = '$business', age_request = '$age_request', ethnicity = '$ethnicity', smoker = '$smoker', alcohol = '$alcohol', weight_request = '$weight_request', height_request = '$height_request', complexion = '$complexion', location = '$location', upload_file = '$target_file', description = '$note'");
-            var_dump($result);
-            if ($result) {
-                $success = "Successfully uploaded...";
+            if(!empty($calling_number)){
+                $result = $db->saveData(TBL_SUGAR_CONNECT, "user_id = '$token', category_id = '$category', enti_guid = uuid(), gender_request = '$gender', age = '$age', price = '$prices', weight = '$weight', height = '$height', currency = '$currency', business = '$business', age_request = '$age_request', ethnicity = '$ethnicity', smoker = '$smoker', alcohol = '$alcohol', weight_request = '$weight_request', height_request = '$height_request', complexion = '$complexion', means_communication = '$communication', communication = '$calling_number', service_charge = '$service_charge', invoice = '$invoice', location = '$location', upload_file = '$target_file', description = '$note'");
+                if ($result) {
+                    $success = "Data processing, proceed to pay service charges to complete transaction.";
+                }else {
+                    $error = "Something went wrong";
+                }
+            }elseif(!empty($whatsapp_number)){
+                $result = $db->saveData(TBL_SUGAR_CONNECT, "user_id = '$token', category_id = '$category', enti_guid = uuid(), gender_request = '$gender', age = '$age', price = '$prices', weight = '$weight', height = '$height', currency = '$currency', business = '$business', age_request = '$age_request', ethnicity = '$ethnicity', smoker = '$smoker', alcohol = '$alcohol', weight_request = '$weight_request', height_request = '$height_request', complexion = '$complexion', means_communication = '$communication', communication = '$whatsapp_number', service_charge = '$service_charge', invoice = '$invoice', location = '$location', upload_file = '$target_file', description = '$note'");
+                if ($result) {
+                    $success = "Data processing, proceed to pay service charges to complete transaction.";
+                }else {
+                    $error = "Something went wrong";
+                }
+            }elseif(!empty($email_address)){
+                $result = $db->saveData(TBL_SUGAR_CONNECT, "user_id = '$token', category_id = '$category', enti_guid = uuid(), gender_request = '$gender', age = '$age', price = '$prices', weight = '$weight', height = '$height', currency = '$currency', business = '$business', age_request = '$age_request', ethnicity = '$ethnicity', smoker = '$smoker', alcohol = '$alcohol', weight_request = '$weight_request', height_request = '$height_request', complexion = '$complexion', means_communication = '$communication', communication = '$email_address', service_charge = '$service_charge', invoice = '$invoice', location = '$location', upload_file = '$target_file', description = '$note'");
+                if ($result) {
+                    $success = "Data processing, proceed to pay service charges to complete transaction.";
+                }else {
+                    $error = "Something went wrong";
+                }
             }else {
                 $error = "Something went wrong";
             }
@@ -505,19 +533,19 @@ if ($pg == 206) {
     $error = '';
     $outPut = '';
     $data = $db->escape($_GET['data']);
-    $esc_pg = '67543388$re386yf32198765430op876y$';
-    // $db->escape($_GET['esc_pg']);
+    $esc_pg = $db->escape($_GET['esc_pg']);
     if (empty($data)) {
         $error = '<li class="list-items list-unstyle mb-2"><a href="" class="text-bold text-danger" style="font-weight: 600; color:#000">Search a keyword</a></li>';
     }else{
-        $result = $db->searchData(TBL_USERS, "*", "user_guid = '$esc_pg'", "$data", 10); //var_dump($result);exit;
+        $columns = ['user_name', 'state', 'lga'];
+        $result = $db->searchData(TBL_ESCORTS, "*", "category_id = '$esc_pg'", $columns, "$data", 15); //var_dump($result);exit;
 
-        if ($result) { echo 'edd';exit;
+        if ($result) { //echo 'edd';exit;
             foreach ($result as $key) {
-                echo $token = $key['entity_guid'];exit;
+                $token = $key['entity_guid'];
                 foreach (Ajax::getEscortById($token) as $value) {
                     $outPut .= '
-                        <li class="list-items list-unstyle mb-2"><a href="" class="text-bold" style="font-weight: 600; color:#000">'.$value['name'].'</a></li>
+                        <li class="list-group-item list-unstyle mb-2"><a href="escort-profile?esc='.$key['entity_guid'].'&sg='.$key['category_id'].'" class="fw-bold text-dark" style="font-weight: 600; color:#000">'.ucfirst($value['name']).' ('.ucfirst($key['user_name']).')</a></li>
                     ';
                 }
             }
@@ -612,7 +640,7 @@ if ($pg == 208) {
         $move_file = move_uploaded_file($_FILES["nin_slip"]["tmp_name"], $target_file);
         $move_file2 = move_uploaded_file($_FILES["passport"]["tmp_name"], $target_file2);
         if ($move_file && $move_file2) {
-            $result = $db->update(TBL_USERS, "username = '$username', gender = $gender, nin_number = '$nin', nin_slip = '$target_file', recent_passport = '$target_file2', address = '$address', escort_approval = 'waiting'", "user_guid = '$token'");
+            $result = $db->update(TBL_USERS, "role_id = '2', username = '$username', gender = $gender, nin_number = '$nin', nin_slip = '$target_file', recent_passport = '$target_file2', address = '$address', escort_approval = 'waiting'", "user_guid = '$token'");
             // var_dump($re);
             if ($result) {
                 $success = "Successfully uploaded...";
@@ -625,6 +653,260 @@ if ($pg == 208) {
     }
 
     echo json_encode(['error' => $error, 'success' => $success]);
+}
+
+//update task
+if ($pg == 209) {
+    $error = '';
+    $success = '';
+    $order_status = $db->escape($_POST['order_status']);
+    $order_csrf = $db->escape($_POST['order_csrf']);
+
+    if (!empty($order_status) && !empty($order_csrf)) {
+        $request = $db->update(TBL_ORDERS, "order_status = '$order_status'", "order_entity = '$order_csrf'");
+
+        if ($request) {
+            $success = 'Task approved';
+        }
+    }
+
+    echo json_encode(['error' => $error, 'success' => $success]);
+}
+
+//sugar connect
+if ($pg == 210) {
+    $error = '';
+    $success = '';
+    $age = $db->escape($_POST['age']);
+    $token = $db->escape($_POST['token']);
+    $guid = $db->escape($_POST['guid']);
+    $gender = $db->escape($_POST['gender']);
+    $weight = $db->escape($_POST['weight']);
+    $height = $db->escape($_POST['height']);
+    $business = $db->escape($_POST['business']);
+    $ethnicity = $db->escape($_POST['ethnicity']);
+    $smoker = $db->escape($_POST['smoker']);
+    $alcohol = $db->escape($_POST['alcohol']);
+    $complexion = $db->escape($_POST['complexion']);
+    $location = $db->escape($_POST['location']);
+    $note = $_POST['note'];
+    $communication = $db->escape($_POST['communication']);
+    $calling_number = $db->escape($_POST['calling_number']);
+    $whatsapp_number = $db->escape($_POST['whatsapp_number']);
+    $service_charge = $db->escape($_POST['service_charge']);
+    $email_address = $db->escape($_POST['email_address']);
+    $invoice = $db->escape($_POST['invoice']);
+
+    
+
+    if (empty($age)) {
+        $error = "Age is required!";
+    }
+    
+    if (empty($weight)) {
+        $error = "Weight is required!";
+    }
+
+    if (empty($height)) {
+        $error = "Height is required!";
+    }
+
+    if (empty($token&&$guid)) {
+        $error = "Something went wrong!";
+    }
+
+    if (empty($business)) {
+        $error = "Business is required!";
+    }
+
+    if (empty($ethnicity)) {
+        $error = "Ethnicity is required!";
+    }
+
+    if (empty($smoker)) {
+        $error = "Smoker is required!";
+    }
+
+    if (empty($alcohol)) {
+        $error = "Alcohol is required!";
+    }
+
+    if (empty($location)) {
+        $error = "Location is required!";
+    }
+
+    if (empty($complexion)) {
+        $error = "All field is required!";
+    }
+    if (empty($communication)) {
+        $error = "Communication is required!";
+    }
+
+    // File upload
+    $target_dir = "../sugar_mum_dad_boy_girl/";
+    $target_file  = $target_dir . basename($_FILES["fileUpload"]["name"]); //var_dump($target_file);exit;
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $check = getimagesize($_FILES["fileUpload"]["tmp_name"]);
+    if ($check == false) {
+        $error =  "File is not an image";
+        $uploadOk = 0;
+    }
+
+    if (file_exists($target_file)) {
+        $error = "Sorry, file already exists.";
+        $uploadOk = 0;
+    }
+
+    if ($_FILES["fileUpload"]["size"] > 500000) {
+        $error = "Sorry, your file is too large.";
+        $uploadOk = 0;
+    }
+
+    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+        $error = "Sorry, only JPG, JPEG, PNG files are allowed.";
+        $uploadOk = 0;
+    }
+
+    if ($uploadOk == 1 && empty($error)) {
+        $move_file = move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file); //var_dump($move_file);exit;
+        if ($move_file) {
+            if(!empty($calling_number)){
+                $result = $db->saveData(TBL_SUGAR_CONNECTION, "sugar_guid = uuid(), user_id = '$token', sugar_request_id = '$guid', age = '$age', sug_con_gender = '$gender', sugar_weight = '$weight', sugar_height = '$height', sugar_business = '$business', sugar_ethnicity = '$ethnicity', sugar_smoker = '$smoker', sugar_alcohol = '$alcohol', sugar_complexion = '$complexion', sug_means_communication = '$communication', sugar_communication = '$calling_number', sugar_location = '$location', fileUpload = '$target_file', sugar_note = '$note', sugar_service_charge = '$service_charge', sugar_invoice = '$invoice'");
+                if ($result) {
+                    $success = "Data processing, proceed to pay service charges to complete transaction.";
+                }else {
+                    $error = "Something went wrong";
+                }
+            }elseif(!empty($whatsapp_number)){
+                $result = $db->saveData(TBL_SUGAR_CONNECTION, "sugar_guid = uuid(), user_id = '$token', sugar_request_id = '$guid', age = '$age', sug_con_gender = '$gender', sugar_weight = '$weight', sugar_height = '$height', sugar_business = '$business', sugar_ethnicity = '$ethnicity', sugar_smoker = '$smoker', sugar_alcohol = '$alcohol', sugar_complexion = '$complexion', sug_means_communication = '$communication', sugar_communication = '$whatsapp_number', sugar_location = '$location', fileUpload = '$target_file', sugar_note = '$note', sugar_service_charge = '$service_charge', sugar_invoice = '$invoice'");
+                if ($result) {
+                    $success = "Data processing, proceed to pay service charges to complete transaction.";
+                }else {
+                    $error = "Something went wrong";
+                }
+            }elseif(!empty($email_address)){
+                $result = $db->saveData(TBL_SUGAR_CONNECTION, "sugar_guid = uuid(), user_id = '$token', sugar_request_id = '$guid', age = '$age', sug_con_gender = '$gender', sugar_weight = '$weight', sugar_height = '$height', sugar_business = '$business', sugar_ethnicity = '$ethnicity', sugar_smoker = '$smoker', sugar_alcohol = '$alcohol', sugar_complexion = '$complexion', sug_means_communication = '$communication', sugar_communication = '$email_address', sugar_location = '$location', fileUpload = '$target_file', sugar_note = '$note', sugar_service_charge = '$service_charge', sugar_invoice = '$invoice'");
+                if ($result) {
+                    $success = "Data processing, proceed to pay service charges to complete transaction.";
+                }else {
+                    $error = "Something went wrong";
+                }
+            }else {
+                $error = "Something went wrong";
+            }
+        }else {
+            $error = "File not uploaded! Something went wrong";
+        }
+    }
+
+    echo json_encode(['error' => $error, 'success' => $success]);
+}
+
+//change password
+if ($pg == 211) {
+    $error = '';
+    $success = '';
+    $current_password = $db->escape($_POST['current_password']);
+    $password = $db->escape($_POST['new_password']);
+    $cPassword = $db->escape($_POST['c_new_password']);
+    $token = $db->escape($_POST['token']);
+
+    if (empty($password)) {
+        $error = "Password can not be empty!";
+    }
+
+    if (empty($current_password)) {
+        $error = "Current password can not be empty!";
+    }
+
+    if (empty($cPassword)) {
+        $error = "Confirm password can not be empty!";
+    }
+
+    if ($cPassword != $password) {
+        $error = "Confirm password not match!";
+    }
+
+    // if (DataBase::strengthPassword($password) == false) {
+    //     $error = 'Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.';
+    // }
+
+    if (empty($error)) {
+
+        if (Ajax::checkPassword($token, $current_password) == true) {
+            
+            $hashPassword = password_hash($password, PASSWORD_DEFAULT);
+            $insert = $db->update(TBL_USERS, "password = '$hashPassword'", "user_guid = '$token'");
+
+            if($insert){
+                $success = "Password updated successfully...";
+            }else{
+                $error = "Something went wrong! The system can't proceess your request.";
+            }
+
+        }else {
+            $error = "Current password not valid!";
+        }
+    }
+
+    echo json_encode([
+        'error' => $error,
+        'success' => $success
+    ]);
+}
+
+//edit profile
+if ($pg == 212) {
+    $error = '';
+    $success = '';
+    $full_name = $db->escape($_POST['full_name']);
+    $username = $db->escape($_POST['username']);
+    $email = $db->escape($_POST['email']);
+    $token = $db->escape($_POST['token']);
+    $gender = $db->escape($_POST['gender']);
+    $phone_number = $db->escape($_POST['phone_number']);
+    $address = $db->escape($_POST['address']);
+
+    if (empty($full_name)) {
+        $error = "Full name can not be empty!";
+    }
+
+    if (empty($username)) {
+        $error = "Username can not be empty!";
+    }
+
+    if (empty($email)) {
+        $error = "Email can not be empty!";
+    }
+
+    if (empty($gender)) {
+        $error = "Gender can not be empty!";
+    }
+
+    // if ($phone_number) {
+    //     $error = "Phone number can not be empty!";
+    // }
+
+    // if ($address) {
+    //     $error = "Address can not be empty!";
+    // }
+
+    if (empty($error)) {
+            
+        $insert = $db->update(TBL_USERS, "name = '$full_name', username = '$username', email = '$email', gender = '$gender', phone_number = '$phone_number', address = '$address'", "user_guid = '$token'");
+
+        if($insert){
+            $success = "Profile  updated successfully...";
+        }else{
+            $error = "Something went wrong! The system can't proceess your request.";
+        }
+    }
+
+    echo json_encode([
+        'error' => $error,
+        'success' => $success
+    ]);
 }
 
 //Video to GIF

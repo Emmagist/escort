@@ -20,6 +20,9 @@ RewriteRule ^([^\.]+)$ $1.php [NC,L]
 # Error_display
 # php_flag display_startup_errors off
 # php_flag display_errors on
+# ini_set('display_errors', 1);
+# ini_set('display_startup_errors', 1);
+# error_reporting(E_ALL);
 
 # Error 
 # ErrorDocument 404 /404.php

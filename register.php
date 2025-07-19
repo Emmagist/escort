@@ -1,4 +1,5 @@
 <?php
+  require_once "controllers/process.php";
   require "inc/head.php";
 
 ?>
