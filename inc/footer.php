@@ -74,6 +74,28 @@
       })
     }
 
+
+    //Wallet earns
+    $(document).ready(function() {
+        $.ajax({
+            url: 'controllers/ajaxGet.php?ern=200',
+            method: 'GET',
+            dataType: 'json',
+            data: '200',
+            contentType: false,
+            processData: false,
+            beforeSend: () => {
+                $('#wallet_earn').html('Loading contents...');
+            },
+            success: (param) => {
+                if (param) {
+                    $('#wallet_earn').html(param);
+                }
+            }
+        })
+
+    })
+
     function SquadPaySUb() {
       // e.preventDefault();
       const arial_token = document.getElementById("arial_token").value;

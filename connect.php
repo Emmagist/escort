@@ -23,11 +23,11 @@
       <!--  Header End -->
       <div class="container-fluid">
         <div class="row mb-5">
-          <div class="col-md-3">
-            <input type="search" name="search" id="search__data" class="form-control" placeholder="Search by state, location or username">
-            <ul class="rounded p-2" style="box-shadow: 2px 2px gray; display:none;" id="search_result">
-              <li class="list-items list-unstyle mb-2"><a href="" class="text-bold" style="font-weight: 600; color:#000">Lagos</a></li>
-            </ul>
+          <div class="position-relative col-md-9">
+            <input type="search" name="search" id="search__data" class="form-control ps-5" placeholder="Search by Age, State or Price">
+            <i class="fa fa-search text-black" style="position: absolute;top: 50%;left: 15px;transform: translateY(-50%);font-size: 18px;color: #888;pointer-events: none; padding-left:10px;"></i>
+            
+            <ul class="list-group position-absolute w-100 z-3 bg-white" id="search_result" style="display:none; max-height: 250px; overflow-y: auto;"></ul>
           </div>
         </div>
         <div class="row sugar__row">
@@ -81,9 +81,9 @@
    //upload escort profile
    $('#search__data').keyup(function () {
       const formData = $(this).val();
-      const slug = '<?=$slug?>';
+      const slug = '<?=$_SESSION['gender']?>';
       $.ajax({
-          url: 'controllers/fetchAjax.php?pg=206&esc_pg='+slug+'&data='+formData,
+          url: 'controllers/fetchAjax.php?pg=213&esc_pg='+slug+'&data='+formData,
           method: 'POST',
           dataType: 'json',
           data: {formData,slug},

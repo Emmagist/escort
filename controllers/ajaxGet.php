@@ -3,7 +3,6 @@
     require_once "ajaxRequest.php";
 
   if ($_GET['nav']) {
-    $token = $_GET['nav'];
     $outPut = '';
 
     if (Ajax::getSideBarLists()) {
@@ -63,7 +62,7 @@
             <div class="card-body pt-3 p-4">
               <h6 class="fw-semibold fs-4">'.$key['username'].'</h6>
               <div class="d-flex align-items-center justify-content-between">
-                <h6 class="fw-semibold fs-4 mb-0">$'.$key['prices'].'/<span>'.$key['period_prices'].'</span></h6>
+                <h6 class="fw-semibold fs-4 mb-0">&#8358;'.$key['prices'].'/<span>'.$key['period_prices'].'</span></h6>
                 <ul class="list-unstyled d-flex align-items-center mb-0">
                   <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
                   <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
@@ -76,7 +75,7 @@
           </div>
         </div>';
       }
-    }
+    } 
 
     echo json_encode($outPut);
   }
@@ -112,7 +111,7 @@
             <label><strong>Gender: </strong>'.ucwords($key['gender']).'</label>
           </div>
           <div class="col-md-4 mb-5">
-            <label><strong>Price/'.ucwords($key['period_prices']).': </strong>'.ucwords($key['prices']).'</label>
+            <label><strong>Price/'.ucwords($key['period_prices']).': </strong>&#8358;'.ucwords($key['prices']).'</label>
           </div>
           <div class="col-md-3 mb-5">
             <label><strong>Weight:</strong> '.$key['weight'].'kg</label>
@@ -361,6 +360,7 @@
     if (Ajax::getSingleSexVideos($slug)) {
       foreach (Ajax::getSingleSexVideos($slug) as $key) {
         if ($key['porn_video']) {
+          $imgSrc = str_replace('../','',$key['img']);
           $videoSrc = str_replace('../','',$key['porn_video']);
           $title = ucfirst($key['title']);
           $videoID = $key['user_id'];
@@ -372,7 +372,7 @@
                   <video 
                       class="video-player" 
                       src="'.$videoSrc.'" 
-                      poster="poster.jpg" 
+                      poster="'.$imgSrc.'" 
                       controls 
                       preload="none">
                   </video>
@@ -483,7 +483,7 @@
 
     if (Ajax::getSingleSubscriptionPlans($id)) {
       foreach (Ajax::getSingleSubscriptionPlans($id) as $key) {
-        $outPut .= '<input type="hidden" class="form-control mb-3" name="price" id="plan_price" value="'.$key['price'].'">';
+        $outPut .= '<input type="hidden" class="form-control mb-3" name="price" id="plan_price" value="&#8358;'.$key['price'].'">';
       }
       
     }
@@ -584,7 +584,7 @@
             <label><strong>Business Type:</strong> '.$key['business'].'</label>
           </div>
            <div class="col-md-3 mb-5">
-            <label><strong>Price offering:</strong> '.$key['price'].'</label>
+            <label><strong>Price offering:</strong> &#8358;'.$key['price'].'</label>
           </div>
           <div class="col-md-3 mb-5">
             <label><strong>Weight:</strong> '.$key['weight'].'</label>
@@ -713,7 +713,7 @@
             </div>
             <div class="col-md-6">
             <label for="amount">Amount</label>
-            <input type="text" class="form-control mb-3" name="amount" id="amount" value="'.$key['amount'].'" readonly>
+            <input type="text" class="form-control mb-3" name="amount" id="amount" value="&#8358;'.$key['amount'].'" readonly>
             </div>
             <div class="col-md-6">
             <label for="contact_number">Contact Number</label>
@@ -769,7 +769,7 @@
             </div>
             <div class="col-md-6">
             <label for="amount">Amount</label>
-            <input type="text" class="form-control mb-3" name="amount" id="amount" value="'.$key['amount'].'" disabled>
+            <input type="text" class="form-control mb-3" name="amount" id="amount" value="&#8358;'.$key['amount'].'" disabled>
             </div>
             <div class="col-md-6">
             <label for="contact_number">Contact Number</label>
@@ -866,6 +866,41 @@
           <div class="col-md-6"><button type="submit" class="btn btn-success p-3" id="post_button">Edit Profile</button></div>
         ';
       }
+    }
+
+    echo json_encode($outPut);
+    
+  }
+
+  //Earns Balance
+  if (isset($_GET['ern'])) {
+    $outPut = '';
+    $balance = Ajax::getWalletByToken($_SESSION['token']);
+
+    if ($balance) {
+      $outPut .= '
+        <h4 class="fw-semibold mb-3">&#8358;'.number_format($balance) .'</h4>
+        <div class="d-flex align-items-center pb-1">
+          <span
+            class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+            <i class="ti ti-arrow-up-right text-success"></i>
+          </span>
+          <!-- <p class="text-dark me-1 fs-3 mb-0">+9%</p>
+          <p class="fs-3 mb-0">last year</p> -->
+        </div>
+      ';
+    }else{
+      $outPut .= '
+        <h4 class="fw-semibold mb-3">&#8358;0</h4>
+        <div class="d-flex align-items-center pb-1">
+          <span
+            class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+            <i class="ti ti-arrow-down-right text-danger"></i>
+          </span>
+          <!-- <p class="text-dark me-1 fs-3 mb-0">+9%</p>
+          <p class="fs-3 mb-0">last year</p> -->
+        </div>
+      ';
     }
 
     echo json_encode($outPut);

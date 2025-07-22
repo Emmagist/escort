@@ -19,20 +19,17 @@ class Ajax
     //     return $profit;
     // }
 
-    public static function getUserByEmail($email)
-    {
+    public static function getUserByEmail($email){
         global $db;
         return $db->selectData(TBL_USERS, "*", "email = '$email'");
     }
 
-    public static function getSideBarLists()
-    {
+    public static function getSideBarLists(){
         global $db;
         return $db->selectData(TBL_CATEGORY, "*");
     }
 
-    public static function getAllEscortsBySlug($slug)
-    {
+    public static function getAllEscortsBySlug($slug){
         global $db;
         $rows = [];
         $result = $db->query("SELECT * FROM " . TBL_ESCORTS . "
@@ -48,8 +45,7 @@ class Ajax
         }
     }
 
-    public static function getEscortById($token)
-    {
+    public static function getEscortById($token){
         global $db;
 
         $rows = [];
@@ -68,8 +64,7 @@ class Ajax
         }
     }
 
-    public static function getSugarById($token)
-    {
+    public static function getSugarById($token){
         global $db;
 
         $rows = [];
@@ -86,8 +81,7 @@ class Ajax
         }
     }
 
-    public static function getRequestById($token)
-    {
+    public static function getRequestById($token){
         global $db;
 
         $rows = [];
@@ -106,8 +100,7 @@ class Ajax
         }
     }
 
-    public static function getAllEscortRequest($token)
-    {
+    public static function getAllEscortRequest($token){
         global $db;
 
         $rows = [];
@@ -126,33 +119,28 @@ class Ajax
         }
     }
 
-    public static function getAllSexVideos()
-    {
+    public static function getAllSexVideos(){
         global $db;
         return $db->selectData(TBL_PORN_VIDEOS, "*");
     }
 
-    public static function getSingleSexVideos($slug)
-    {
+    public static function getSingleSexVideos($slug){
         global $db;
         return $db->selectData(TBL_PORN_VIDEOS, "*", "entity_guid = '$slug'");
     }
 
-    public static function getRelatedSexVideos($slug, $cat)
-    {
+    public static function getRelatedSexVideos($slug, $cat){
         global $db;
         return $db->selectLimit(TBL_PORN_VIDEOS, "*", "sex_cat_id = '$cat' OR user_id = '$slug'", "title", 30);
 
     }
 
-    public static function getSexVideosCategory()
-    {
+    public static function getSexVideosCategory(){
         global $db;
         return $db->selectData(TBL_SEX_VIDEO_CATEGORY, "*");
     }
 
-    public static function getSingleSexVideosCategory($slug)
-    {
+    public static function getSingleSexVideosCategory($slug){
         global $db;
         return $db->selectData(TBL_SEX_VIDEO_CATEGORY, "*", "slugs = '$slug'");
     }
@@ -176,20 +164,17 @@ class Ajax
         
     }
 
-    public static function getSubscriptionPlans()
-    {
+    public static function getSubscriptionPlans(){
         global $db;
         return $db->selectData(TBL_SUBSCRIPTION_PLAN, "*");
     }
 
-    public static function getSingleSubscriptionPlans($id)
-    {
+    public static function getSingleSubscriptionPlans($id){
         global $db;
         return $db->selectData(TBL_SUBSCRIPTION_PLAN, "*", "plan_guid = '$id'");
     }
 
-    public static function getAllSugarConnectBySlug($slug, $gender)
-    {
+    public static function getAllSugarConnectBySlug($slug, $gender){
         global $db;
         // $genders = $gender == 'female' ? 'male' : 'female'; return $genders;exit;
         $rows = [];
@@ -206,8 +191,7 @@ class Ajax
         }
     }
 
-    public static function getAllSugarConnect($slug)
-    {
+    public static function getAllSugarConnect($slug){
         global $db;
         $rows = [];
         $result = $db->query("SELECT * FROM " . TBL_SUGAR_CONNECT . "
@@ -261,8 +245,7 @@ class Ajax
         }
     }
 
-    public static function checkPassword($token, $password)
-    {
+    public static function checkPassword($token, $password){
         global $db;
 
         $user = $db->singleData(TBL_USERS, "password", "user_guid = '$token'");
@@ -280,6 +263,64 @@ class Ajax
         return $db->selectData(TBL_USERS, "*", "user_guid = '$token'");
     }
 
+    public static function getWalletByToken($token){
+        global $db;
+
+        $result = $db->singleData(TBL_WALLET, "credit", "user_id = '$token'");
+
+        if ($result) {
+            $balance = $result['credit'];
+            return $balance;
+        }else{
+            return false;
+        }
+    }
+
+    public function creditEscortOnTaskDone($order_status, $order_csrf, $token){
+        global $db;
+
+        if ($token) {
+            $result = $db->query("SELECT * FROM " . TBL_ORDERS . "
+                INNER JOIN " . TBL_PAYMENTS_LOG . "
+                ON " . TBL_ORDERS . ".payments_log_id = " . TBL_PAYMENTS_LOG . ".payment_entity 
+                WHERE " . TBL_ORDERS . ".order_entity = '$order_csrf'
+            ");
+
+            if (!empty($result)) {
+                while ($row = $result->fetch_assoc()) {
+                    $amount = $row['amount'];
+                    $current_balance = $this->getWalletByToken($token);
+                    $wallet_balance = $current_balance + $amount;
+
+                    if ($this->getWalletByToken($token) != false) {
+                        $wallet = $db->update(TBL_WALLET, "credit = '$wallet_balance'", "user_id = '$token'");
+
+                        $request = $db->update(TBL_ORDERS, "order_status = '$order_status', payment_status = 'pending'", "order_entity = '$order_csrf'");
+
+                        if ($wallet && $request) {
+                            return true;
+                        }else{
+                            return false;
+                        }
+
+                    }else {
+                        $wallet = $db->saveData(TBL_WALLET, "user_id = '$token', entity_uuid = uuid(), credit = '$amount'");
+
+                        $request = $db->update(TBL_ORDERS, "order_status = '$order_status', payment_status = 'pending'", "order_entity = '$order_csrf'");
+
+                        if ($wallet && $request) {
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }
+                }
+            }
+        }else {
+            return false;
+        }
+    }
+
 
     // public static function checkUserIfVerified($email)
     // {
@@ -291,30 +332,6 @@ class Ajax
     //     } else {
     //         return false;
     //     }
-    // }
-
-    // public static function findUserByToken($token)
-    // {
-    //     global $db;
-    //     return $db->selectData(TBL_SYSTEM_USER, "*", "user_guid = '$token'");
-    // }
-
-    // public static function getUsername($username)
-    // {
-    //     global $db;
-    //     return $db->selectData(TBL_SYSTEM_USER, "*", "username = '$username'");
-    // }
-
-    // public static function getAdminUsername($username)
-    // {
-    //     global $db;
-    //     return $db->selectData(TBL_ADMIN, "*", "username = '$username'");
-    // }
-
-    // public static function getPassword($password)
-    // {
-    //     global $db;
-    //     return $db->selectData(TBL_SYSTEM_USER, "*", "password = '$password'");
     // }
 
     // public static function verifySignupCode($verify)

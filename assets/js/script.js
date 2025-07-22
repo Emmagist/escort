@@ -51,39 +51,27 @@ $('#registeration_form').submit(function () {
     return false;
 });
 
-//login
-$('#login_form').submit(function (event) {
-    event.preventDefault();
-    const formData = new FormData(this);
+//earns
+$(document).ready(function() {alert('hey')
+    // event.preventDefault(); 
     $.ajax({
-        url: 'controllers/fetchAjax.php?pg=201',
-        method: 'POST',
+        url: 'controllers/ajaxGet.php?ern=200',
+        method: 'GET',
         dataType: 'json',
-        data: formData,
+        data: '200',
         contentType: false,
         processData: false,
         beforeSend: () => {
-            $('.login_button').html('Signing In...');
+            $('#wallet_earn').html('Loading contents...');
         },
-        success: (param) => { //alert(param)
-            if (param.success) {
-                $('#reg_success').fadeIn()
-                $('#reg_success').text(param.success);
-                setInterval(() => {
-                    $('#reg_success').fadeOut();
-                    location.href = '/';
-                }, 7000);
-            }else if(param.error){
-                $('#reg_danger').fadeIn()
-                $('#reg_danger').text(param.error);
-                setInterval(() => {
-                    $('#reg_danger').fadeOut();
-                }, 5000);
+        success: (param) => {
+            if (param) {
+                $('#wallet_earn').html(param);
             }
         }
     })
-    return false;
-});
+
+})
 
 //get escort
 // $(window).load(function(event) {

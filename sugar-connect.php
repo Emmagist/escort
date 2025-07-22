@@ -26,13 +26,13 @@
         <p class="">We will be charging you
         <?php
           if ($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 's_mummy') {
-            echo '<strong>#50,000</strong>';
+            echo '<strong>&#8358;50,000</strong>';
           }elseif ($_SESSION['gender'] == 'female' && $_SESSION['connect'] == 'none') {
-            echo '<strong>#35,000</strong>';
+            echo '<strong>&#8358;35,000</strong>';
           }elseif ($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 's_daddy') {
-            echo '<strong>#50,000</strong>';
+            echo '<strong>&#8358;50,000</strong>';
           }elseif ($_SESSION['gender'] == 'male' && $_SESSION['connect'] == 'none') {
-            echo '<strong>#35,000</strong>';
+            echo '<strong>&#8358;35,000</strong>';
           }
           ?>
           for connection fee.
@@ -125,7 +125,7 @@
                   <input type="text" class="form-control mb-3" name="whatsapp_number" id="whatsapp_number" placeholder="+23488888888888">
                 </div>
                 <div class="col-md-6" style="display: none;" id="div-input3">
-                  <label for="email_address">Emmail Address</label>
+                  <label for="email_address">Email Address</label>
                   <input type="email" class="form-control mb-3" name="email_address" id="email_address" placeholder="example@gmail.com">
                 </div>
                 <div class="col-md-6">
