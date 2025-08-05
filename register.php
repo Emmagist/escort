@@ -34,10 +34,18 @@
                     <label for="exampleInputPassword1" class="form-label">Password</label>
                     <input type="password" class="form-control" name="password" id="exampleInputPassword1">
                   </div>
+                  <div class="mb-4">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select name="gender" id="gender" class="form-control">
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                  </div>
                   <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2 register_button">Sign Up</button>
                   <div class="d-flex align-items-center justify-content-center">
                     <p class="fs-4 mb-0 fw-bold">Already have an Account?</p>
-                    <a class="text-primary fw-bold ms-2" href="login.php">Sign In</a>
+                    <a class="text-primary fw-bold ms-2" href="login">Sign In</a>
                   </div>
                 </form>
               </div>

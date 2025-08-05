@@ -210,12 +210,30 @@ class Ajax
     public static function getMyTasks($token){
         global $db;
         $rows = [];
-        $result = $db->query("SELECT * FROM " . TBL_PAYMENTS_LOG . "
-            INNER JOIN " . TBL_ORDERS . "
-            ON " . TBL_PAYMENTS_LOG . ".payment_entity = " . TBL_ORDERS . ".payments_log_id
+        $result = $db->query("SELECT * FROM " . TBL_ORDERS . "
+            INNER JOIN " . TBL_PAYMENTS_LOG . "
+            ON " . TBL_ORDERS . ".payments_log_id = " . TBL_PAYMENTS_LOG . ".payment_entity
             INNER JOIN " . TBL_USERS . " 
             ON " . TBL_PAYMENTS_LOG . ".escortee_id = " . TBL_USERS . ".user_guid 
-            WHERE " . TBL_PAYMENTS_LOG . ".escorte_id = '$token' AND conditions = 'successful'
+            WHERE " . TBL_ORDERS . ".user_uuid = '$token' ORDER BY created_at DESC
+        ");
+        if (!empty($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            return $rows;
+        }
+    }
+
+    public static function myOrders($token){
+        global $db;
+        $rows = [];
+        $result = $db->query("SELECT * FROM " . TBL_ORDERS . "
+            INNER JOIN " . TBL_PAYMENTS_LOG . "
+            ON " . TBL_ORDERS . ".payments_log_id = " . TBL_PAYMENTS_LOG . ".payment_entity
+            INNER JOIN " . TBL_USERS . " 
+            ON " . TBL_PAYMENTS_LOG . ".escorte_id = " . TBL_USERS . ".user_guid 
+            WHERE " . TBL_ORDERS . ".user_uuid = '$token' ORDER BY created_at DESC
         ");
         if (!empty($result)) {
             while ($row = $result->fetch_assoc()) {
@@ -320,6 +338,48 @@ class Ajax
             return false;
         }
     }
+
+    public static function escortTransaction($token){
+        global $db;
+
+        $rows = [];
+        $result = $db->query("SELECT * FROM " . TBL_ORDERS . "
+            INNER JOIN " . TBL_PAYMENTS_LOG . "
+            ON " . TBL_ORDERS . ".payments_log_id = " . TBL_PAYMENTS_LOG . ".payment_entity
+            INNER JOIN " . TBL_CATEGORY . "
+            ON " . TBL_PAYMENTS_LOG . ".category_id = " . TBL_CATEGORY . ".token_guid
+            INNER JOIN " . TBL_USERS . " 
+            ON " . TBL_PAYMENTS_LOG . ".escortee_id = " . TBL_USERS . ".user_guid 
+            WHERE " . TBL_ORDERS . ".user_uuid = '$token' AND order_status = 'done' ORDER BY created_at DESC LIMIT 5
+        ");
+        if (!empty($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            return $rows;
+        }
+    }
+
+    public static function escortPaymentsReceivedSuccessfully($token){
+        global $db;
+
+        $rows = [];
+        $result = $db->query("SELECT * FROM " . TBL_ORDERS . "
+            INNER JOIN " . TBL_PAYMENTS_LOG . "
+            ON " . TBL_ORDERS . ".payments_log_id = " . TBL_PAYMENTS_LOG . ".payment_entity
+            INNER JOIN " . TBL_USERS . " 
+            ON " . TBL_PAYMENTS_LOG . ".escortee_id = " . TBL_USERS . ".user_guid 
+            WHERE " . TBL_ORDERS . ".user_uuid = '$token' AND order_status = 'done' AND payment_status = 'paid' ORDER BY created_at DESC LIMIT 5
+        ");
+        if (!empty($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            return $rows;
+        }
+    }
+
+
 
 
     // public static function checkUserIfVerified($email)

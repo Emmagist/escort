@@ -105,8 +105,9 @@ class Users
 
                          foreach ($success_payment as $key) {
                               $id = $key['payment_entity'];
+                              $escorte_id = $key['escorte_id'];
 
-                              $order = $db->saveData(TBL_ORDERS, "order_entity = uuid(), payments_log_id = '$id', order_status = 'waiting'");
+                              $order = $db->saveData(TBL_ORDERS, "user_uuid = '$escorte_id', order_entity = uuid(), payments_log_id = '$id', order_status = 'waiting'");
 
                               if ($order) {
                                    $result = $db->query("SELECT * FROM " . TBL_PAYMENTS_LOG . "

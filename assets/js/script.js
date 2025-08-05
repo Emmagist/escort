@@ -52,26 +52,26 @@ $('#registeration_form').submit(function () {
 });
 
 //earns
-$(document).ready(function() {alert('hey')
-    // event.preventDefault(); 
-    $.ajax({
-        url: 'controllers/ajaxGet.php?ern=200',
-        method: 'GET',
-        dataType: 'json',
-        data: '200',
-        contentType: false,
-        processData: false,
-        beforeSend: () => {
-            $('#wallet_earn').html('Loading contents...');
-        },
-        success: (param) => {
-            if (param) {
-                $('#wallet_earn').html(param);
-            }
-        }
-    })
+// $(document).ready(function() {alert('hey')
+//     // event.preventDefault(); 
+//     $.ajax({
+//         url: 'controllers/ajaxGet.php?ern=200',
+//         method: 'GET',
+//         dataType: 'json',
+//         data: '200',
+//         contentType: false,
+//         processData: false,
+//         beforeSend: () => {
+//             $('#wallet_earn').html('Loading contents...');
+//         },
+//         success: (param) => {
+//             if (param) {
+//                 $('#wallet_earn').html(param);
+//             }
+//         }
+//     })
 
-})
+// })
 
 //get escort
 // $(window).load(function(event) {

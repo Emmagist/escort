@@ -1,4 +1,7 @@
 <?php
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
 
     require_once "ajaxRequest.php";
 
@@ -638,8 +641,8 @@
 
   //Show task table
   if (isset($_GET['task'])) {
-    $token = $_GET['task'];
     $outPut = '';
+    $token = $_SESSION['token'];
 
     if (Ajax::getMyTasks($token)) {
       $count = 1;
@@ -901,6 +904,145 @@
           <p class="fs-3 mb-0">last year</p> -->
         </div>
       ';
+    }
+
+    echo json_encode($outPut);
+    
+  }
+
+  //Escort Transaction
+  if (isset($_GET['trn'])) {
+    $outPut = '';
+    $token = $_SESSION['token'];
+    $transactions = Ajax::escortTransaction($token);
+
+    if ($transactions) {
+      foreach($transactions as $transaction){
+        $outPut .= '
+          <tr>
+            <td class="border-bottom-0"><h6 class="fw-semibold mb-0">1</h6></td>
+            <td class="border-bottom-0">
+                <h6 class="fw-semibold mb-1">'.ucfirst($transaction['category']).'</h6>
+                <!--<span class="fw-normal">Web Designer</span> --->                       
+            </td>
+            <td class="border-bottom-0">
+              <p class="mb-0 fw-normal">'.ucfirst($transaction['name']).'</p>
+            </td>
+            <td class="border-bottom-0">
+              <div class="d-flex align-items-center gap-2">';
+              if($transaction['payment_status'] == 'pending'){
+                $outPut .= '<span class="badge bg-warning rounded-3 fw-semibold">'.ucfirst($transaction['payment_status']).'</span>';
+              }elseif ($transaction['payment_status'] == 'paid') {
+                $outPut .= '<span class="badge bg-success rounded-3 fw-semibold">'.ucfirst($transaction['payment_status']).'</span>';
+              }elseif ($transaction['payment_status'] == 'reversed') {
+                $outPut .= '<span class="badge bg-danger rounded-3 fw-semibold">'.ucfirst($transaction['payment_status']).'</span>';
+              }
+              $outPut .= '</div>
+            </td>
+            <td class="border-bottom-0">
+              <h6 class="fw-semibold mb-0 fs-4">&#8358;'.number_format($transaction['amount']).'</h6>
+            </td>
+            <td class="border-bottom-0">
+              <p class="mb-0 fw-normal">'.Database::dateFormat($transaction['updated_at']).'</p>
+            </td>
+          </tr>
+        ';
+      }
+    }else{
+      $outPut .= '
+        <td class="border-bottom-0">
+          <h6 class="fw-semibold mb-0 fs-4 text-danger">No Transaction Found!</h6>
+        </td>
+      ';
+    }
+
+    echo json_encode($outPut);
+    
+  }
+
+  //Escort Transaction
+  if (isset($_GET['prv'])) {
+    $outPut = '';
+    $token = $_SESSION['token'];
+    $transactions = Ajax::escortPaymentsReceivedSuccessfully($token);
+
+    if ($transactions) {
+      foreach($transactions as $transaction){
+        $outPut .= '
+          <li class="timeline-item d-flex position-relative overflow-hidden">
+            <div class="timeline-time text-dark flex-shrink-0 text-end">'.Database::time($transaction['name']).'</div>
+            <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+              <span class="timeline-badge border-2 border border-success flex-shrink-0 my-8"></span>
+              <span class="timeline-badge-border d-block flex-shrink-0"></span>
+            </div>
+            <div class="timeline-desc fs-3 text-dark mt-n1">Payment received from '.ucfirst($transaction['name']).' of &#8358;'.number_format($transaction['amount']).'</div>
+          </li>
+        ';
+      }
+    }else{
+      $outPut .= '
+        <li class="timeline-item d-flex position-relative overflow-hidden">
+          
+          <div class="timeline-desc fs-3 text-danger mt-n1 fw-semibold">No Payment Received Yet!</div>
+        </li>
+      ';
+    }
+
+    echo json_encode($outPut);
+    
+  }
+
+  //Show task table
+  if (isset($_GET['order'])) {
+    $outPut = '';
+    $token = $_SESSION['token'];
+
+    $keys = Ajax::myOrders($token); var_dump($keys);exit;
+
+    if ($keys) {
+      $count = 1;
+      foreach ($keys as $key) {
+        $outPut = '
+          <tr>
+            <td class="border-bottom-0"><h6 class="fw-semibold mb-0">'.$count++.'</h6></td>
+            <td class="border-bottom-0">
+                <h6 class="fw-semibold mb-1">'.$key['name'].'</h6>
+            </td>
+            <td class="border-bottom-0">
+              <p class="mb-0 fw-semibold fs-4">'.$key['contact_number'].'</p>
+            </td>
+            <td class="border-bottom-0">
+              <p class="mb-0 fw-semibold fs-4">'.$key['location'].'</p>
+            </td>
+            <td class="border-bottom-0">
+              <h6 class="fw-semibold mb-0 fs-4">'.Database::dateFormat($key['escortee_date']).'</h6>
+            </td>
+            <td class="border-bottom-0">
+              <h6 class="fw-semibold mb-0 fs-4">'.Database::time($key['escortee_time']).'</h6>
+            </td>
+            <td class="border-bottom-0">
+              <h6 class="fw-semibold mb-0 fs-4 ';if($key['order_status']=='waiting'):
+                $outPut .= 'text-warning';
+                elseif($key['order_status']=='accept'):
+                  $outPut .= 'text-success';
+                elseif($key['order_status']=='decline'):
+                  $outPut .= 'text-muted';
+                elseif($key['order_status']=='done'):
+                  $outPut .= 'text-dark';
+                endif;$outPut .= '
+              ">'.$key['order_status'].'</h6>
+            </td>
+            <td class="border-bottom-0">
+              <a class="fw-bold mb-0 ti ti-eye task-view text-success" onclick="viewTask(`'.$key['payment_entity'].'`)" style="font-size:24px;"></a>
+              <a class="fw-bold mb-0 ti ti-pencil task-edit text-warning" onclick="editTask(`'.$key['payment_entity'].'`)" style="font-size:24px;"></a>
+            </td>
+          </tr> 
+        ';
+      }
+    }else {
+      $outPut = '<td class="border-bottom-0">
+        <h6 class="fw-semibold mb-0 fs-4 text-danger mt-3">No Data Found</h6>
+      </td>';
     }
 
     echo json_encode($outPut);

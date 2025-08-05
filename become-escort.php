@@ -27,14 +27,14 @@
                   <input type="text" class="form-control mb-3" name="address">
                 </div>
                 <input type="hidden" class="form-control mb-3" name="token" value="<?=$_SESSION['token']?>">
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="gender">Gender</label>
                   <select name="gender" id="gender" class="form-control mb-3">
                     <option value="">Select Gender</option>
                     <option value="female">Female</option>
                     <option value="male">Male</option>
                   </select>
-                </div>
+                </div> -->
                 <div class="form-group">
                     <label>NIN</label>
                     <input type="number" class="form-control mb-3" name="nin" placeholder="12345678912">

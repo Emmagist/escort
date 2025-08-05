@@ -31,11 +31,7 @@
                   <label for="title">Title</label>
                   <input type="text" class="form-control mb-3" name="title" id="title">
                 </div>
-                <input type="hidden" class="form-control mb-3" name="token" value="67543388$re386yf32198765430op876y$">
-                <div class="col-md-6">
-                  <label for="video_duration">Video Duration</label>
-                  <input type="time" class="form-control mb-3" name="video_duration" id="video_duration">
-                </div>
+                <input type="hidden" class="form-control mb-3" name="token" value="<?=$_SESSION['token']?>">
                 <div class="col-md-6">
                   <label for="hash_tag">Hash Tag</label>
                   <input type="text" class="form-control mb-3" name="hash_tag" id="hash_tag">

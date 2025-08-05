@@ -56,6 +56,32 @@ class Mailer{
         }
     }
 
+    public function sendEscortRequestMessage($email,$username){
+        global $mail, $db;
+        $subject = 'Request - Incoming Escort Request';
+        $body = '<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Escort Request</title>
+            </head>
+            <body>
+                <div class="email_wrap">
+                    <h5>Hi '.$username.',</h5>
+
+                    <p>You have a new escort request, kindly check your task dashboard to approve the request
+                    or click on this <a href="http://localhost/escort/my-tasks" style="text-decoration:none">link</a> to go to my task.</p>
+                </div> 
+               <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+            </body>
+            </html>';
+        // foreach ($result as $to) {
+            $this->mailerFunction($email,$body,$subject);
+
+    }
+
     public static function sendWithdrawCode($email,$username, $amount, $code, $token,$ref){
         global $mail, $db;
         $body = '<!DOCTYPE html>
@@ -116,32 +142,6 @@ class Mailer{
             } catch (Exception $e) {
                 return "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             }
-
-    }
-
-    public function sendEscortRequestMessage($email,$username){
-        global $mail, $db;
-        $subject = 'Request - Incoming Escort Request';
-        $body = '<!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Escort Request</title>
-            </head>
-            <body>
-                <div class="email_wrap">
-                    <h5>Hi '.$username.',</h5>
-
-                    <p>You have a new escort request, kindly check your task dashboard to approve the request
-                    or click on this <a href="http://localhost/escort/my-tasks" style="text-decoration:none">link</a> to go to my task.</p>
-                </div> 
-               <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-            </body>
-            </html>';
-        // foreach ($result as $to) {
-            $this->mailerFunction($email,$body,$subject);
 
     }
 

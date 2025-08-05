@@ -74,7 +74,6 @@
       })
     }
 
-
     //Wallet earns
     $(document).ready(function() {
         $.ajax({
@@ -94,7 +93,49 @@
             }
         })
 
-    })
+    });
+
+    //escort transactions
+    $(document).ready(function() {
+        $.ajax({
+            url: 'controllers/ajaxGet.php?trn=220',
+            method: 'GET',
+            dataType: 'json',
+            data: '220',
+            contentType: false,
+            processData: false,
+            beforeSend: () => {
+                $('#table-body').html('Loading Transactions...');
+            },
+            success: (param) => {
+                if (param) {
+                    $('#table-body').html(param);
+                }
+            }
+        })
+
+    });
+
+    //escort payment received
+    $(document).ready(function() {
+        $.ajax({
+            url: 'controllers/ajaxGet.php?prv=220',
+            method: 'GET',
+            dataType: 'json',
+            data: '220',
+            contentType: false,
+            processData: false,
+            beforeSend: () => {
+                $('#timeline').html('Loading Transactions...');
+            },
+            success: (param) => {
+                if (param) {
+                    $('#timeline').html(param);
+                }
+            }
+        })
+
+    });
 
     function SquadPaySUb() {
       // e.preventDefault();

@@ -44,7 +44,15 @@
                           <i class="ti ti-list-check fs-6"></i>
                           <p class="mb-0 fs-3">My Task</p>
                         </a>
+                        <a href="withdraw" class="d-flex align-items-center gap-2 dropdown-item">
+                          <i class="ti ti-credit-card fs-6"></i>
+                          <p class="mb-0 fs-3">Withdraw</p>
+                        </a>
                       <?php endif;?>
+                      <a href="my-order" class="d-flex align-items-center gap-2 dropdown-item">
+                          <i class="ti ti-list-check fs-6"></i>
+                          <p class="mb-0 fs-3">My Order</p>
+                        </a>
                       <a href="change-password" class="d-flex align-items-center gap-2 dropdown-item">
                         <i class="ti ti-lock fs-6"></i>
                         <p class="mb-0 fs-3">Change Password</p>

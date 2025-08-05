@@ -426,22 +426,11 @@ use Google\Service\Analytics\Column;
             return substr(str_shuffle($str_result), 0, 8); 
         }
 
-        public static function strengthPassword($password){
-            // Validate password strength
-            // $uppercase = preg_match('@[A-Z]@', $password);
-            // $lowercase = preg_match('@[a-z]@', $password);
-            // $number    = preg_match('@[0-9]@', $password);
-            // $specialChars = preg_match('@[^\w]@', $password);
-
-            // if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
-            //     return false;
-            // }else{
-            //     return true;
-            // }
-
-            if (!preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $password)) {
+        public static function strengthPassword($password) {
+            if (!preg_match('/^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)/', $password)) {
                 return false;
             }
+            return true;
         }
 
         public static function invoiceCode(){
@@ -559,5 +548,45 @@ use Google\Service\Analytics\Column;
             
             return $str; 
         }
+
+        public static function videoToGif($videoPath, $outputGif, $start = 0, $duration = 5, $scale = 320) {
+            $ffmpeg = "/usr/bin/ffmpeg";
+            $cmd = "$ffmpeg -ss $start -t $duration -i \"$videoPath\" -vf \"fps=10,scale=$scale:-1:flags=lanczos\" -gifflags -transdiff -y \"$outputGif\" 2>&1";
+            $output = shell_exec($cmd);
+
+            if (!file_exists($outputGif)) {
+                file_put_contents("ffmpeg_error_log.txt", "GIF FAILED:\n$cmd\n$output\n\n", FILE_APPEND);
+            }
+
+            return file_exists($outputGif);
+        }
+
+
+        public static function videoToImage($videoPath, $outputImage, $timestamp = '00:00:01') {
+            $ffmpeg = "/usr/bin/ffmpeg";
+            $cmd = "$ffmpeg -ss $timestamp -i \"$videoPath\" -frames:v 1 -q:v 2 \"$outputImage\" 2>&1";
+            $output = shell_exec($cmd);
+
+            if (!file_exists($outputImage)) {
+                file_put_contents("ffmpeg_error_log.txt", "IMAGE FAILED:\n$cmd\n$output\n\n", FILE_APPEND);
+            }
+
+            return file_exists($outputImage);
+        }
+
+
+
+        public static function getVideoDuration($filePath) {
+            $ffmpeg = "/usr/bin/ffmpeg";
+            $output = shell_exec("$ffmpeg -i \"$filePath\" 2>&1");
+
+            if (preg_match('/Duration: (\d{2}:\d{2}:\d{2})/', $output, $matches)) {
+                return $matches[1]; // HH:MM:SS
+            }
+
+            file_put_contents("ffmpeg_error_log.txt", "DURATION FAILED:\n$output\n\n", FILE_APPEND);
+            return null;
+        }
+
     }
     $db = new Database;

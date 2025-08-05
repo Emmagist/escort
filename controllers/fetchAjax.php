@@ -1,4 +1,5 @@
 <?php
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -22,6 +23,7 @@ if ($pg == 200) {
     $full_name = $db->escape($_POST['name']); //exit;
     $email = $db->escape($_POST['email']); //exit;
     $password = $db->escape($_POST['password']); //exit;
+    $gender = $db->escape($_POST['gender']);
 
     $hash_password = password_hash($password, PASSWORD_DEFAULT); //exit;
 
@@ -37,6 +39,10 @@ if ($pg == 200) {
         $errors = "Password is required!";
     }
 
+    if (empty($gender)) {
+        $errors = "Gender is required!";
+    }
+
     if ($db->validateEmail($email) == false) {
         $errors = "Invalid email address";
     }
@@ -45,11 +51,15 @@ if ($pg == 200) {
         $errors = "Email already exist!";
     }
 
+    if (Database::strengthPassword($password) == false) {
+        $error = "Password must be at least 8 characters, include capital letter, small letter, digit & special character.";;
+    }
+
     if (empty($errors)) {
         $user_guid = $db->entityGuid();
         $code = Database::registrationCode();
 
-        $result = $db->saveData(TBL_USERS, "user_guid = '$user_guid', role_id = '3', name = '$full_name', email = '$email', password = '$hash_password'"); // var_dump($result);exit;
+        $result = $db->saveData(TBL_USERS, "user_guid = '$user_guid', role_id = '3', name = '$full_name', email = '$email', password = '$hash_password', gender = '$gender'"); // var_dump($result);exit;
 
         if ($result) {
 
@@ -292,7 +302,6 @@ if ($pg == 204) {
     $error = '';
     $success = '';
     $title = $db->escape($_POST['title']);
-    $video_duration = $_POST['video_duration'];
     $hash_tag = $db->escape($_POST['hash_tag']);
     $token = $db->escape($_POST['token']);
     $content = $_POST['content'];
@@ -314,14 +323,10 @@ if ($pg == 204) {
     // File upload
     $target_dir = "../porn_video/";
     $target_gif = "../porn_gif/";
+    $target_img = "../porn_img/";
     $target_file  = $target_dir . basename($_FILES["fileUpload"]["name"]);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    // $check = getimagesize($_FILES["fileUpload"]["tmp_name"]);
-    // if ($check == false) {
-    //     $error =  "File is not an image";
-    //     $uploadOk = 0;
-    // }
 
     if (file_exists($target_file)) {
         $error = "Sorry, file already exists.";
@@ -341,33 +346,54 @@ if ($pg == 204) {
     if ($uploadOk == 1 && empty($error)) {
         $move_file = move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file);
         if ($move_file) {
-            // $gif= $apiInstance->videoConvertToGif($target_file, $target_file, '560', '170', );
-            // $target_gif_file  = $target_gif . basename($gif);
-            // $move_file = move_uploaded_file($gif, $target_gif_file);
-            if (empty($category) && ! empty($custom_cat)) {
-                $slug = Database::slug($custom_cat);
-                $cat_result = $db->saveData(TBL_SEX_VIDEO_CATEGORY, "identity_guid = uuid(), custom_category = '$custom_cat', user_id = '$token', slugs = '$slug'");
-                if ($cat_result && Ajax::getSingleSexVideosCategory($slug)) {
-                    foreach (Ajax::getSingleSexVideosCategory($slug) as $key) {
-                        $identity_guid = $key['identity_guid'];
-                        $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', sex_cat_id = '$identity_guid', entity_guid = uuid(), title = '$title', video_duration = '$video_duration', contents = '$content', porn_video = '$target_file'");
-                        // var_dump($re);
-                        if ($result) {
-                            $success = "Successfully uploaded...";
-                        } else {
-                            $error = "Something went wrong";
+            $filename = pathinfo($_FILES["fileUpload"]["name"], PATHINFO_FILENAME);
+            $img_path = $target_img . $filename . ".jpg";
+            $gif_path = $target_gif . $filename . ".gif";
+
+            $video_duration = Database::getVideoDuration($target_file);
+            $img = Database::videoToImage($target_file, $img_path); 
+            $gif = Database::videoToGif($target_file, $gif_path);
+
+            $version = shell_exec("ffmpeg -version");
+            echo "FFmpeg Version:<br>";
+            echo $version ? nl2br($version) : "Not available";
+            echo "<br><strong>Video Duration:</strong> $video_duration<br>";
+            echo "<strong>Image Created:</strong> " . ($img ? "Yes" : "No") . "<br>";
+            echo "<strong>GIF Created:</strong> " . ($gif ? "Yes" : "No") . "<br>";
+
+            if ($img && $gif) {
+
+                if (empty($category) && ! empty($custom_cat)) {
+                    $slug = Database::slug($custom_cat);
+                    $cat_result = $db->saveData(TBL_SEX_VIDEO_CATEGORY, "identity_guid = uuid(), custom_category = '$custom_cat', user_id = '$token', slugs = '$slug'");
+                    $keys = Ajax::getSingleSexVideosCategory($slug);
+                    if ($cat_result && $keys) {
+                        foreach ($keys as $key) {
+                            $identity_guid = $key['identity_guid'];
+                            $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', sex_cat_id = '$identity_guid', entity_guid = uuid(), title = '$title', video_duration = '$video_duration', contents = '$content', porn_video = '$target_file', img = '$img', gif = '$gif'");
+                            // var_dump($re);
+                            if ($result) {
+                                $success = "Successfully uploaded...";
+                            } else {
+                                $error = "Something went wrong";
+                            }
                         }
                     }
+                } else {
+                
+                    $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', sex_cat_id = '$category', entity_guid = uuid(), title = '$title', video_duration = '$video_duration', contents = '$content', porn_video = '$target_file', img = '$img', gif = '$gif'");
+                    // var_dump($re);
+                    if ($result) {
+                        $success = "Successfully uploaded...";
+                    } else {
+                        $error = "Something went wrong";
+                    }
                 }
+
             } else {
+                echo "Failed to create thumbnail";
             }
-            $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', sex_cat_id = '$category', entity_guid = uuid(), title = '$title', video_duration = '$video_duration', contents = '$content', porn_video = '$target_file'");
-            // var_dump($re);
-            if ($result) {
-                $success = "Successfully uploaded...";
-            } else {
-                $error = "Something went wrong";
-            }
+
         } else {
             $error = "File not uploaded! Something went wrong";
         }
@@ -569,14 +595,13 @@ if ($pg == 207) {
     echo json_encode('Done');
 }
 
-//upload escort profile
+//Register escort
 if ($pg == 208) {
     $error = '';
     $success = '';
     $username = $db->escape($_POST['username']);
     $address = $db->escape($_POST['address']);
     $token = $db->escape($_POST['token']);
-    $gender = $db->escape($_POST['gender']);
     $nin = $db->escape($_POST['nin']);
 
     if (empty($username)) {
@@ -591,17 +616,14 @@ if ($pg == 208) {
         $error = "Something went wrong!";
     }
 
-    if (empty($gender)) {
-        $error = "Gender is required!";
-    }
-
     if (empty($nin)) {
         $error = "NIN is required!";
     }
 
-    if (strlen($nin) > 11 || strlen($nin) < 11) {
-        $error = "NIN must be 11 digits";
+    if (!(strlen($nin) === 11 && ctype_digit($nin))) {
+        $error = "NIN must be exactly 11 digits";
     }
+
 
     // File upload
     $target_dir = "../nin_slip/";
@@ -637,7 +659,7 @@ if ($pg == 208) {
         $move_file = move_uploaded_file($_FILES["nin_slip"]["tmp_name"], $target_file);
         $move_file2 = move_uploaded_file($_FILES["passport"]["tmp_name"], $target_file2);
         if ($move_file && $move_file2) {
-            $result = $db->update(TBL_USERS, "role_id = '2', username = '$username', gender = $gender, nin_number = '$nin', nin_slip = '$target_file', recent_passport = '$target_file2', address = '$address', escort_approval = 'waiting'", "user_guid = '$token'");
+            $result = $db->update(TBL_USERS, "role_id = '2', username = '$username', nin_number = '$nin', nin_slip = '$target_file', recent_passport = '$target_file2', address = '$address', escort_approval = 'waiting'", "user_guid = '$token'");
             // var_dump($re);
             if ($result) {
                 $success = "Successfully uploaded...";
@@ -1001,6 +1023,53 @@ if ($pg == 2014) {
         }
     } else {
         $error =  "File not uploaded";
+    }
+
+    echo json_encode([
+        'error' => $error,
+        'success' => $success
+    ]);
+}
+
+//Withdraw Fund
+if ($pg == 215) {
+    $error = '';
+    $success = '';
+    $amount = $db->escape($_POST['amount']);
+    $bank_name = $db->escape($_POST['bank_name']);
+    $acc_number = $db->escape($_POST['acc_number']);
+    $token = $db->escape($_POST['token']);
+    $acc_name = $db->escape($_POST['acc_name']);
+
+    if (empty($amount)) {
+        $error = "Amount can not be empty!";
+    }
+
+    if (empty($bank_name)) {
+        $error = "Bank name can not be empty!";
+    }
+
+    if (empty($acc_number)) {
+        $error = "Account number can not be empty!";
+    }
+
+    if (empty($acc_name)) {
+        $error = "Account name can not be empty!";
+    }
+
+    if (empty($token)) {
+        $error = "Something went wrong. The system can't proceess your request!";
+    }
+
+    if (empty($error)) {
+
+        $insert = $db->saveData(TBL_WITHDRAWAL, "user_id = '$token', withdrawal_token = uuid(), amount = '$amount', bank_name = '$bank_name', acc_number = '$acc_number', acc_name = '$acc_name'");
+
+        if ($insert) {
+            $success = "Withdrawal Initiated successfully...";
+        } else {
+            $error = "Something went wrong! The system can't proceess your request.";
+        }
     }
 
     echo json_encode([

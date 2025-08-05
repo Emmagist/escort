@@ -85,8 +85,8 @@ define("TBL_CATEGORY",              "category");
 define("TBL_PAYMENTS_LOG",          "payments_log");
 define("TBL_ORDERS",                "orders");
 define("TBL_WALLET",                "wallets");
+define("TBL_WITHDRAWAL",                "withdrawals");
 
-define("TBL_WITHDRAWAL",            "withdrawal");
 define("TBL_WITHDRAWAL_CODE",       "withdrawal_code");
 define("TBL_TRANSACTION_LOG",       "transaction_logs");
 define("TBL_REGISTRATION_CODE",     "registration_code");
