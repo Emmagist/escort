@@ -566,10 +566,13 @@ if ($pg == 206) {
         if ($result) { //echo 'edd';exit;
             foreach ($result as $key) {
                 $token = $key['entity_guid'];
-                foreach (Ajax::getEscortById($token) as $value) {
-                    $outPut .= '
-                        <li class="list-group-item list-unstyle mb-2"><a href="escort-profile?esc=' . $key['entity_guid'] . '&sg=' . $key['category_id'] . '" class="fw-bold text-dark" style="font-weight: 600; color:#000">' . ucfirst($value['name']) . ' (' . ucfirst($key['user_name']) . ')</a></li>
-                    ';
+                $users = Ajax::getEscortById($token); //var_dump($users);exit;
+                if($users){
+                    foreach ($users as $value) {
+                        $outPut .= '
+                            <li class="list-group-item list-unstyle mb-2"><a href="escort-profile?esc=' . $key['entity_guid'] . '&sg=' . $key['category_id'] . '" class="fw-bold text-dark" style="font-weight: 600; color:#000">' . ucfirst($value['name']) . ' (' . ucfirst($key['user_name']) . ')</a></li>
+                        ';
+                    }
                 }
             }
         } else {

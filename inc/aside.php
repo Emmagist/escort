@@ -96,7 +96,7 @@
             <li class="sidebar-item">
               <a class="sidebar-link" href="sex-videos" aria-expanded="false">
                 <span>
-                  <i class="ti ti-mood-happy"></i>
+                  <i class="ti ti-video"></i>
                 </span>
                 <span class="hide-menu">Sex Videos</span>
               </a>

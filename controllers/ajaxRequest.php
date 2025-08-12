@@ -225,23 +225,23 @@ class Ajax
         }
     }
 
-    public static function myOrders($token){
-        global $db;
-        $rows = [];
-        $result = $db->query("SELECT * FROM " . TBL_ORDERS . "
-            INNER JOIN " . TBL_PAYMENTS_LOG . "
-            ON " . TBL_ORDERS . ".payments_log_id = " . TBL_PAYMENTS_LOG . ".payment_entity
-            INNER JOIN " . TBL_USERS . " 
-            ON " . TBL_PAYMENTS_LOG . ".escorte_id = " . TBL_USERS . ".user_guid 
-            WHERE " . TBL_ORDERS . ".user_uuid = '$token' ORDER BY created_at DESC
-        ");
-        if (!empty($result)) {
-            while ($row = $result->fetch_assoc()) {
-                $rows[] = $row;
-            }
-            return $rows;
-        }
-    }
+    // public static function myOrders($token){
+    //     global $db;
+    //     $rows = [];
+    //     $result = $db->query("SELECT * FROM " . TBL_ORDERS . "
+    //         INNER JOIN " . TBL_PAYMENTS_LOG . "
+    //         ON " . TBL_ORDERS . ".payments_log_id = " . TBL_PAYMENTS_LOG . ".payment_entity
+    //         INNER JOIN " . TBL_USERS . " 
+    //         ON " . TBL_PAYMENTS_LOG . ".escorte_id = " . TBL_USERS . ".user_guid 
+    //         WHERE " . TBL_ORDERS . ".user_uuid = '$token' ORDER BY created_at DESC
+    //     ");
+    //     if (!empty($result)) {
+    //         while ($row = $result->fetch_assoc()) {
+    //             $rows[] = $row;
+    //         }
+    //         return $rows;
+    //     }
+    // }
 
     public static function getMySingleTasks($id){
         global $db;

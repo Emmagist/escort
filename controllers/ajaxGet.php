@@ -1,7 +1,7 @@
 <?php
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
+  // ini_set('display_errors', 1);
+  // ini_set('display_startup_errors', 1);
+  // error_reporting(E_ALL);
 
     require_once "ajaxRequest.php";
 
@@ -39,24 +39,24 @@
                 if($key['gender'] == 'male' && empty($key['profile_image']) && Ajax::checkActiveSubscriber($_SESSION['token']) == false || $_SESSION['token'] == 0): 
                   $image = 'assets/images/products/no-img-men.jpg';
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 350px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);">';
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-10" alt="..." style="width:100%; max-height: 250px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);">';
                 elseif ($key['gender'] == 'female' && empty($key['profile_image']) && Ajax::checkActiveSubscriber($_SESSION['token']) == false || $_SESSION['token'] == 0) :
                   $image = 'assets/images/products/no-img-women.jpg';
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 350px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);">';
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-10" alt="..." style="width:100%; max-height: 250px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);">';
                 elseif ($key['profile_image'] > 0 || $_SESSION['token'] == 0) :
                   $image = $key['profile_image'];
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 350px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);">';
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-10" alt="..." style="width:100%; max-height: 250px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);">';
                 elseif (empty($key['profile_image']) && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true && $key['gender'] == 'male') :
                   // $image->blurImage(5,3);
-                  $outPut .='<img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 350px; object-fit: cover;">';
+                  $outPut .='<img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-10" alt="..." style="width:100%; max-height: 250px; object-fit: cover;">';
                 elseif (empty($key['profile_image']) && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true && $key['gender'] == 'female') :
                   // $image->blurImage(5,3);
-                  $outPut .='<img src="assets/images/products/no-img-women.jpg" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 350px; object-fit: cover;">';
+                  $outPut .='<img src="assets/images/products/no-img-women.jpg" class="card-img-top rounded-10" alt="..." style="width:100%; max-height: 250px; object-fit: cover;">';
                 elseif (!empty($key['profile_image']) && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true) :
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.str_replace('../','',$key['profile_image']).'" class="card-img-top rounded-0" alt="'.$key['username'].'" style="width:100%; max-height: 350px;">';
+                $outPut .='<img src="'.str_replace('../','',$key['profile_image']).'" class="card-img-top rounded-10" alt="'.$key['username'].'" style="width:100%; max-height: 250px;">';
                 endif;
               $outPut .= '</a>
               <a class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-placement="top" data-bs-title="Book" style="cursor:pointer" onclick=bookEscort(`'.$key['entity_guid'].'`)>book<i class=" fs-4"></i>
@@ -993,58 +993,58 @@
   }
 
   //Show task table
-  if (isset($_GET['order'])) {
-    $outPut = '';
-    $token = $_SESSION['token'];
+  // if (isset($_GET['order'])) {
+  //   $outPut = '';
+  //   $token = $_SESSION['token'];
 
-    $keys = Ajax::myOrders($token); var_dump($keys);exit;
+  //   $keys = Ajax::myOrders($token); var_dump($keys);exit;
 
-    if ($keys) {
-      $count = 1;
-      foreach ($keys as $key) {
-        $outPut = '
-          <tr>
-            <td class="border-bottom-0"><h6 class="fw-semibold mb-0">'.$count++.'</h6></td>
-            <td class="border-bottom-0">
-                <h6 class="fw-semibold mb-1">'.$key['name'].'</h6>
-            </td>
-            <td class="border-bottom-0">
-              <p class="mb-0 fw-semibold fs-4">'.$key['contact_number'].'</p>
-            </td>
-            <td class="border-bottom-0">
-              <p class="mb-0 fw-semibold fs-4">'.$key['location'].'</p>
-            </td>
-            <td class="border-bottom-0">
-              <h6 class="fw-semibold mb-0 fs-4">'.Database::dateFormat($key['escortee_date']).'</h6>
-            </td>
-            <td class="border-bottom-0">
-              <h6 class="fw-semibold mb-0 fs-4">'.Database::time($key['escortee_time']).'</h6>
-            </td>
-            <td class="border-bottom-0">
-              <h6 class="fw-semibold mb-0 fs-4 ';if($key['order_status']=='waiting'):
-                $outPut .= 'text-warning';
-                elseif($key['order_status']=='accept'):
-                  $outPut .= 'text-success';
-                elseif($key['order_status']=='decline'):
-                  $outPut .= 'text-muted';
-                elseif($key['order_status']=='done'):
-                  $outPut .= 'text-dark';
-                endif;$outPut .= '
-              ">'.$key['order_status'].'</h6>
-            </td>
-            <td class="border-bottom-0">
-              <a class="fw-bold mb-0 ti ti-eye task-view text-success" onclick="viewTask(`'.$key['payment_entity'].'`)" style="font-size:24px;"></a>
-              <a class="fw-bold mb-0 ti ti-pencil task-edit text-warning" onclick="editTask(`'.$key['payment_entity'].'`)" style="font-size:24px;"></a>
-            </td>
-          </tr> 
-        ';
-      }
-    }else {
-      $outPut = '<td class="border-bottom-0">
-        <h6 class="fw-semibold mb-0 fs-4 text-danger mt-3">No Data Found</h6>
-      </td>';
-    }
+  //   if ($keys) {
+  //     $count = 1;
+  //     foreach ($keys as $key) {
+  //       $outPut = '
+  //         <tr>
+  //           <td class="border-bottom-0"><h6 class="fw-semibold mb-0">'.$count++.'</h6></td>
+  //           <td class="border-bottom-0">
+  //               <h6 class="fw-semibold mb-1">'.$key['name'].'</h6>
+  //           </td>
+  //           <td class="border-bottom-0">
+  //             <p class="mb-0 fw-semibold fs-4">'.$key['contact_number'].'</p>
+  //           </td>
+  //           <td class="border-bottom-0">
+  //             <p class="mb-0 fw-semibold fs-4">'.$key['location'].'</p>
+  //           </td>
+  //           <td class="border-bottom-0">
+  //             <h6 class="fw-semibold mb-0 fs-4">'.Database::dateFormat($key['escortee_date']).'</h6>
+  //           </td>
+  //           <td class="border-bottom-0">
+  //             <h6 class="fw-semibold mb-0 fs-4">'.Database::time($key['escortee_time']).'</h6>
+  //           </td>
+  //           <td class="border-bottom-0">
+  //             <h6 class="fw-semibold mb-0 fs-4 ';if($key['order_status']=='waiting'):
+  //               $outPut .= 'text-warning';
+  //               elseif($key['order_status']=='accept'):
+  //                 $outPut .= 'text-success';
+  //               elseif($key['order_status']=='decline'):
+  //                 $outPut .= 'text-muted';
+  //               elseif($key['order_status']=='done'):
+  //                 $outPut .= 'text-dark';
+  //               endif;$outPut .= '
+  //             ">'.$key['order_status'].'</h6>
+  //           </td>
+  //           <td class="border-bottom-0">
+  //             <a class="fw-bold mb-0 ti ti-eye task-view text-success" onclick="viewTask(`'.$key['payment_entity'].'`)" style="font-size:24px;"></a>
+  //             <a class="fw-bold mb-0 ti ti-pencil task-edit text-warning" onclick="editTask(`'.$key['payment_entity'].'`)" style="font-size:24px;"></a>
+  //           </td>
+  //         </tr> 
+  //       ';
+  //     }
+  //   }else {
+  //     $outPut = '<td class="border-bottom-0">
+  //       <h6 class="fw-semibold mb-0 fs-4 text-danger mt-3">No Data Found</h6>
+  //     </td>';
+  //   }
 
-    echo json_encode($outPut);
+  //   echo json_encode($outPut);
     
-  }
+  // }
