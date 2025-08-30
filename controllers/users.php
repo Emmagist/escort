@@ -11,6 +11,12 @@ class Users
           return $db->selectData(TBL_CATEGORY, "*");
      }
 
+     public static function getCategoryById($pg)
+     {
+          global $db;
+          return $db->singleData(TBL_CATEGORY, "category", "token_guid = '$pg'");
+     }
+
      public static function getUserByEmail($email)
      {
           global $db;

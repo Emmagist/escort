@@ -964,14 +964,14 @@ if ($pg == 213) {
         $error = '<li class="list-items list-unstyle mb-2"><a href="" class="text-bold text-danger" style="font-weight: 600; color:#000">Search a keyword</a></li>';
     } else {
         $columns = ['age', 'location', 'price'];
-        $result = $db->searchData(TBL_SUGAR_CONNECT, "*", "category_id != '$esc_pg'", $columns, "$data", 15); //var_dump($result);exit;
+        $result = $db->searchData(TBL_SUGAR_CONNECT, "*", "category_id != '$esc_pg'", $columns, "$data", 15);
 
-        if ($result) { //echo 'edd';exit;
+        if ($result) {
             foreach ($result as $key) {
                 $token = $key['enti_guid'];
                 foreach (Ajax::getSugarById($token) as $value) {
                     $outPut .= '
-                        <li class="list-group-item list-unstyle mb-2"><a href="escort-profile?esc=' . $key['enti_guid'] . '&sg=' . $key['category_id'] . '" class="fw-bold text-dark" style="font-weight: 600; color:#000">' . ucfirst($value['name']) . ' (' . ucfirst($value['username']) . ')</a></li>
+                        <li class="list-group-item list-unstyle mb-2"><a href="sugar-profile?esc=' . $key['enti_guid'] . '&sg=' . $key['category_id'] . '" class="fw-bold text-dark" style="font-weight: 600; color:#000">' . ucfirst($value['name']) . ' (' . ucfirst($value['username']) . ')</a></li>
                     ';
                 }
             }

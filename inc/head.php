@@ -2,6 +2,12 @@
 
 $page = $db->curlNamePage();
 
+if (isset($_GET['pg'])) {
+  $pg = $_GET['pg'];
+}
+
+$pageSub = Users::getCategoryById($pg);
+
 $pageTitles = [
   'request-connect.php'    => 'Escort | Request Connect',
   'connect.php'            => 'Escort | Connect',
@@ -12,9 +18,10 @@ $pageTitles = [
   'upload-porn-video.php'  => 'Escort | Upload Porn Video',
   'upload-escort.php'      => 'Escort | Upload Escort',
   'become-escort.php'      => 'Escort | Become Escort',
-  'pages.php'              => 'Escort | Page',
+  'pages.php'              => 'Escort | '.ucwords($pageSub['category']),
   'my-tasks.php'           => 'Escort | My Tasks',
   'register.php'           => 'Escort | Register',
+  'my-order.php'           => 'Escort | My-Order',
 ];
 
 $title = $pageTitles[$page] ?? 'Escort | Home';

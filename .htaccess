@@ -11,7 +11,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 
 # RewriteRule ^(.*)$ index.php
 
-RewriteRule ^invest/([0-9]+)$ invest.php?inv=$1 [NC]
+# RewriteRule ^invest/([0-9]+)$ invest.php?inv=$1 [NC]
 
 RewriteRule ^verify/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$ verify.php?verify=$1&inv=$2&amt=$3 [NC]
 
@@ -25,7 +25,7 @@ RewriteRule ^([^\.]+)$ $1.php [NC,L]
 # error_reporting(E_ALL);
 
 # Error 
-# ErrorDocument 404 /404.php
+ErrorDocument 404 /404
 # rrorDocument 400 /400.php
 # ErrorDocument 401 /401.php
 # ErrorDocument 403 /403.php
