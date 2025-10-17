@@ -76,21 +76,26 @@
       <!--  Header End -->
     <div class="container-fluid">
         <div class="row escort_ro">
-          <div class="col-lg-12 d-flex align-items-strech" id="show-sex-video"></div>
-          <!-- <div class="col-sm-6 col-xl-3">
+          <div class="col-lg-9 d-flex align-items-strech" id="show-sex-video"></div>
+          <div class="col-sm-3 col-xl-3">
             <div class="" style="display: block;">
-                <div class=" overflow-hidden rounded-2 mb-4 mt-3">
-                <div class="position-relative" id="testing">
-                <a href="javascript:void(0)"><img src="assets/images/advert/PLACE-YOUR-ADVERT-HERE.gif" class="show-not" alt="" width="300" height="200"></a>
+                <div class="overflow-hidden rounded-2 mb-4 mt-4 d-flex justify-content-center align-items-center" ">
+                  <div class="position-relative" id="testing">
+                    <a href="javascript:void(0)">
+                      <img src="assets/images/advert/PLACE-YOUR-ADVERT-HERE.gif" class="img-fluid d-block mx-auto" alt="" style="height:232px; width:300px; margin:auto;">
+                    </a>
+                  </div>
                 </div>
-                </div>
-                <div class=" overflow-hidden rounded-2">
-                <div class="" id="testing">
-                <a href="javascript:void(0)"><img src="assets/images/advert/PLACE-YOUR-ADVERT-HERE.gif" class="show-not" alt="" width="300" height="200" style="display: block !important;margin-left: auto!important;margin-right: auto!important;"></a>
-                </div>
+
+                <div class="overflow-hidden rounded-2 d-flex justify-content-center align-items-center" ">
+                  <div class="position-relative" id="testing">
+                    <a href="javascript:void(0)">
+                      <img src="assets/images/advert/PLACE-YOUR-ADVERT-HERE.gif" class="img-fluid d-block mx-auto" alt="" style="height:232px; width:300px; margin:auto;">
+                    </a>
+                  </div>
                 </div>
             </div>
-          </div> -->
+          </div>
         </div>
         <div class="container-fluid" style="padding-top:100px;">
             <h4 class="text-title">Related Videos</h4>

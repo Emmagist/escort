@@ -851,7 +851,7 @@
           </div>
           <input type="hidden" class="form-control mb-3" name="token" value="'.$_SESSION['token'].'">
           <div class="col-md-6">
-            <label for="email">Phone Number</label>
+            <label for="email">Email</label>
             <input type="email" class="form-control mb-3" name="email"  id="email" value="'.$user['email'].'">
           </div>
           <div class="col-md-6">
@@ -993,58 +993,91 @@
   }
 
   //Show task table
-  // if (isset($_GET['order'])) {
-  //   $outPut = '';
-  //   $token = $_SESSION['token'];
+  if (isset($_GET['order'])) {
+    $outPut = '';
+    $token = $_SESSION['token'];
 
-  //   $keys = Ajax::myOrders($token); var_dump($keys);exit;
+    $keys = Ajax::myOrders($token);
 
-  //   if ($keys) {
-  //     $count = 1;
-  //     foreach ($keys as $key) {
-  //       $outPut = '
-  //         <tr>
-  //           <td class="border-bottom-0"><h6 class="fw-semibold mb-0">'.$count++.'</h6></td>
-  //           <td class="border-bottom-0">
-  //               <h6 class="fw-semibold mb-1">'.$key['name'].'</h6>
-  //           </td>
-  //           <td class="border-bottom-0">
-  //             <p class="mb-0 fw-semibold fs-4">'.$key['contact_number'].'</p>
-  //           </td>
-  //           <td class="border-bottom-0">
-  //             <p class="mb-0 fw-semibold fs-4">'.$key['location'].'</p>
-  //           </td>
-  //           <td class="border-bottom-0">
-  //             <h6 class="fw-semibold mb-0 fs-4">'.Database::dateFormat($key['escortee_date']).'</h6>
-  //           </td>
-  //           <td class="border-bottom-0">
-  //             <h6 class="fw-semibold mb-0 fs-4">'.Database::time($key['escortee_time']).'</h6>
-  //           </td>
-  //           <td class="border-bottom-0">
-  //             <h6 class="fw-semibold mb-0 fs-4 ';if($key['order_status']=='waiting'):
-  //               $outPut .= 'text-warning';
-  //               elseif($key['order_status']=='accept'):
-  //                 $outPut .= 'text-success';
-  //               elseif($key['order_status']=='decline'):
-  //                 $outPut .= 'text-muted';
-  //               elseif($key['order_status']=='done'):
-  //                 $outPut .= 'text-dark';
-  //               endif;$outPut .= '
-  //             ">'.$key['order_status'].'</h6>
-  //           </td>
-  //           <td class="border-bottom-0">
-  //             <a class="fw-bold mb-0 ti ti-eye task-view text-success" onclick="viewTask(`'.$key['payment_entity'].'`)" style="font-size:24px;"></a>
-  //             <a class="fw-bold mb-0 ti ti-pencil task-edit text-warning" onclick="editTask(`'.$key['payment_entity'].'`)" style="font-size:24px;"></a>
-  //           </td>
-  //         </tr> 
-  //       ';
-  //     }
-  //   }else {
-  //     $outPut = '<td class="border-bottom-0">
-  //       <h6 class="fw-semibold mb-0 fs-4 text-danger mt-3">No Data Found</h6>
-  //     </td>';
-  //   }
+    if ($keys) {
+      foreach ($keys as $key) {
+        $outPut = '
+          <tr>
+            <td class="border-bottom-0"><h6 class="fw-semibold mb-0">'.$key['invoice_code'].'</h6></td>
+            <td class="border-bottom-0">
+                <h6 class="fw-semibold mb-1">'.$key['category'].'</h6>
+            </td>
+            <td class="border-bottom-0">
+              <p class="mb-0 fw-semibold fs-4">'.$key['username'].'</p>
+            </td>
+            <td class="border-bottom-0">
+              <h6 class="fw-semibold mb-0 fs-4">'.Database::dateFormat($key['payment_created_at']).'</h6>
+            </td>
+            <td class="border-bottom-0">
+              <h6 class="fw-semibold mb-0 fs-4 ';if($key['order_status']=='waiting'):
+                $outPut .= 'text-warning';
+                elseif($key['order_status']=='accept'):
+                  $outPut .= 'text-success';
+                elseif($key['order_status']=='decline'):
+                  $outPut .= 'text-muted';
+                elseif($key['order_status']=='done'):
+                  $outPut .= 'text-dark';
+                endif;$outPut .= '
+              ">'.$key['order_status'].'</h6>
+            </td>
+          </tr> 
+        ';
+      }
+    }else {
+      $outPut = '<td class="border-bottom-0">
+        <h6 class="fw-semibold mb-0 fs-4 text-danger mt-3">No Data Found</h6>
+      </td>';
+    }
 
-  //   echo json_encode($outPut);
+    echo json_encode($outPut);
     
-  // }
+  }
+
+  if (isset($_GET['sugestion'])) {
+    $outPut = '';
+    $keys = Ajax::getAllEscorts();
+
+    if ($keys) {
+      foreach ($keys as $key) {
+        $outPut .= '
+          <div class="col-sm-6 col-xl-3">
+            <div class="card overflow-hidden rounded-2">
+              <div class="position-relative">';
+                if (Ajax::checkActiveSubscriber($_SESSION['token']) == true && $key['profile_image']):
+                  $outPut .= '<a href="escort-profile?esc='.$key['entity_guid'].'&sg='.$key['token_guid'].'"><img src="'.str_replace('../','',$key['profile_image']).'" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 250px;"></a>';
+                elseif (Ajax::checkActiveSubscriber($_SESSION['token']) == true || empty($key['profile_image'])):
+                  $outPut .= '<a href="escort-profile?esc='.$key['entity_guid'].'&sg='.$key['token_guid'].'"><img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 250px;"></a>';
+                elseif (Ajax::checkActiveSubscriber($_SESSION['token']) == false) :
+                  $outPut .= '
+                    <p class=" text-danger mb-5 text-center text-bold"><marquee behavior="" direction="">Kindly subscribe to view <strong>'.ucwords($key['username']).'</strong> pictures. <a class="text-pramry" style="cursor:pointer;" onclick="subscribe(`'.$_SESSION['token'].'`)">Subscribe here</a></marquee></p>
+                    <img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0" alt="..." style="width:100%; max-height: 250px;filter: blur(30px); -webkit-filter: blur(30px);">
+                  ';
+                endif;
+              $outPut .= '</div>
+              <div class="card-body pt-3 p-4">
+                <h6 class="fw-semibold fs-4">'.$key['username'].'</h6>
+                <div class="d-flex align-items-center justify-content-between">
+                  <h6 class="fw-semibold fs-4 mb-0">&#8358;'.ucwords($key['prices']).' <span class="ms-2 fw-normal text-muted fs-3"><del>$65</del></span></h6>
+                  <ul class="list-unstyled d-flex align-items-center mb-0">
+                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                    <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                    <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        ';
+      }
+    }
+
+    echo json_encode($outPut);
+
+  }

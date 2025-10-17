@@ -113,7 +113,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" id="sugestion">
           <div class="col-sm-6 col-xl-3">
             <div class="card overflow-hidden rounded-2">
               <div class="position-relative">
@@ -287,4 +287,23 @@
       })
       return false;
   })
+
+  $(document).ready(function () {
+    $.ajax({
+      url: 'controllers/ajaxGet.php?sugestion=sugestion',
+      method: 'GET',
+      dataType: 'json',
+      data: 'sugestion',
+      contentType: false,
+      processData: false,
+      beforeSend: () => {
+          $('#sugestion').html('Loading contents...');
+      },
+      success: (param) => {
+        if (param) {
+            $('#sugestion').html(param);
+        }
+      }
+    })
+  });
 </script>
