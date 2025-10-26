@@ -137,6 +137,23 @@
 
     });
 
+    //Check expired subscription and update user
+    $(document).ready(function () {
+      $.ajax({
+        url: 'controllers/fetchAjax.php?pg=216',
+        method: 'POST',
+        dataType: 'json',
+        data: '216',
+        contentType: false,
+        processData: false,
+        success: (param) => {
+          if (param.success) {
+            console.log(response.message);
+          }
+        }
+      })
+    })
+
     function SquadPaySUb() {
       // e.preventDefault();
       const arial_token = document.getElementById("arial_token").value;

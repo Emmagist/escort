@@ -110,6 +110,18 @@
               </a>
             </li>
             <li class="sidebar-item">
+              <?php if($_SESSION['token'] && $_SESSION['role'] == 2):?>
+                <a class="sidebar-link" href="go-live" aria-expanded="false">
+              <?php else:?>
+                <a class="sidebar-link" href="join-live" aria-expanded="false">
+              <?php endif;?>
+                <span>
+                  <i class="ti ti-video"></i>
+                </span>
+                <span class="hide-menu">Live Video Call</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
               <a class="sidebar-link" href="#" aria-expanded="false">
                 <span>
                   <i class="ti ti-typography"></i>

@@ -1081,6 +1081,24 @@ if ($pg == 215) {
     ]);
 }
 
+//Check expired subscription and update user
+if ($pg == 216){
+    $user = $_SESSION['token'];
+    $success = '';
+    $error = '';
+
+    if(Ajax::updateSubscriberOnExpiration($user) == true){
+        $success = 'inactive';
+    }else{
+        $error = 'active';
+    }
+
+    echo json_encode([
+        'error' => $error,
+        'success' => $success
+    ]);
+}
+
 //Video to GIF
 // if ($pg == 204) {
 //     try {

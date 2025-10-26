@@ -71,13 +71,17 @@ class Users
 
                if ($get) {
                     foreach ($get as $key) {
-                         // $id = $key['id'];
-                         // $expire_at = Database::expire_at($key['duration']);
+                         $plan_id = $key['plan_id'];
+                         $duration = $db->singleData(TBL_SUBSCRIPTION_PLAN, "duration", "plan_guid = '$plan_id'"); 
 
-                         if ($key['sub_condition'] == 'successful') {
+                         if ($key['sub_condition'] == 'successful' && !empty($key['end_date']) && $key['sub_status'] == 'active') {
+                              return true;
                          } else {
                               //update subscription log
-                              $update = $db->update(TBL_SUBSCRIPTIONS, "paystack_invoice = '$paystackCode', sub_condition = 'successful', sub_status = 'active'", "amount = '$amount' AND invoice_code = '$code' AND user_id = '$token'");
+                              $startDate = date('Y-m-d H:i:s');
+                              $expire_at = Database::expire_at($duration);
+
+                              $update = $db->update(TBL_SUBSCRIPTIONS, "paystack_invoice = '$paystackCode', sub_condition = 'successful', sub_status = 'active', start_date = '$startDate', end_date = '$expire_at'", "amount = '$amount' AND invoice_code = '$code' AND user_id = '$token'");
                               if ($update) {
                                    return true;
                               } else {

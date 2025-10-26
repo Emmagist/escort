@@ -182,6 +182,22 @@ class Ajax
         
     }
 
+    public static function updateSubscriberOnExpiration($user){
+        global $db;
+
+        $update = $db->update(TBL_SUBSCRIPTIONS, "sub_status = 'inactive'", "user_id = '$user' AND end_date < NOW() AND sub_status = 'active'");
+
+        if ($update) {
+
+            return true;
+
+        }else {
+
+            return false;
+        }
+        
+    }
+
     public static function getSubscriptionPlans(){
         global $db;
         return $db->selectData(TBL_SUBSCRIPTION_PLAN, "*");
