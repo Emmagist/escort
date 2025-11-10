@@ -1,7 +1,10 @@
-<!-- <div class="py-6 px-6 text-center">
-          <p class="mb-0 fs-4">Design and Developed by <a href="https://adminmart.com/" target="_blank" class="pe-1 text-primary text-decoration-underline">AdminMart.com</a> Distributed by <a href="https://themewagon.com">ThemeWagon</a></p>
+<div class="py-6 px-6 text-center mt-5">
+          <p class="text-center pb-3">Follow Us</p>
+          <p class="mb-0 fs-4"><a href="" target="_blank" class="pe-3 text-primary"><i class="fa fa-twitter" style="font-size:32px;"></i></a> <a href="" class="pe-3"><i class="fa fa-telegram" style="font-size:32px;"></i></a><a href="" class="pe-3"><i class="fa fa-instagram" style="font-size:32px;"></i></a>
+            
+          </ul></p>
         </div>
-      </div> -->
+      </div>
 
       <form action="" class="form-group" method="post" id="subscription_proc_form" style="display:none;"><input type="hidden" id="arial_sub_token" name="arial_sub_token"><select name="select_sub_plan" id="select_sub_plan"><option value="" id="select_opt"></option></select><input type="hidden" id="price_plan" name="price_plan"><input type="hidden" id="invoice_code" name="invoice_code"><button type="submit" id="subscription_processing"></button></form>
     </div>

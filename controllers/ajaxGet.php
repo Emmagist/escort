@@ -653,12 +653,20 @@
             <td class="border-bottom-0">
                 <h6 class="fw-semibold mb-1">'.$key['name'].'</h6>
             </td>
-            <td class="border-bottom-0">
-              <p class="mb-0 fw-semibold fs-4">'.$key['contact_number'].'</p>
-            </td>
-            <td class="border-bottom-0">
-              <p class="mb-0 fw-semibold fs-4">'.$key['location'].'</p>
-            </td>
+            <td class="border-bottom-0">';
+              if($key['order_status'] == 'accept' || $key['order_status'] == 'done'):
+                $outPut .= '<p class="mb-0 fw-semibold fs-4">'.$key['contact_number'].'</p>';
+              else :
+                $outPut .= '<p class="mb-0 fw-semibold fs-4">'.Database::maskNumber($key['contact_number']).'</p>';
+              endif;
+            $outPut .= '</td>
+            <td class="border-bottom-0">';
+            if($key['order_status'] == 'accept' || $key['order_status'] == 'done'):
+              $outPut .= '<p class="mb-0 fw-semibold fs-4">'.$key['location'].'</p>';
+            else :
+              $outPut .= '<p class="mb-0 fw-semibold fs-4">'.Database::maskString($key['location']).'</p>';
+            endif;
+            $outPut .= '</td>
             <td class="border-bottom-0">
               <h6 class="fw-semibold mb-0 fs-4">'.Database::dateFormat($key['escortee_date']).'</h6>
             </td>
@@ -719,13 +727,21 @@
             <input type="text" class="form-control mb-3" name="amount" id="amount" value="&#8358;'.$key['amount'].'" readonly>
             </div>
             <div class="col-md-6">
-            <label for="contact_number">Contact Number</label>
-            <input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.$key['contact_number'].'" readonly>
-            </div>
+            <label for="contact_number">Contact Number</label>';
+            if($key['order_status'] == 'accept' || $key['order_status'] == 'done'):
+              $outPut .= '<input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.$key['contact_number'].'" readonly>';
+            else :
+              $outPut .= '<input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.Database::maskNumber($key['contact_number']).'" readonly>';
+            endif;
+            $outPut .= '</div>
             <div class="col-md-6">
-            <label for="location">Meeting Location</label>
-            <input type="text" class="form-control mb-3" name="location" id="location" value="'.$key['location'].'" readonly>
-            </div>
+            <label for="location">Meeting Location</label>';
+            if($key['order_status'] == 'accept' || $key['order_status'] == 'done'):
+              $outPut .= '<input type="text" class="form-control mb-3" name="location" id="location" value="'.$key['location'].'" readonly>';
+            else :
+              $outPut .= '<input type="text" class="form-control mb-3" name="location" id="location" value="'.Database::maskString($key['location']).'" readonly>';
+            endif;
+            $outPut .= '</div>
             <div class="col-md-6">
             <label for="escortee_date">Booking Date</label>
             <input type="text" class="form-control mb-3" name="escortee_date" id="escortee_date" value="'.Database::dateFormat($key['escortee_date']).'" readonly>
@@ -775,13 +791,21 @@
             <input type="text" class="form-control mb-3" name="amount" id="amount" value="&#8358;'.$key['amount'].'" disabled>
             </div>
             <div class="col-md-6">
-            <label for="contact_number">Contact Number</label>
-            <input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.$key['contact_number'].'" disabled>
-            </div>
+            <label for="contact_number">Contact Number</label>';
+            if($key['order_status'] == 'accept' || $key['order_status'] == 'done'):
+              $outPut .= '<input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.$key['contact_number'].'" disabled>';
+            else :
+              $outPut .= '<input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.Database::maskNumber($key['contact_number']).'" disabled>';
+            endif;
+            $outPut .= '</div>
             <div class="col-md-6">
-            <label for="location">Meeting Location</label>
-            <input type="text" class="form-control mb-3" name="location" id="location" value="'.$key['location'].'" disabled>
-            </div>
+            <label for="location">Meeting Location</label>';
+            if($key['order_status'] == 'accept' || $key['order_status'] == 'done'):
+              $outPut .= '<input type="text" class="form-control mb-3" name="location" id="location" value="'.$key['location'].'" disabled>';
+            else :
+              $outPut .= '<input type="text" class="form-control mb-3" name="location" id="location" value="'.Database::maskString($key['location']).'" disabled>';
+            endif;
+            $outPut .= '</div>
             <div class="col-md-6">
             <label for="escortee_date">Booking Date</label>
             <input type="text" class="form-control mb-3" name="escortee_date" id="escortee_date" value="'.Database::dateFormat($key['escortee_date']).'" disabled>
