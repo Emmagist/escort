@@ -4,16 +4,16 @@
 
 // use Google\Service\CloudAsset\Resource\V1;
 
-define("DB_HOST",             "localhost");
-define("DB_USER",             "root");
-define("DB_PASSWORD",         ""); //Emmagist@1994204;
-define("DB_NAME",             "escorts");
+// define("DB_HOST",             "localhost");
+// define("DB_USER",             "root");
+// define("DB_PASSWORD",         ""); //Emmagist@1994204;
+// define("DB_NAME",             "escorts");
 
 // Online Database
-// define("DB_HOST",              "localhost");
-// define("DB_USER",              "sanmlfqm_id_rsa");
-// define("DB_PASSWORD",          "emma1994204");
-// define("DB_NAME",              "sanmlfqm_sanmtos_app");
+define("DB_HOST",              "localhost");
+define("DB_USER",              "konjiytm_escorts_1");
+define("DB_PASSWORD",          "Emmagist@1994204");
+define("DB_NAME",              "konjiytm_escorts");
 
 // Local DB4FREE
 // define("DB_HOST",             "https://www.db4free.net/");
@@ -42,9 +42,9 @@ define("GOOGLE_REDIRECT",       "http://localhost/sanmtos-app/user/dashboard");
 
 // Gateway
 // GTPay
-// define("KEY",   "pk_4b4285f4f8bf88fd5f3e6be658c1bd24d2156e7c");
+define("KEY",   "pk_4b4285f4f8bf88fd5f3e6be658c1bd24d2156e7c");
 // GTPay Sand box
-define("KEY",   "sandbox_pk_2812061280c862064951d1ace69f69213cbe2d1f2f07");
+// define("KEY",   "sandbox_pk_2812061280c862064951d1ace69f69213cbe2d1f2f07");
 
 // Rave
 // define("KEY",   "FLWPUBK_TEST-0f469fd305d1834979534dd656d0e97b-X");

@@ -159,6 +159,7 @@
 
     function SquadPaySUb() {
       // e.preventDefault();
+      const key_opener = "<?=KEY?>"; alert(key_opener);
       const arial_token = document.getElementById("arial_token").value;
       const plan_id = document.getElementById("selectPlan").value;
       const price = document.getElementById("plan_price").value;
@@ -166,7 +167,7 @@
       passage(arial_token,plan_id,price,invoice);
       const squadInstance = new squad({
       onLoad: () => console.log("Widget loaded successfully"),
-      key: 'sandbox_pk_2812061280c862064951d1ace69f69213cbe2d1f2f07',
+      key: key_opener,
       // "test_pk_sample-public-key-1"
       //Change key (test_pk_sample-public-key-1) to the key on your Squad Dashboard
       email: document.getElementById("email-address").value,

@@ -71,6 +71,87 @@
     text-overflow: ellipsis;
 }
 
+.media_screen{
+  display: block;
+}
+
+#related_videos{
+  padding-top:100px;
+}
+
+.related_video_img_card{
+  width: 260px;
+  height: 170px;
+}
+
+@media only screen and (max-width: 600px) {
+  .media_screen{
+    display: none;
+  }
+
+  #related_videos{
+    padding-top: 50px;
+  }
+
+  .related_video_img_card{
+    width: 350px;
+    height: 200px;
+  }
+}
+
+@media only screen and (max-width: 390px){
+  .related_video_img_card{
+    width: 330px !important;
+    height: 180px !important;
+  }
+}
+
+@media only screen and (max-width: 375px){
+  .related_video_img_card{
+    width: 320px !important;
+    height: 170px !important;
+  }
+}
+
+@media only screen and (max-width: 344px){
+  .related_video_img_card{
+    width: 285px !important;
+    height: 150px !important;
+  }
+}
+
+@media only screen and (max-width: 912px){
+  .media_screen{
+    display: none;
+  }
+
+  #related_videos{
+    padding-top: 50px;
+  }
+
+  .retaled_video_card{
+    margin-right: 70px;
+  }
+}
+
+@media only screen and (max-width: 768px){
+  .retaled_video_card{
+    margin-right: 130px;
+  }
+}
+
+@media only screen and (max-width: 820px){
+  .retaled_video_card{
+    margin-right: 123px;
+  }
+}
+
+@media only screen and (max-width: 1024px){
+  .retaled_video_card{
+    margin-right: 30px;
+  }
+}
+
 </style>
     
       <!--  Header End -->
@@ -78,7 +159,7 @@
         <div class="row escort_ro">
           <div class="col-lg-9 d-flex align-items-strech" id="show-sex-video"></div>
           <div class="col-sm-3 col-xl-3">
-            <div class="" style="display: block;">
+            <div class="media_screen">
                 <div class="overflow-hidden rounded-2 mb-4 mt-4 d-flex justify-content-center align-items-center" ">
                   <div class="position-relative" id="testing">
                     <a href="javascript:void(0)">
@@ -97,8 +178,8 @@
             </div>
           </div>
         </div>
-        <div class="container-fluid" style="padding-top:100px;">
-            <h4 class="text-title">Related Videos</h4>
+        <div class="container-fluid" id="related_videos">
+            <h4 class="text-title pb-4" style="font-weight: bold;">Related Videos</h4>
             <div class="row" id="re__videos">
                 <!-- <div class="col-sm-6 col-xl-3">
                   <div class="card overflow-hidden rounded-2">

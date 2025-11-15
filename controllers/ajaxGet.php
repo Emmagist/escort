@@ -400,12 +400,12 @@
     if (Ajax::getRelatedSexVideos($slug, $cat)) {
       foreach (Ajax::getRelatedSexVideos($slug, $cat) as $key) {
         if ($key['img']) {
-          $outPut .= '<div class="col-md-3">
+          $outPut .= '<div class="col-md-3 pb-3 retaled_video_card">
             <div class="rounded-2">
               <div class="position-relative" id="testing">
               <a href="video?ent='.$key['entity_guid'].'" class="align-middle">
-                <img src="'.str_replace('../', '', $key['img']).'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change__'.$key['entity_guid'].'" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`, `'.$key['entity_guid'].'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`, `'.$key['entity_guid'].'`)" alt="" width="260" height="170">
-                <h5 class=" text-capitalize text-left">'.$key['title'].'</h5>
+                <img src="'.str_replace('../', '', $key['img']).'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change__'.$key['entity_guid'].' related_video_img_card" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`, `'.$key['entity_guid'].'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`, `'.$key['entity_guid'].'`)" alt=""">
+                <h5 class=" text-capitalize text-left" style="width: 260px;">'.$key['title'].'</h5>
               </a>
               </div>
             </div>
@@ -466,10 +466,10 @@
         <select name="plan" id="selectPlan" class="form-control mb-3" onchange=selectplan()>
           <option value="">Select a plan</option>';
           foreach (Ajax::getSubscriptionPlans() as $key) {
-            $outPut .= '<option value="'.$key['plan_guid'].'">'.ucfirst($key['plan']).' &#8358;'.$key['price'].' for '.$key['duration'].'Days</option>';
+            $outPut .= '<option value="'.$key['plan_guid'].'">'.ucfirst($key['plan']).' &#8358;'.$key['price'].' for '.$key['duration'].'Day(s)</option>';
           }
         $outPut .= '</select>
-        <div class="form-group" id="price_div"></div>
+        <div class="form-group" id="price_div"><input type="hidden" class="form-control mb-3" name="arial_token" id="arial_token" value="'.$key['price'].'"></div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-success" onclick="SquadPaySUb()" id="subscription_button">Subscribe Now</button>
@@ -486,7 +486,7 @@
 
     if (Ajax::getSingleSubscriptionPlans($id)) {
       foreach (Ajax::getSingleSubscriptionPlans($id) as $key) {
-        $outPut .= '<input type="hidden" class="form-control mb-3" name="price" id="plan_price" value="&#8358;'.$key['price'].'">';
+        $outPut .= '<input type="hidden" class="form-control mb-3" name="price" id="plan_price" value="'.$key['price'].'">';
       }
       
     }
@@ -561,16 +561,16 @@
         $outPut .= '
           <div class="col-md-12 mb-3">';
             if (Ajax::checkActiveSubscriber($_SESSION['token']) == true):
-              $outPut .= '<img src="'.str_replace('../','',$key['upload_file']).'" class="card-img-top rounded-0" alt="..." style="width:650px;height:550px">';
+              $outPut .= '<img src="'.str_replace('../','',$key['upload_file']).'" class="card-img-top rounded-0" alt="..." style="width:378px;height:378px">';
             elseif (Ajax::checkActiveSubscriber($_SESSION['token']) == false && !empty($key['upload_file'])):
               $outPut .= '
                 <p class=" text-danger mb-5 text-center text-bold"><marquee behavior="" direction="">Kindly subscribe to view <strong>'.ucwords($key['username']).'</strong> pictures. <a class="text-pramry" style="cursor:pointer;" onclick="subscribe(`'.$_SESSION['token'].'`)">Subscribe here</a></marquee></p>
-                <img src="'.str_replace('../','',$key['upload_file']).'" class="card-img-top rounded-0" alt="..." style="width:650px;height:550px" filter: blur(30px); -webkit-filter: blur(30px);">
+                <img src="'.str_replace('../','',$key['upload_file']).'" class="card-img-top rounded-0" alt="..." style="width:378px;height:378px" filter: blur(30px); -webkit-filter: blur(30px);">
               ';
             elseif (Ajax::checkActiveSubscriber($_SESSION['token']) == false) :
               $outPut .= '
                 <p class=" text-danger mb-5 text-center text-bold"><marquee behavior="" direction="">Kindly subscribe to view <strong>'.ucwords($key['username']).'</strong> pictures. <a class="text-pramry" style="cursor:pointer;" onclick="subscribe(`'.$_SESSION['token'].'`)">Subscribe here</a></marquee></p>
-                <img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0 mb-4" alt="..." style="width:650px;height:550px;filter: blur(30px); -webkit-filter: blur(30px);">
+                <img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-0 mb-4" alt="..." style="width:378px;height:378px;filter: blur(30px); -webkit-filter: blur(30px);">
               ';
             endif;
           $outPut .= '</div>
