@@ -4,16 +4,16 @@
 
 // use Google\Service\CloudAsset\Resource\V1;
 
-// define("DB_HOST",             "localhost");
-// define("DB_USER",             "root");
-// define("DB_PASSWORD",         ""); //Emmagist@1994204;
-// define("DB_NAME",             "escorts");
+define("DB_HOST",             "localhost");
+define("DB_USER",             "root");
+define("DB_PASSWORD",         ""); //Emmagist@1994204;
+define("DB_NAME",             "escorts");
 
 // Online Database
-define("DB_HOST",              "localhost");
-define("DB_USER",              "konjiytm_escorts_1");
-define("DB_PASSWORD",          "Emmagist@1994204");
-define("DB_NAME",              "konjiytm_escorts");
+// define("DB_HOST",              "localhost");
+// define("DB_USER",              "konjiytm_escorts_1");
+// define("DB_PASSWORD",          "Emmagist@1994204");
+// define("DB_NAME",              "konjiytm_escorts");
 
 // Local DB4FREE
 // define("DB_HOST",             "https://www.db4free.net/");

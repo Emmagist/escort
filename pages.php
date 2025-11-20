@@ -108,7 +108,7 @@
             $('#search_result').html(param.error);
             setTimeout(() => {
               $('#search_result').fadeOut();
-            }, 3000);
+            }, 10000);
           }
         }
     });

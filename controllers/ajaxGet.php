@@ -337,11 +337,11 @@
       foreach (Ajax::getAllSexVideos() as $key) {
         if ($key['img']) {
           $outPut .= '<div class="col-md-3">
-            <div class="rounded-2">
-              <div class="position-relative " id="testing">
+            <div class="rounded-2 rounded_sex_video_div">
+              <div class="position-relative sex_video_div" id="testing">
                 <a href="video?ent='.$key['entity_guid'].'" class="align-middle">
-                  <img src="'.str_replace('../', '', $key['img']).'" data-img="'.str_replace('../', '', $key['img']).'" data-gif="'.str_replace('../', '', $key['gif']).'" class="show-not align-middle sex__change__'.$key['entity_guid'].'" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`, `'.$key['entity_guid'].'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`, `'.$key['entity_guid'].'`)" alt="" width="260" height="170">
-                  <h6 class=" text-capitalize text-center d-inline-block text-truncate pt-1" title="'.$key['title'].'">'.$key['title'].'</h6>
+                  <img src="'.str_replace('../', '', $key['img']).'" data-img="'.str_replace('../', '', $key['img']).'" data-gif="'.str_replace('../', '', $key['gif']).'" class="sex__list__show show-not align-middle sex__change__'.$key['entity_guid'].'" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`, `'.$key['entity_guid'].'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`, `'.$key['entity_guid'].'`)" alt="'.$key['title'].'" width="260" height="170">
+                  <h6 class="sex_video_title text-capitalize text-center d-inline-block text-truncate pt-1" title="'.$key['title'].'">'.$key['title'].'</h6>
                 </a>
               </div>
             </div>
@@ -404,7 +404,7 @@
             <div class="rounded-2">
               <div class="position-relative" id="testing">
               <a href="video?ent='.$key['entity_guid'].'" class="align-middle">
-                <img src="'.str_replace('../', '', $key['img']).'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change__'.$key['entity_guid'].' related_video_img_card" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`, `'.$key['entity_guid'].'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`, `'.$key['entity_guid'].'`)" alt=""">
+                <img src="'.str_replace('../', '', $key['img']).'" data-img="'.$key['img'].'" data-gif="'.$key['gif'].'" class="show-not align-middle sex__change__'.$key['entity_guid'].' related_video_img_card" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`, `'.$key['entity_guid'].'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`, `'.$key['entity_guid'].'`)" alt="'.$key['title'].'">
                 <h5 class=" text-capitalize text-left" style="width: 260px;">'.$key['title'].'</h5>
               </a>
               </div>

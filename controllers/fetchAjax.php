@@ -79,61 +79,61 @@ if ($pg == 200) {
 }
 
 //login
-if ($pg == 201) {
-    $errors = '';
-    $success = '';
-    $email = $db->escape($_POST['email']);
-    $password = $db->escape($_POST['password']); //exit;
+// if ($pg == 201) {
+//     $errors = '';
+//     $success = '';
+//     $email = $db->escape($_POST['email']);
+//     $password = $db->escape($_POST['password']); //exit;
 
-    if (empty($email)) {
-        $errors = "Email is required!";
-    }
+//     if (empty($email)) {
+//         $errors = "Email is required!";
+//     }
 
-    if (empty($password)) {
-        $errors = "Password is required!";
-    }
+//     if (empty($password)) {
+//         $errors = "Password is required!";
+//     }
 
-    if (Ajax::getUserByEmail($email) > 0) {
+//     if (Ajax::getUserByEmail($email) > 0) {
 
-        // Set cookie
-        // echo $_POST['checkbox'];exit; 
-        if (!empty($_POST['checkbox'])) {
-            setcookie("email", $email, time() + 3600, '/');
-            setcookie("password", $password, time() + 3600, '/');
-        } else {
-            // Expire cookie
-            setcookie("email", "", time() - 3600);
-            setcookie("password", "", time() - 3600);
-        }
-    }
-    if (empty($errors)) { //echo "done";exit;
-        if (Ajax::getUserByEmail(($email))) {
-            foreach (Ajax::getUserByEmail($email) as $userInfo) {
-                if (password_verify($password, $userInfo['password'])) {
-                    $_SESSION['token'] = $userInfo['user_guid'];
-                    $_SESSION['email'] = $userInfo['email'];
-                    $_SESSION['role'] = $userInfo['role_id'];
-                    // $_SESSION['username'] = $userInfo['username'];
-                    $db->set('login', true);
-                    // $redirect = $_REQUEST['page_url'];
-                    // if ($redirect == '') {
-                    //     header('Location: ../');
-                    // }else {
-                    //     header("Location: $redirect");
-                    // }
+//         // Set cookie
+//         // echo $_POST['checkbox'];exit; 
+//         if (!empty($_POST['checkbox'])) {
+//             setcookie("email", $email, time() + 3600, '/');
+//             setcookie("password", $password, time() + 3600, '/');
+//         } else {
+//             // Expire cookie
+//             setcookie("email", "", time() - 3600);
+//             setcookie("password", "", time() - 3600);
+//         }
+//     }
+//     if (empty($errors)) { //echo "done";exit;
+//         if (Ajax::getUserByEmail(($email))) {
+//             foreach (Ajax::getUserByEmail($email) as $userInfo) {
+//                 if (password_verify($password, $userInfo['password'])) {
+//                     $_SESSION['token'] = $userInfo['user_guid'];
+//                     $_SESSION['email'] = $userInfo['email'];
+//                     $_SESSION['role'] = $userInfo['role_id'];
+//                     // $_SESSION['username'] = $userInfo['username'];
+//                     $db->set('login', true);
+//                     // $redirect = $_REQUEST['page_url'];
+//                     // if ($redirect == '') {
+//                     //     header('Location: ../');
+//                     // }else {
+//                     //     header("Location: $redirect");
+//                     // }
 
-                    $success = "Login successfull...";
-                } else {
-                    $errors = "Email or password not correct!";
-                }
-            }
-        } else {
-            $errors = "Email or password not correct!";
-        }
-    }
+//                     $success = "Login successfull...";
+//                 } else {
+//                     $errors = "Email or password not correct!";
+//                 }
+//             }
+//         } else {
+//             $errors = "Email or password not correct!";
+//         }
+//     }
 
-    echo json_encode(['error' => $errors, 'success' => $success]);
-}
+//     echo json_encode(['error' => $errors, 'success' => $success]);
+// }
 
 //payment form
 if ($pg == 202) {

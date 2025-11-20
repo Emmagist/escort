@@ -6,17 +6,17 @@
     // $success = [];
     //login
     if (isset($_POST['login_button'])) {
-        $errors = '';
+        $errors = [];
         $success = '';
         $email = $db->escape($_POST['email']);
         $password = $db->escape($_POST['password']);//exit;
 
         if (empty($email)) {
-            $errors = "Email is required!";
+            $errors['email-require'] = "Email is required!";
         }
 
         if (empty($password)) {
-            $errors = "Password is required!";
+            $errors['password-req'] = "Password is required!";
         }
 
         if (Users::getUserByEmail($email) > 0) { 
@@ -57,15 +57,16 @@
                         }
                     }
                     else {
-                        $errors = "Email or password not correct!";
+                        $errors['credential-fail'] = "Email or password not correct!";
                     }
                 }
-            }else {
-                $errors = "Email or password not correct!";
+            }
+            else {
+                $errors['not-correct'] = "Email or password not correct!";
             }
         }
         
-        echo json_encode(['error' => $errors, 'success' => $success]);
+        // echo json_encode(['error' => $errors, 'success' => $success]);
     }
 
 

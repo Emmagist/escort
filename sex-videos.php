@@ -19,6 +19,121 @@
   require "inc/header.php";
 
 ?>
+
+<style>
+  @media only screen and (max-width: 600px) {
+  .sex__list__show{
+    width: 390px;
+    height: 220px;
+  }
+
+  #related_videos{
+    padding-top: 50px;
+  }
+
+  .related_video_img_card{
+    width: 350px;
+    height: 200px;
+  }
+}
+
+/* @media only screen and (max-width: 540px){
+  .sex__list__show{
+    width: 718px;
+    height: 260px;
+  }
+} */
+
+@media only screen and (max-width: 414px){
+  .sex__list__show{
+    width: 375px;
+    height: 200px;
+  }
+}
+
+@media only screen and (max-width: 390px){
+  .sex__list__show{
+    width: 350px;
+    height: 180px;
+  }
+}
+
+@media only screen and (max-width: 375px){
+  .sex__list__show{
+    width: 337px;
+    height: 170px;
+  }
+}
+
+@media only screen and (max-width: 360px){
+  .sex__list__show{
+    width: 320px;
+    height: 170px;
+  }
+}
+
+@media only screen and (max-width: 344px){
+  .sex__list__show{
+    width: 420px !important;
+    height: 170px !important;
+  }
+}
+
+/* @media only screen and (max-width: 768px){
+  .sex__list__show{
+    padding-right: 225px;
+    width: 400px;
+    height: 150px;
+  }
+
+  .sex_video_title{
+    width: 170px;
+  }
+}
+
+@media only screen and (max-width: 912px){
+  .sex__list__show{
+    padding-right: 215px;
+    width: 420px;
+    height: 150px;
+  }
+
+  .sex_video_title{
+    width: 200px !important;
+  }
+}
+
+@media only screen and (max-width: 768px){
+  .retaled_video_card{
+    margin-right: 130px;
+  }
+}
+
+@media only screen and (max-width: 820px){
+  .sex__list__show{
+    padding-right: 215px;
+    width: 400px;
+    height: 150px;
+  }
+
+  .sex_video_title{
+    width: 170px;
+  }
+}
+
+@media only screen and (max-width: 1024px){
+  .sex__list__show{
+    padding-right: 210px;
+    width: 445px;
+    height: 170px;
+  }
+
+  .sex_video_title{
+    width: 235px;
+  }
+} */
+
+</style>
     
       <!--  Header End -->
       <div class="container-fluid">
