@@ -36,6 +36,7 @@ $title = $pageTitles[$page] ?? 'Escort | Home';
   <link rel="shortcut icon" type="image/png" href="assets/images/logos/favicon.png" />
   <link rel="stylesheet" href="assets/css/styles.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta name="google-site-verification" content="7qzjafXmW2ujOoSdsCmQGwfWd95PTw2hz1t6EDO4EvI" />
 </head>
 
 <body>
