@@ -15,7 +15,7 @@
           </div>
         </div>
         <!-- Sidebar navigation-->
-        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="" role="navigation">
           <ul id="sidebarnav">
             <?php if($_SESSION['role'] == 2):?>
             <li class="nav-small-cap">

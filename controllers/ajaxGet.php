@@ -443,9 +443,9 @@
     $outPut = '';
 
     if (Ajax::getSexVideosCategory()) {
+      $outPut .= '<option value="">Choose Category</option>';
       foreach (Ajax::getSexVideosCategory() as $key) {
         $outPut .= '
-          <option value="">Choose Option</option>
           <option value="'.$key['identity_guid'].'">'.$key['sex_category'].'</option>
         ';
       }

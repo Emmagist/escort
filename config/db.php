@@ -62,7 +62,7 @@ use Google\Service\Analytics\Column;
         }
 
 
-        public function activeUsers($table, $field = '*', $conditions = ""){
+        public function inactiveUsers($table, $field = '*', $conditions = ""){
             $rows = [];
                 $fields = trim($field);
                 $where = !empty($conditions) ? "WHERE" : "";
@@ -75,6 +75,16 @@ use Google\Service\Analytics\Column;
               }
               return $rows;
             }
+        }
+
+        public function totalActiveUsers($table, $field = '*', $conditions = ""){
+            $fields = trim($field);
+            $where = !empty($conditions) ? "WHERE" : "";
+            $result = $this->query("SELECT COUNT( " . $fields . " ) as total FROM " . $table . " $where " . $conditions);
+
+            $total = $result->fetch_assoc();
+
+            return intval($total['total']);
         }
 
         public function searchData($table, $field = "*", $conditions = "", $columns = [], $val = '', $limit = '') {

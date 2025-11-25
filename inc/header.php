@@ -1,7 +1,7 @@
 <!--  Main wrapper -->
-<div class="body-wrapper">
+<div class="body-wrapper" role="main">
       <!--  Header Start -->
-      <header class="app-header">
+      <header class="app-header" role="banner">
         <nav class="navbar navbar-expand-lg navbar-light">
           <ul class="navbar-nav">
             <li class="nav-item d-block d-xl-none">

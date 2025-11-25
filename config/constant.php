@@ -4,16 +4,16 @@
 
 // use Google\Service\CloudAsset\Resource\V1;
 
-// define("DB_HOST",             "localhost");
-// define("DB_USER",             "root");
-// define("DB_PASSWORD",         ""); //Emmagist@1994204;
-// define("DB_NAME",             "escorts");
+define("DB_HOST",             "localhost");
+define("DB_USER",             "root");
+define("DB_PASSWORD",         ""); //Emmagist@1994204;
+define("DB_NAME",             "escorts");
 
 // Online Database
-define("DB_HOST",              "localhost");
-define("DB_USER",              "konjiytm_escorts_1");
-define("DB_PASSWORD",          "Emmagist@1994204");
-define("DB_NAME",              "konjiytm_escorts");
+// define("DB_HOST",              "localhost");
+// define("DB_USER",              "konjiytm_escorts_1");
+// define("DB_PASSWORD",          "Emmagist@1994204");
+// define("DB_NAME",              "konjiytm_escorts");
 
 // Local DB4FREE
 // define("DB_HOST",             "https://www.db4free.net/");
@@ -34,11 +34,6 @@ define("EMAIL_PASSWORD",      "Sanmtos204");
 // //VERIFY
 // define("VERIFY_EMAIL",        "verify@sanmtosapp.com");
 // define("VERIFY_PASSWORD",     "sanmtosapp204");
-
-//Google Credentials
-define("CLIENT_ID",            "1047387549972-ces8ukfv6p889lkod33sm8943gav01c3.apps.googleusercontent.com");
-define("CLIENT_SECRET",        "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");
-define("GOOGLE_REDIRECT",       "http://localhost/sanmtos-app/user/dashboard");
 
 // Gateway
 // GTPay

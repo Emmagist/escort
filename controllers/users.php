@@ -17,6 +17,37 @@ class Users
           return $db->singleData(TBL_CATEGORY, "category", "token_guid = '$pg'");
      }
 
+     public static function getEscortById($token){
+        global $db;
+
+        $rows = [];
+        $result = $db->query("SELECT * FROM " . TBL_ESCORTS . "
+                 INNER JOIN " . TBL_USERS . " 
+                 ON " . TBL_USERS . ".user_guid = " . TBL_ESCORTS . ".user_id
+                 INNER JOIN " . TBL_CATEGORY . "
+                 ON " . TBL_CATEGORY . ".token_guid = " . TBL_ESCORTS . ".category_id 
+                 WHERE " . TBL_ESCORTS . ".entity_guid = '$token'
+            ");
+        if (!empty($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            return $rows;
+        }
+     }
+
+     public static function getTotalEscorts() {
+        global $db;
+
+        return $db->totalActiveUsers(TBL_ESCORTS, "*", "escorts_status = 'active'");
+     }
+
+     public static function getTotalVideos() {
+        global $db;
+
+        return $db->totalActiveUsers(TBL_PORN_VIDEOS, "*");
+     }
+
      public static function getUserByEmail($email)
      {
           global $db;

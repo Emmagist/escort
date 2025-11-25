@@ -1,8 +1,37 @@
 <?php
   require_once "controllers/process.php";
-  require "inc/head.php";
-
 ?>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Create your KonjiZone account to access exclusive features, manage profiles, bookings, messages, and more. Fast and secure registration.">
+
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="canonical" href="https://konjizone.com/register">
+  <meta property="og:image" content="https://konjizone.com/assets/images/seo/login_seo.jpg">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Create Account – KonjiZone">
+  <meta property="og:description" content="Join KonjiZone to manage your profile, bookings, and messages. Fast and secure registration.">
+  <meta property="og:url" content="https://konjizone.com/register">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Create Account – KonjiZone">
+  <meta name="twitter:description" content="Fast and secure KonjiZone account registration.">
+  
+  <title>KonjiZone | Register</title>
+  <link rel="shortcut icon" type="image/png" href="assets/images/logos/favicon.png" />
+  <link rel="stylesheet" href="assets/css/styles.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta name="google-site-verification" content="7qzjafXmW2ujOoSdsCmQGwfWd95PTw2hz1t6EDO4EvI" />
+</head>
+
+<body>
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">

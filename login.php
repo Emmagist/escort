@@ -1,7 +1,32 @@
 <?php 
   require_once "controllers/process.php";
-  require "inc/head.php";
 ?>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Access your KonjiZone account to manage your profile, messages, bookings, and settings. Secure login for models and users.">
+  <meta property="og:title" content="Login – KonjiZone">
+  <meta property="og:image" content="https://konjizone.com/assets/images/seo/login_seo.jpg">
+  <meta property="og:url" content="https://konjizone.com/login">
+  <meta property="og:description" content="Secure login for KonjiZone users and models.">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Login – KonjiZone">
+  <meta name="twitter:description" content="Access your KonjiZone account securely.">
+  
+  <title>KonjiZone | Login</title>
+  <link rel="shortcut icon" type="image/png" href="assets/images/logos/favicon.png" />
+  <link rel="stylesheet" href="assets/css/styles.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta name="google-site-verification" content="7qzjafXmW2ujOoSdsCmQGwfWd95PTw2hz1t6EDO4EvI" />
+</head>
+
+<body>
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
     <div
@@ -11,7 +36,7 @@
           <div class="col-md-8 col-lg-6 col-xxl-3">
             <div class="card mb-0">
               <div class="card-body">
-                <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                <a href="/" class="text-nowrap logo-img text-center d-block py-3 w-100" aria-label="This link leads you to the home page">
                   <!-- <img src="../assets/images/logos/dark-logo.svg" width="180" alt=""> -->
                    <strong style="font-size: 30px;font-weight:bold;color:blueviolet;">KonjiZone</strong>
                 </a>

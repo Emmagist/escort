@@ -322,8 +322,8 @@ if ($pg == 204) {
 
     // File upload
     $target_dir = "../porn_video/";
-    $target_gif = "../porn_gif/";
-    $target_img = "../porn_img/";
+    // $target_gif = "../porn_gif/";
+    // $target_img = "../porn_img/";
     $target_file  = $target_dir . basename($_FILES["fileUpload"]["name"]);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
@@ -347,21 +347,21 @@ if ($pg == 204) {
         $move_file = move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file);
         if ($move_file) {
             $filename = pathinfo($_FILES["fileUpload"]["name"], PATHINFO_FILENAME);
-            $img_path = $target_img . $filename . ".jpg";
-            $gif_path = $target_gif . $filename . ".gif";
+            // $img_path = $target_img . $filename . ".jpg";
+            // $gif_path = $target_gif . $filename . ".gif";
 
-            $video_duration = Database::getVideoDuration($target_file);
-            $img = Database::videoToImage($target_file, $img_path); 
-            $gif = Database::videoToGif($target_file, $gif_path);
+            // $video_duration = Database::getVideoDuration($target_file);
+            // $img = Database::videoToImage($target_file, $img_path); 
+            // $gif = Database::videoToGif($target_file, $gif_path);
 
-            $version = shell_exec("ffmpeg -version");
-            echo "FFmpeg Version:<br>";
-            echo $version ? nl2br($version) : "Not available";
-            echo "<br><strong>Video Duration:</strong> $video_duration<br>";
-            echo "<strong>Image Created:</strong> " . ($img ? "Yes" : "No") . "<br>";
-            echo "<strong>GIF Created:</strong> " . ($gif ? "Yes" : "No") . "<br>";
+            // $version = shell_exec("ffmpeg -version");
+            // echo "FFmpeg Version:<br>";
+            // echo $version ? nl2br($version) : "Not available";
+            // echo "<br><strong>Video Duration:</strong> $video_duration<br>";
+            // echo "<strong>Image Created:</strong> " . ($img ? "Yes" : "No") . "<br>";
+            // echo "<strong>GIF Created:</strong> " . ($gif ? "Yes" : "No") . "<br>";
 
-            if ($img && $gif) {
+            // if ($img && $gif) {
 
                 if (empty($category) && ! empty($custom_cat)) {
                     $slug = Database::slug($custom_cat);
@@ -370,7 +370,7 @@ if ($pg == 204) {
                     if ($cat_result && $keys) {
                         foreach ($keys as $key) {
                             $identity_guid = $key['identity_guid'];
-                            $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', sex_cat_id = '$identity_guid', entity_guid = uuid(), title = '$title', video_duration = '$video_duration', contents = '$content', porn_video = '$target_file', img = '$img', gif = '$gif'");
+                            $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', sex_cat_id = '$identity_guid', entity_guid = uuid(), title = '$title', contents = '$content', porn_video = '$target_file'");
                             // var_dump($re);
                             if ($result) {
                                 $success = "Successfully uploaded...";
@@ -381,7 +381,7 @@ if ($pg == 204) {
                     }
                 } else {
                 
-                    $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', sex_cat_id = '$category', entity_guid = uuid(), title = '$title', video_duration = '$video_duration', contents = '$content', porn_video = '$target_file', img = '$img', gif = '$gif'");
+                    $result = $db->saveData(TBL_PORN_VIDEOS, "user_id = '$token', sex_cat_id = '$category', entity_guid = uuid(), title = '$title', contents = '$content', porn_video = '$target_file'");
                     // var_dump($re);
                     if ($result) {
                         $success = "Successfully uploaded...";
@@ -390,9 +390,9 @@ if ($pg == 204) {
                     }
                 }
 
-            } else {
-                echo "Failed to create thumbnail";
-            }
+            // } else {
+            //     echo "Failed to create thumbnail";
+            // }
 
         } else {
             $error = "File not uploaded! Something went wrong";

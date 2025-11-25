@@ -1,4 +1,4 @@
-<div class="py-6 px-6 text-center mt-5">
+<div class="py-6 px-6 text-center mt-5" role="contentinfo">
           <p class="text-center pb-3">Follow Us</p>
           <p class="mb-0 fs-4"><a href="" target="_blank" class="pe-3 text-primary"><i class="fa fa-twitter" style="font-size:32px;"></i></a> <a href="" class="pe-3"><i class="fa fa-telegram" style="font-size:32px;"></i></a><a href="" class="pe-3"><i class="fa fa-instagram" style="font-size:32px;"></i></a>
             
