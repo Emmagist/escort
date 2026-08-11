@@ -137,7 +137,6 @@ if ($pg == 200) {
 
 //payment form
 if ($pg == 202) {
-    202;
     $escort_id = $db->escape($_POST['escort']);
     $amount = $db->escape($_POST['esc_price']);
     $escortee_id = $db->escape($_POST['escortee']);
@@ -587,7 +586,6 @@ if ($pg == 206) {
 
 //payment form
 if ($pg == 207) {
-    // echo 202;
     $arial_token = $db->escape($_POST['arial_sub_token']);
     $plan = $db->escape($_POST['select_sub_plan']);
     $price = $db->escape($_POST['price_plan']);
@@ -1082,22 +1080,22 @@ if ($pg == 215) {
 }
 
 //Check expired subscription and update user
-if ($pg == 216){
-    $user = $_SESSION['token'];
-    $success = '';
-    $error = '';
+// if ($pg == 216){
+//     $user = $_SESSION['token'];
+//     $success = '';
+//     $error = '';
 
-    if(Ajax::updateSubscriberOnExpiration($user) == true){
-        $success = 'inactive';
-    }else{
-        $error = 'active';
-    }
+//     if(Ajax::updateSubscriberOnExpiration($user) == true){
+//         $success = 'inactive';
+//     }else{
+//         $error = 'active';
+//     }
 
-    echo json_encode([
-        'error' => $error,
-        'success' => $success
-    ]);
-}
+//     echo json_encode([
+//         'error' => $error,
+//         'success' => $success
+//     ]);
+// }
 
 //Video to GIF
 // if ($pg == 204) {

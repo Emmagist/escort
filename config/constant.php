@@ -7,7 +7,7 @@
 define("DB_HOST",             "localhost");
 define("DB_USER",             "root");
 define("DB_PASSWORD",         ""); //Emmagist@1994204;
-define("DB_NAME",             "escorts");
+define("DB_NAME",             "escort");
 
 // Online Database
 // define("DB_HOST",              "localhost");
@@ -37,9 +37,9 @@ define("EMAIL_PASSWORD",      "Sanmtos204");
 
 // Gateway
 // GTPay
-define("KEY",   "pk_4b4285f4f8bf88fd5f3e6be658c1bd24d2156e7c");
+// define("KEY",   "pk_4b4285f4f8bf88fd5f3e6be658c1bd24d2156e7c");
 // GTPay Sand box
-// define("KEY",   "sandbox_pk_2812061280c862064951d1ace69f69213cbe2d1f2f07");
+define("KEY",   "sandbox_pk_2812061280c862064951d1ace69f69213cbe2d1f2f07");
 
 // Rave
 // define("KEY",   "FLWPUBK_TEST-0f469fd305d1834979534dd656d0e97b-X");

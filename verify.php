@@ -12,27 +12,27 @@
       $role = $_SESSION['role'];
   }
 
-  if (isset($_GET['inv']) && isset($_GET['amt']) && isset($_GET['verify'])) {
-    if (Users::orderVerification($_GET['inv'], $_GET['amt'], $_GET['verify'], $token) == true) {
-        $paymentCode = $_GET['verify'];
-        // $amount = $_GET['amt'];
-        // $inv = $_GET['inv'];
-    }else{
-        // echo "<script>
-        //     alert('Something went wrong here...');
-        //     window.location.href = '../logout';
-        // </script>";
-    }
+    if (isset($_GET['inv']) && isset($_GET['amt']) && isset($_GET['verify'])) {
+        if (Users::orderVerification($_GET['inv'], $_GET['amt'], $_GET['verify'], $token) == true) {
+            $paymentCode = $_GET['verify'];
+            // $amount = $_GET['amt'];
+            // $inv = $_GET['inv'];
+        }else{
+            // echo "<script>
+            //     alert('Something went wrong here...');
+            //     window.location.href = '../logout';
+            // </script>";
+        }
 
-    
-}else{
-    echo "
-    <script>
-        alert('Something went wrong...');
-    </script>";
-    
-}
-  require "inc/head.php";
+        
+    }else{
+        echo "
+        <script>
+            alert('Something went wrong...');
+        </script>";
+        
+    }
+    require "inc/head.php";
 
 ?>
     
@@ -42,7 +42,8 @@
             <?php
 
                 if ($paymentCode) {
-                    echo '<p style="color: #000;">Order succesfull, reference: " <span style="color:orangered">'. $paymentCode .' </span> "<br /><br /> Your reference code is your verification code, kindly note it.</p>';
+                    echo '<p style="color: #000;">Order succesful, reference code: " <span style="color:orangered">'. $paymentCode .' </span> "<br /><br /> Your reference code is your verification code, kindly note it.</p><br /><br />
+                    <a href="my-order" style="padding: 10px;border: 1px solid #ddd;border-radius: 10px;color:orangered;margin-left:127px">View Order</a>';
                 }
 
             ?>

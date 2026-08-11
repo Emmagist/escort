@@ -63,12 +63,10 @@
         const token = $('#escort_profile').attr('data-id'); //alert(token);
         
         $.ajax({
-            url: 'controllers/ajaxGet.php?esc='+token,
+            url: 'controllers/ajaxGet.php',
             method: 'GET',
             dataType: 'json',
-            data: token,
-            contentType: false,
-            processData: false,
+            data: {esc:token},
             beforeSend: () => {
                 $('.escort_profile').html('Loading contents...');
             },
@@ -86,12 +84,10 @@
         $('#exampleModal').modal('show');
 
         $.ajax({
-            url: 'controllers/ajaxGet.php?esc_book='+params+'&slug='+slug,
+            url: 'controllers/ajaxGet.php',
             method: 'GET',
             dataType: 'json',
-            data: {params,slug},
-            contentType: false,
-            processData: false,
+            data: {esc_book:params,slug:slug},
             beforeSend: () => {
                 $('#modal-body').html('Loading contents...');
             },
@@ -109,45 +105,52 @@
     //   const NairapaymentForm = document.getElementById('bookEscortPaymentForm'); 
     //   NairapaymentForm.addEventListener("submit", SquadPay, false);
 
-  function SquadPay() {
-    // e.preventDefault();
-    const key = '<?=KEY?>';
-    const escort = document.getElementById("escort").value;
-    const escortee = document.getElementById("escortee").value;
-    const trn_invoice = document.getElementById("invoice").value;
-    const price = document.getElementById("price").value;
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
-    const slug = document.getElementById("slug").value; //console.log('date:'+date, 'time:'+time, 'escort:'+escort, 'escortee:'+escortee, 'trn:'+trn_invoice, 'price:'+price, 'slug:'+slug);
-    const phone_number = document.getElementById("phone_number").value;
-    const location = document.getElementById("location").value;
-    const note = document.getElementById("note").value;
-    passable(date,time,escort,escortee,trn_invoice,price,slug,phone_number,location,note); 
-    const squadInstance = new squad({
-    onLoad: () => console.log("Widget loaded successfully"),
-    key: key,
-    // "test_pk_sample-public-key-1"
-    //Change key (test_pk_sample-public-key-1) to the key on your Squad Dashboard
-    email: document.getElementById("email-address").value,
-    amount: document.getElementById("price").value * 100,
-    //Enter amount in Naira or Dollar (Base value Kobo/cent already multiplied by 100)
-    transaction_ref: 'Inv'+Math.floor((Math.random() * 1000000000) + 1),
-    currency_code: "NGN",
-    
-    onSuccess: function(response){
-        // let message = 'Payment complete! Reference: ' + response.transaction_ref ;
-        // alert(message);
-        const amt = document.getElementById("price").value;
-        location.href = "verify?verify="+response.transaction_ref+"&inv="+trn_invoice+"&amt="+amt+"&slug="+slug;
-    },
-    onClose: () => alert("Transaction Cancelled")
-    });
-    squadInstance.setup();
-    squadInstance.open();
+    function SquadPay() {
+        // e.preventDefault();
+        const key_opener = '<?=KEY?>';
+        const escort = document.getElementById("escort").value;
+        const escortee = document.getElementById("escortee").value;
+        const trn_invoice = document.getElementById("invoice").value;
+        const price = document.getElementById("price").value;
+        const date = document.getElementById("date").value;
+        const time = document.getElementById("time").value;
+        const slug = document.getElementById("slug").value; //console.log('date:'+date, 'time:'+time, 'escort:'+escort, 'escortee:'+escortee, 'trn:'+trn_invoice, 'price:'+price, 'slug:'+slug);
+        const phone_number = document.getElementById("phone_number").value;
+        const bookingLocation = document.getElementById("location").value;
+        const note = document.getElementById("note").value;
+        passable(date,time,escort,escortee,trn_invoice,price,slug,phone_number,bookingLocation,note); 
+        const squadInstance = new squad({
+        onLoad: () => console.log("Widget loaded successfully"),
+        key: key_opener,
+        // "test_pk_sample-public-key-1"
+        //Change key (test_pk_sample-public-key-1) to the key on your Squad Dashboard
+        email: document.getElementById("email-address").value,
+        amount: document.getElementById("price").value * 100,
+        //Enter amount in Naira or Dollar (Base value Kobo/cent already multiplied by 100)
+        transaction_ref: 'Inv'+Math.floor((Math.random() * 1000000000) + 1),
+        currency_code: "NGN",
+        
+        onSuccess: function(response){
+            // let message = 'Payment complete! Reference: ' + response.transaction_ref ;
+            // alert(message);
+            const amt = price;
+            window.location.href =
+                "verify?verify=" +
+                encodeURIComponent(response.transaction_ref) +
+                "&inv=" +
+                encodeURIComponent(trn_invoice) +
+                "&amt=" +
+                encodeURIComponent(amt) +
+                "&slug=" +
+            encodeURIComponent(slug);
+        },
+        onClose: () => alert("Transaction Cancelled")
+        });
+        squadInstance.setup();
+        squadInstance.open();
+    }
 
-  }
-
-    function passable(date,time,escort,escortee,trn_invoice,price,slug,phone_number,location,note) {
+    function passable(date,time,escort,escortee,trn_invoice,price,slug,phone_number,bookingLocation,note) {
         const escotee_date = $('#escotee_date').val(date);
         const escotee_time = $('#escotee_time').val(time);
         const escort_id = $('#escort_id').val(escort);
@@ -156,7 +159,7 @@
         const amount_pay = $('#esc_price').val(price);
         const page = $('#page').val(slug);
         const phone = $('#phone').val(phone_number);
-        const meet_location = $('#meet_location').val(location);
+        const meet_location = $('#meet_location').val(bookingLocation);
         const message = $('#message').val(note);
 
         if (amount_pay != '' && invoiceGen != '' && escort_id != '' && escortee_id != '' && escotee_date != '' && escotee_time != '' && phone != '' && meet_location != '') {

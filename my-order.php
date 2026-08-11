@@ -105,7 +105,7 @@
           </div>
         </div>
         <div class="row" id="sugestion">
-          <div class="col-sm-6 col-xl-3">
+          <!-- <div class="col-sm-6 col-xl-3">
             <div class="card overflow-hidden rounded-2">
               <div class="position-relative">
                 <a href="javascript:void(0)"><img src="assets/images/products/s4.jpg" class="card-img-top rounded-0" alt="..."></a>
@@ -184,46 +184,77 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
 <?php require "inc/footer.php"; ?>
 
 <script>
+  // $(document).ready(function () {
+  //   const token = '<?=$token?>';
+  //   $.ajax({
+  //     url: 'controllers/ajaxGet.php?order='+token,
+  //     method: 'GET',
+  //     dataType: 'json',
+  //     data: token,
+  //     beforeSend: () => {
+  //         $('#task-body').html('Loading contents...');
+  //     },
+  //     success: (param) => {console.log(param);
+  //       if (param) {
+  //           $('#task-body').html(param);
+  //       }
+  //     }
+  //   })
+  // });
+
   $(document).ready(function () {
     const token = '<?=$token?>';
+
     $.ajax({
-      url: 'controllers/ajaxGet.php?order='+token,
-      method: 'GET',
-      dataType: 'json',
-      data: token,
-      contentType: false,
-      processData: false,
-      beforeSend: () => {
+        url: 'controllers/ajaxGet.php',
+        method: 'GET',
+        dataType: 'json',
+        data: {order: token},
+
+        beforeSend: function () {
           $('#task-body').html('Loading contents...');
-      },
-      success: (param) => {
-        if (param) {
-            $('#task-body').html(param);
+        },
+
+        success: function (response) {
+            console.log(response);
+
+            if (response) {
+              $('#task-body').html(response);
+            }else {
+              $('#task-body').html('No orders found.');
+            }
+        },
+
+        error: function () {
+          $('#task-body').html('Unable to load orders.');
         }
-      }
-    })
-  });
+    });
+});
 
   $(document).ready(function () {
     $.ajax({
-      url: 'controllers/ajaxGet.php?sugestion=sugestion',
+      url: 'controllers/ajaxGet.php',
       method: 'GET',
       dataType: 'json',
-      data: 'sugestion',
-      contentType: false,
-      processData: false,
+      data: {sugestion:'sugestion'},
+
       beforeSend: () => {
-          $('#sugestion').html('Loading contents...');
+        $('#sugestion').html('Loading contents...');
       },
+
       success: (param) => {
         if (param) {
             $('#sugestion').html(param);
         }
+      },
+
+      error: function () {
+        $('#sugestion').html('Unable to load data.');
       }
     })
   });

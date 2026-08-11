@@ -182,21 +182,21 @@ class Ajax
         
     }
 
-    public static function updateSubscriberOnExpiration($user){
-        global $db;
+    // public static function updateSubscriberOnExpiration($user){
+    //     global $db;
 
-        $update = $db->update(TBL_SUBSCRIPTIONS, "sub_status = 'inactive'", "user_id = '$user' AND end_date < NOW() AND sub_status = 'active'");
+    //     $update = $db->update(TBL_SUBSCRIPTIONS, "sub_status = 'inactive'", "user_id = '$user' AND end_date < NOW() AND sub_status = 'active'");
 
-        if ($update) {
+    //     if ($update) {
 
-            return true;
+    //         return true;
 
-        }else {
+    //     }else {
 
-            return false;
-        }
+    //         return false;
+    //     }
         
-    }
+    // }
 
     public static function getSubscriptionPlans(){
         global $db;
@@ -269,7 +269,7 @@ class Ajax
             ON " . TBL_PAYMENTS_LOG . ".category_id = " . TBL_CATEGORY . ".token_guid
             INNER JOIN " . TBL_USERS . " 
             ON " . TBL_PAYMENTS_LOG . ".escorte_id = " . TBL_USERS . ".user_guid 
-            WHERE " . TBL_PAYMENTS_LOG . ".escortee_id = '$token' ORDER BY created_at DESC
+            WHERE " . TBL_PAYMENTS_LOG . ".escortee_id = '$token' ORDER BY order_created_at DESC
         ");
         if (!empty($result)) {
             while ($row = $result->fetch_assoc()) {

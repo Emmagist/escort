@@ -98,12 +98,13 @@ class Users
           $userExist = $db->selectData(TBL_USERS, "*", "user_guid = '$token'");
 
           if ($userExist) {
-               $get = $db->selectData(TBL_SUBSCRIPTIONS, "*", "amount = '$amount' AND invoice_code = '$code'");        //var_dump($get);exit;
+               $get = $db->selectData(TBL_SUBSCRIPTIONS, "*", "amount = '$amount' AND invoice_code = '$code'"); //var_dump($get);exit;
 
                if ($get) {
                     foreach ($get as $key) {
                          $plan_id = $key['plan_id'];
-                         $duration = $db->singleData(TBL_SUBSCRIPTION_PLAN, "duration", "plan_guid = '$plan_id'"); 
+                         $durationData = $db->singleData(TBL_SUBSCRIPTION_PLAN, "duration", "plan_guid = '$plan_id'"); //var_dump($duration);exit;
+                         $duration = (int) $durationData['duration'];
 
                          if ($key['sub_condition'] == 'successful' && !empty($key['end_date']) && $key['sub_status'] == 'active') {
                               return true;
@@ -159,16 +160,17 @@ class Users
                                         WHERE " . TBL_PAYMENTS_LOG . ".invoice_code = '$code'
                                    ");
                                    if (!empty($result)) {
-                                        while ($row = $result->fetch_assoc()) {
-                                             $email = $row['email'];
-                                             $username = $row['username'];
-                                             $mail = $mailer->sendEscortRequestMessage($email, $username);
-                                             if ($mail) {
-                                                  return true;
-                                             } else {
-                                                  return false;
-                                             }
-                                        }
+                                        // while ($row = $result->fetch_assoc()) {
+                                        //      $email = $row['email'];
+                                        //      $username = $row['username'];
+                                        //      $mail = $mailer->sendEscortRequestMessage($email, $username);
+                                        //      if ($mail) {
+                                        //           return true;
+                                        //      } else {
+                                        //           return false;
+                                        //      }
+                                        // }
+                                        return true;
                                    }
                               } else {
                                    return false;

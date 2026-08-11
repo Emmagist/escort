@@ -518,12 +518,21 @@ use Google\Service\Analytics\Column;
             return $ipaddress;
         }
 
-        public static function expire_at($duration){
-            $date=date("Y-m-d");
-            $int_date = $duration + 1;
-            $expire_at = date('Y-m-d', strtotime($date. ' + ' . $int_date . ' days'));
+        // public static function expire_at($duration){
+        //     $date=date("Y-m-d");
+        //     $int_date = $duration + 1;
+        //     $expire_at = date('Y-m-d', strtotime($date. ' + ' . $int_date . ' days'));
 
-            return $expire_at;
+        //     return $expire_at;
+        // }
+
+        public static function expire_at($duration)
+        {
+            $startDate = new DateTime();
+
+            $startDate->modify("+{$duration} days");
+
+            return $startDate->format('Y-m-d H:i:s');
         }
 
         public static function userUrlTitleFormat($page){
