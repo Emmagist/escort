@@ -194,12 +194,11 @@
     const con = '<?=$_SESSION['connect']?>';
     const gender = '<?=$_SESSION['gender']?>';
     $.ajax({
-      url: 'controllers/ajaxGet.php?con='+con+'&gender='+gender,
+      url: 'controllers/ajaxGet.php',
       method: 'GET',
       dataType: 'json', 
-      data: {con,gender},
-      contentType: false,
-      processData: false,
+      data: {con:con,gender:gender},
+
       beforeSend: () => {
           $('#category').html('Loading contents...');
       },
@@ -278,9 +277,10 @@
   // payment
   function SquadPay() {
     // e.preventDefault();
+    const key_opener = '<?= KEY?>';
     const squadInstance = new squad({
     onLoad: () => console.log("Widget loaded successfully"),
-    key: 'sandbox_pk_2812061280c862064951d1ace69f69213cbe2d1f2f07',
+    key: key_opener,
     // "test_pk_sample-public-key-1"
     //Change key (test_pk_sample-public-key-1) to the key on your Squad Dashboard
     email: document.getElementById("user_email").value,

@@ -1,6 +1,6 @@
 <?php
 
-require_once "../config/db.php";
+require_once "../helper/helper.php";
 // require_once "../phpMailer.php";
 require_once "../vendor/autoload.php";
 
@@ -139,7 +139,7 @@ class Ajax
 
     public static function getAllSexVideos(){
         global $db;
-        return $db->selectData(TBL_PORN_VIDEOS, "*");
+        return $db->selectData(TBL_PORN_VIDEOS, "*", "video_approval_status = 'approved'");
     }
 
     public static function getSingleSexVideos($slug){
@@ -244,12 +244,12 @@ class Ajax
     public static function getMyTasks($token){
         global $db;
         $rows = [];
-        $result = $db->query("SELECT * FROM " . TBL_ORDERS . "
-            INNER JOIN " . TBL_PAYMENTS_LOG . "
+        $result = $db->query("SELECT * FROM " . TBL_PAYMENTS_LOG . "
+            INNER JOIN " . TBL_ORDERS . "
             ON " . TBL_ORDERS . ".payments_log_id = " . TBL_PAYMENTS_LOG . ".payment_entity
             INNER JOIN " . TBL_USERS . " 
             ON " . TBL_PAYMENTS_LOG . ".escortee_id = " . TBL_USERS . ".user_guid 
-            WHERE " . TBL_ORDERS . ".user_uuid = '$token' ORDER BY created_at DESC
+            WHERE " . TBL_PAYMENTS_LOG . ".escorte_id = '$token' ORDER BY pay_created_at DESC
         ");
         if (!empty($result)) {
             while ($row = $result->fetch_assoc()) {
@@ -270,6 +270,26 @@ class Ajax
             INNER JOIN " . TBL_USERS . " 
             ON " . TBL_PAYMENTS_LOG . ".escorte_id = " . TBL_USERS . ".user_guid 
             WHERE " . TBL_PAYMENTS_LOG . ".escortee_id = '$token' ORDER BY order_created_at DESC
+        ");
+        if (!empty($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            return $rows;
+        }
+    }
+
+    public static function getSingleOrder($id){
+        global $db;
+        $rows = [];
+        $result = $db->query("SELECT * FROM " . TBL_ORDERS . "
+            INNER JOIN " . TBL_PAYMENTS_LOG . "
+            ON " . TBL_PAYMENTS_LOG . ".payment_entity = " . TBL_ORDERS . ".payments_log_id
+            INNER JOIN " . TBL_CATEGORY . "
+            ON " . TBL_PAYMENTS_LOG . ".category_id = " . TBL_CATEGORY . ".token_guid
+            INNER JOIN " . TBL_USERS . " 
+            ON " . TBL_PAYMENTS_LOG . ".escorte_id = " . TBL_USERS . ".user_guid 
+            WHERE " . TBL_ORDERS . ".order_entity = '$id'
         ");
         if (!empty($result)) {
             while ($row = $result->fetch_assoc()) {
@@ -330,6 +350,53 @@ class Ajax
         }
     }
 
+    public static function getPendingWalletByToken($token){
+        global $db;
+
+        $result = $db->singleData(TBL_WALLET, "pending_funds", "user_id = '$token'");
+
+        if ($result) {
+            $balance = $result['pending_funds'];
+            return $balance;
+        }else{
+            return false;
+        }
+    }
+
+    public function movePendingFundOnEscorteeOrderApprove($order_csrf){
+        global $db;
+
+        $update = $db->update(TBL_ORDERS, "payment_status = 'paid', complaint = ''", "order_entity = '$order_csrf'");
+
+        if ($update) {
+            $result = $db->query("SELECT * FROM " . TBL_ORDERS . "
+                INNER JOIN " . TBL_PAYMENTS_LOG . "
+                ON " . TBL_ORDERS . ".payments_log_id = " . TBL_PAYMENTS_LOG . ".payment_entity 
+                WHERE " . TBL_ORDERS . ".order_entity = '$order_csrf'
+            ");
+
+            while ($row = $result->fetch_assoc()) {
+                $amount = $row['amount'];
+                $escorte_id = $row['escorte_id'];
+                $current_pending_balance = $this->getPendingWalletByToken($escorte_id);
+                $fund = $current_pending_balance - $amount;
+                $current_balance = $this->getWalletByToken($escorte_id);
+                $wallet_balance = $current_balance + $amount;
+
+                if ($this->getPendingWalletByToken($escorte_id) != false) {
+                    $wallet = $db->update(TBL_WALLET, "credit = '$wallet_balance', pending_funds = '$fund'", "user_id = '$escorte_id'");
+
+                    if ($wallet) {
+                        return true;
+                    }else{
+                        return false;
+                    }
+
+                }
+            }
+        }
+    }
+
     public function creditEscortOnTaskDone($order_status, $order_csrf, $token){
         global $db;
 
@@ -343,11 +410,11 @@ class Ajax
             if (!empty($result)) {
                 while ($row = $result->fetch_assoc()) {
                     $amount = $row['amount'];
-                    $current_balance = $this->getWalletByToken($token);
+                    $current_balance = $this->getPendingWalletByToken($token);
                     $wallet_balance = $current_balance + $amount;
 
-                    if ($this->getWalletByToken($token) != false) {
-                        $wallet = $db->update(TBL_WALLET, "credit = '$wallet_balance'", "user_id = '$token'");
+                    if ($this->getPendingWalletByToken($token) != false) {
+                        $wallet = $db->update(TBL_WALLET, "pending_funds = '$wallet_balance'", "user_id = '$token'");
 
                         $request = $db->update(TBL_ORDERS, "order_status = '$order_status', payment_status = 'pending'", "order_entity = '$order_csrf'");
 
@@ -358,7 +425,7 @@ class Ajax
                         }
 
                     }else {
-                        $wallet = $db->saveData(TBL_WALLET, "user_id = '$token', entity_uuid = uuid(), credit = '$amount'");
+                        $wallet = $db->saveData(TBL_WALLET, "user_id = '$token', entity_uuid = uuid(), pending_funds = '$amount'");
 
                         $request = $db->update(TBL_ORDERS, "order_status = '$order_status', payment_status = 'pending'", "order_entity = '$order_csrf'");
 
@@ -386,7 +453,7 @@ class Ajax
             ON " . TBL_PAYMENTS_LOG . ".category_id = " . TBL_CATEGORY . ".token_guid
             INNER JOIN " . TBL_USERS . " 
             ON " . TBL_PAYMENTS_LOG . ".escortee_id = " . TBL_USERS . ".user_guid 
-            WHERE " . TBL_ORDERS . ".user_uuid = '$token' AND order_status = 'done' ORDER BY created_at DESC LIMIT 5
+            WHERE " . TBL_ORDERS . ".user_uuid = '$token' AND order_status = 'done' ORDER BY order_created_at DESC LIMIT 5
         ");
         if (!empty($result)) {
             while ($row = $result->fetch_assoc()) {
@@ -405,7 +472,7 @@ class Ajax
             ON " . TBL_ORDERS . ".payments_log_id = " . TBL_PAYMENTS_LOG . ".payment_entity
             INNER JOIN " . TBL_USERS . " 
             ON " . TBL_PAYMENTS_LOG . ".escortee_id = " . TBL_USERS . ".user_guid 
-            WHERE " . TBL_ORDERS . ".user_uuid = '$token' AND order_status = 'done' AND payment_status = 'paid' ORDER BY created_at DESC LIMIT 5
+            WHERE " . TBL_ORDERS . ".user_uuid = '$token' AND order_status = 'done' AND payment_status = 'paid' ORDER BY order_updated_at DESC LIMIT 5
         ");
         if (!empty($result)) {
             while ($row = $result->fetch_assoc()) {

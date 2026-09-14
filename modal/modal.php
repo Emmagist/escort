@@ -86,3 +86,32 @@
     </div>
   </div>
 </div>
+
+<!-- View order -->
+<div class="modal fade" id="viewOrderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">View Order</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="view_order_modal_body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit order -->
+<div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Update Order</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <li class="alert alert-success list-unstyled text-center text-capitalize" style="display: none;"></li>
+        <form action="" method="post" id="edit_order_modal_body"></form>
+      </div>
+    </div>
+  </div>
+</div>

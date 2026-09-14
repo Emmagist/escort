@@ -95,6 +95,9 @@
                         <th class="border-bottom-0">
                           <h6 class="fw-semibold mb-0">Status</h6>
                         </th>
+                        <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Action</h6>
+                        </th>
                       </tr>
                     </thead>
                     <tbody id="task-body"></tbody>
@@ -260,21 +263,19 @@
   });
 
   function viewTask(params) {
-    $('#viewTaskModal').modal('show');
+    $('#viewOrderModal').modal('show');
 
     $.ajax({
-      url: 'controllers/ajaxGet.php?vt='+params,
+      url: 'controllers/ajaxGet.php',
       method: 'GET',
       dataType: 'json',
-      data: params,
-      contentType: false,
-      processData: false,
+      data: {vo: params},
       beforeSend: () => {
-          $('#view_task_modal_body').html('Loading contents...');
+          $('#view_order_modal_body').html('Loading contents...');
       },
       success: (param) => {
         if (param) {
-            $('#view_task_modal_body').html(param);
+            $('#view_order_modal_body').html(param);
         }
       }
     })
@@ -282,31 +283,37 @@
 
   //edit task
   function editTask(params) {
-    $('#editTaskModal').modal('show');
+    $('#editOrderModal').modal('show');
 
     $.ajax({
-      url: 'controllers/ajaxGet.php?et='+params,
+      url: 'controllers/ajaxGet.php',
       method: 'GET',
       dataType: 'json',
-      data: params,
-      contentType: false,
-      processData: false,
+      data: {eo: params},
       beforeSend: () => {
-          $('#edit_task_modal_body').html('Loading contents...');
+          $('#edit_order_modal_body').html('Loading contents...');
       },
       success: (param) => {
         if (param) {
-            $('#edit_task_modal_body').html(param);
+            $('#edit_order_modal_body').html(param);
         }
       }
     })
   }
 
+  function onChangeOrderStatus() {
+    if ($('#escortee_order_status').val() === 'pending') {
+        $('#complaint').show();
+    } else {
+        $('#complaint').hide();
+    }
+  }
+
   // update task form
-  $('#edit_task_modal_body').submit(function () {
+  $('#edit_order_modal_body').submit(function () {
       const formData = new FormData(this); //alert(formData);
       $.ajax({
-          url: 'controllers/fetchAjax.php?pg=209',
+          url: 'controllers/fetchAjax.php?pg=216',
           method: 'POST',
           dataType: 'json',
           data: formData,

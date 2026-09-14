@@ -39,24 +39,24 @@
                 if($key['gender'] == 'male' && empty($key['profile_image']) && Ajax::checkActiveSubscriber($_SESSION['token']) == false || $_SESSION['token'] == 0): 
                   $image = 'assets/images/products/no-img-men.jpg';
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-10" alt="..." style="width:100%; max-height: 250px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);">';
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-10" alt="..." style="width:100%; height: auto;display: block;max-height: 200px;">';
                 elseif ($key['gender'] == 'female' && empty($key['profile_image']) && Ajax::checkActiveSubscriber($_SESSION['token']) == false || $_SESSION['token'] == 0) :
                   $image = 'assets/images/products/no-img-women.jpg';
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-10" alt="..." style="width:100%; max-height: 250px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);">';
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-10" alt="..." style="width:100%; height: auto;display: block;max-height: 200px;">';
                 elseif ($key['profile_image'] > 0 || $_SESSION['token'] == 0) :
                   $image = $key['profile_image'];
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.$image.'" class="card-img-top rounded-10" alt="..." style="width:100%; max-height: 250px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);">';
+                $outPut .='<img src="'.$image.'" class="card-img-top rounded-10" alt="..." style="width:100%; height: auto;display: block;max-height: 200px;">';
                 elseif (empty($key['profile_image']) && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true && $key['gender'] == 'male') :
                   // $image->blurImage(5,3);
-                  $outPut .='<img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-10" alt="..." style="width:100%; max-height: 250px; object-fit: cover;">';
+                  $outPut .='<img src="assets/images/products/no-img-men.jpg" class="card-img-top rounded-10" alt="..." style="width:100%; height: auto;display: block;max-height: 200px;">';
                 elseif (empty($key['profile_image']) && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true && $key['gender'] == 'female') :
                   // $image->blurImage(5,3);
-                  $outPut .='<img src="assets/images/products/no-img-women.jpg" class="card-img-top rounded-10" alt="..." style="width:100%; max-height: 250px; object-fit: cover;">';
+                  $outPut .='<img src="assets/images/products/no-img-women.jpg" class="card-img-top rounded-10" alt="..." style="width:100%; height: auto;display: block;max-height: 200px;">';
                 elseif (!empty($key['profile_image']) && $_SESSION['token'] > 0 && Ajax::checkActiveSubscriber($_SESSION['token']) == true) :
                   // $image->blurImage(5,3);
-                $outPut .='<img src="'.str_replace('../','',$key['profile_image']).'" class="card-img-top rounded-10" alt="'.$key['username'].'" style="width:100%; max-height: 250px;">';
+                $outPut .='<img src="'.str_replace('../','',$key['profile_image']).'" class="card-img-top rounded-10" alt="'.$key['username'].'" style="width:100%; height: auto;display: block;max-height: 200px;">';
                 endif;
               $outPut .= '</a>
               <a class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-placement="top" data-bs-title="Book" style="cursor:pointer" onclick=bookEscort(`'.$key['entity_guid'].'`)>book<i class=" fs-4"></i>
@@ -341,7 +341,7 @@
               <div class="position-relative sex_video_div" id="testing">
                 <a href="video?ent='.$key['entity_guid'].'" class="align-middle">
                   <img src="'.str_replace('../', '', $key['img']).'" data-img="'.str_replace('../', '', $key['img']).'" data-gif="'.str_replace('../', '', $key['gif']).'" class="sex__list__show show-not align-middle sex__change__'.$key['entity_guid'].'" onmouseover="changein(`'.str_replace('../', '', $key['gif']).'`, `'.$key['entity_guid'].'`)" onmouseout="changeout(`'.str_replace('../', '', $key['img']).'`, `'.$key['entity_guid'].'`)" alt="'.$key['title'].'" width="260" height="170">
-                  <h6 class="sex_video_title text-capitalize text-center d-inline-block text-truncate pt-1" title="'.$key['title'].'">'.$key['title'].'</h6>
+                  <h6 class="sex_video_title text-capitalize text-left d-inline-block text-truncate pt-1" title="'.$key['title'].'" style="width: 260px;">'.$key['title'].'</h6>
                 </a>
               </div>
             </div>
@@ -657,14 +657,14 @@
               if($key['order_status'] == 'accept' || $key['order_status'] == 'done'):
                 $outPut .= '<p class="mb-0 fw-semibold fs-4">'.$key['contact_number'].'</p>';
               else :
-                $outPut .= '<p class="mb-0 fw-semibold fs-4">'.Database::maskNumber($key['contact_number']).'</p>';
+                $outPut .= '<p class="mb-0 fw-semibold fs-4">'.Helper::maskNumber($key['contact_number']).'</p>';
               endif;
             $outPut .= '</td>
             <td class="border-bottom-0">';
             if($key['order_status'] == 'accept' || $key['order_status'] == 'done'):
               $outPut .= '<p class="mb-0 fw-semibold fs-4">'.$key['location'].'</p>';
             else :
-              $outPut .= '<p class="mb-0 fw-semibold fs-4">'.Database::maskString($key['location']).'</p>';
+              $outPut .= '<p class="mb-0 fw-semibold fs-4">'.Helper::maskString($key['location']).'</p>';
             endif;
             $outPut .= '</td>
             <td class="border-bottom-0">
@@ -683,7 +683,13 @@
                 elseif($key['order_status']=='done'):
                   $outPut .= 'text-dark';
                 endif;$outPut .= '
-              ">'.$key['order_status'].'</h6>
+              ">';
+              if($key['order_status']=='accept'):
+                $outPut .= $key['order_status'].'ed';
+              elseif($key['order_status']=='decline'):
+                $outPut .= $key['order_status'];$outPut .= 'd';
+              else: $outPut .= $key['order_status'];endif;
+              $outPut .= '</h6>
             </td>
             <td class="border-bottom-0">
               <a class="fw-bold mb-0 ti ti-eye task-view text-success" onclick="viewTask(`'.$key['payment_entity'].'`)" style="font-size:24px;"></a>
@@ -731,7 +737,7 @@
             if($key['order_status'] == 'accept' || $key['order_status'] == 'done'):
               $outPut .= '<input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.$key['contact_number'].'" readonly>';
             else :
-              $outPut .= '<input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.Database::maskNumber($key['contact_number']).'" readonly>';
+              $outPut .= '<input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.Helper::maskNumber($key['contact_number']).'" readonly>';
             endif;
             $outPut .= '</div>
             <div class="col-md-6">
@@ -739,7 +745,7 @@
             if($key['order_status'] == 'accept' || $key['order_status'] == 'done'):
               $outPut .= '<input type="text" class="form-control mb-3" name="location" id="location" value="'.$key['location'].'" readonly>';
             else :
-              $outPut .= '<input type="text" class="form-control mb-3" name="location" id="location" value="'.Database::maskString($key['location']).'" readonly>';
+              $outPut .= '<input type="text" class="form-control mb-3" name="location" id="location" value="'.Helper::maskString($key['location']).'" readonly>';
             endif;
             $outPut .= '</div>
             <div class="col-md-6">
@@ -751,9 +757,15 @@
             <input type="text" class="form-control mb-3" name="email-address" id="escortee_time" value="'.Database::time($key['escortee_time']).'" readonly>
             </div>
             <div class="col-md-6">
-            <label for="order_status">Booking Status</label>
-            <input type="text" class="form-control mb-3" name="order_status" id="order_status" value="'.$key['order_status'].'" readonly>
-            </div>
+            <label for="order_status">Booking Status</label>';
+            if($key['order_status'] == 'accept' || $key['order_status'] == 'decline'):
+              $outPut .= '<input type="text" class="form-control mb-3" name="order_status" id="order_status" value="'.$key['order_status'].'ed" readonly>';
+            elseif($key['order_status'] == 'decline'):
+              $outPut .= '<input type="text" class="form-control mb-3" name="order_status" id="order_status" value="'.$key['order_status'].'d" readonly>';
+            else :
+              $outPut .= '<input type="text" class="form-control mb-3" name="order_status" id="order_status" value="'.$key['order_status'].'" readonly>';
+            endif;
+            $outPut .= '</div>
             <div class="col-md-12">
             <label for="messages">Messages</label>
             <textarea class="form-control mb-3" name="messages" id="messages" readonly>'.$key['messages'].'</textarea>
@@ -795,7 +807,7 @@
             if($key['order_status'] == 'accept' || $key['order_status'] == 'done'):
               $outPut .= '<input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.$key['contact_number'].'" disabled>';
             else :
-              $outPut .= '<input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.Database::maskNumber($key['contact_number']).'" disabled>';
+              $outPut .= '<input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.Helper::maskNumber($key['contact_number']).'" disabled>';
             endif;
             $outPut .= '</div>
             <div class="col-md-6">
@@ -803,7 +815,7 @@
             if($key['order_status'] == 'accept' || $key['order_status'] == 'done'):
               $outPut .= '<input type="text" class="form-control mb-3" name="location" id="location" value="'.$key['location'].'" disabled>';
             else :
-              $outPut .= '<input type="text" class="form-control mb-3" name="location" id="location" value="'.Database::maskString($key['location']).'" disabled>';
+              $outPut .= '<input type="text" class="form-control mb-3" name="location" id="location" value="'.Helper::maskString($key['location']).'" disabled>';
             endif;
             $outPut .= '</div>
             <div class="col-md-6">
@@ -958,7 +970,7 @@
                 $outPut .= '<span class="badge bg-warning rounded-3 fw-semibold">'.ucfirst($transaction['payment_status']).'</span>';
               }elseif ($transaction['payment_status'] == 'paid') {
                 $outPut .= '<span class="badge bg-success rounded-3 fw-semibold">'.ucfirst($transaction['payment_status']).'</span>';
-              }elseif ($transaction['payment_status'] == 'reversed') {
+              }elseif ($transaction['payment_status'] == 'unpaid') {
                 $outPut .= '<span class="badge bg-danger rounded-3 fw-semibold">'.ucfirst($transaction['payment_status']).'</span>';
               }
               $outPut .= '</div>
@@ -984,7 +996,7 @@
     
   }
 
-  //Escort Transaction
+  //Escort payment history
   if (isset($_GET['prv'])) {
     $outPut = '';
     $token = $_SESSION['token'];
@@ -994,12 +1006,12 @@
       foreach($transactions as $transaction){
         $outPut .= '
           <li class="timeline-item d-flex position-relative overflow-hidden">
-            <div class="timeline-time text-dark flex-shrink-0 text-end">'.Database::time($transaction['name']).'</div>
+            <div class="timeline-time text-dark flex-shrink-0 text-end">'.Database::time($transaction['order_update_at']).'</div>
             <div class="timeline-badge-wrap d-flex flex-column align-items-center">
               <span class="timeline-badge border-2 border border-success flex-shrink-0 my-8"></span>
               <span class="timeline-badge-border d-block flex-shrink-0"></span>
             </div>
-            <div class="timeline-desc fs-3 text-dark mt-n1">Payment received from '.ucfirst($transaction['name']).' of &#8358;'.number_format($transaction['amount']).'</div>
+            <div class="timeline-desc fs-3 text-dark mt-n1">Payment of &#8358;'.number_format($transaction['amount']).' received from '.ucfirst($transaction['name']).'</div>
           </li>
         ';
       }
@@ -1016,7 +1028,7 @@
     
   }
 
-  //Show task table
+  //Show order table
   if (isset($_GET['order'])) {
     $outPut = '';
     $token = $_SESSION['token'];
@@ -1049,6 +1061,10 @@
                 endif;$outPut .= '
               ">'.$key['order_status'].'</h6>
             </td>
+            <td class="border-bottom-0">
+              <a class="fw-bold mb-0 ti ti-eye task-view text-success" onclick="viewTask(`'.$key['order_entity'].'`)" style="font-size:24px;"></a>
+              <a class="fw-bold mb-0 ti ti-pencil task-edit text-warning" onclick="editTask(`'.$key['order_entity'].'`)" style="font-size:24px;"></a>
+            </td>
           </tr> 
         ';
       }
@@ -1062,6 +1078,7 @@
     
   }
 
+  //Suggestion
   if (isset($_GET['sugestion'])) {
     $outPut = '';
     $keys = Ajax::getAllEscorts();
@@ -1104,4 +1121,130 @@
 
     echo json_encode($outPut);
 
+  }
+
+  // View order modal
+  if (isset($_GET['vo'])) {
+    $id = $_GET['vo'];
+    $token = $_SESSION['token'];
+    $outPut = '';
+
+    if (Ajax::getSingleOrder($id)) {
+      foreach ($keys = Ajax::getSingleOrder($id) as $key) {
+        $outPut .= '
+          <div class="row">
+            <!-- <div class="col-md-12">
+            <img src="">
+            </div> -->
+            <div class="col-md-6">
+            <label for="name">Order ID</label>
+            <input type="text" class="form-control mb-3" name="arial_token" id="name" value="'.$key['invoice_code'].'" readonly>
+            </div>
+            <div class="col-md-6">
+            <label for="category">Category</label>
+            <input type="text" class="form-control mb-3" name="category" id="category" value="'.$key['category'].'" readonly>
+            </div>
+            <div class="col-md-12">
+            <label for="name">Escortee Name</label>
+            <input type="text" class="form-control mb-3" name="arial_token" id="name" value="'.$key['name'].'" readonly>
+            </div>
+            <div class="col-md-6">
+            <label for="amount">Amount</label>
+            <input type="text" class="form-control mb-3" name="amount" id="amount" value="&#8358;'.$key['amount'].'" readonly>
+            </div>
+            <div class="col-md-6">
+              <label for="escortee_date">Booking Date</label>
+              <input type="text" class="form-control mb-3" name="escortee_date" id="escortee_date" value="'.Database::dateFormat($key['escortee_date']).'" readonly>
+            </div>
+            <div class="col-md-6">
+            <label for="escortee_time">Booking Time</label>
+            <input type="text" class="form-control mb-3" name="email-address" id="escortee_time" value="'.Database::time($key['escortee_time']).'" readonly>
+            </div>
+            <div class="col-md-6">
+            <label for="order_status">Booking Status</label>';
+            if($key['order_status'] == 'accept' || $key['order_status'] == 'decline'):
+              $outPut .= '<input type="text" class="form-control mb-3" name="order_status" id="order_status" value="'.$key['order_status'].'ed" readonly>';
+            elseif($key['order_status'] == 'decline'):
+              $outPut .= '<input type="text" class="form-control mb-3" name="order_status" id="order_status" value="'.$key['order_status'].'d" readonly>';
+            else :
+              $outPut .= '<input type="text" class="form-control mb-3" name="order_status" id="order_status" value="'.$key['order_status'].'" readonly>';
+            endif;
+            $outPut .= '</div>
+            <div class="col-md-12">
+            <label for="messages">Messages</label>
+            <textarea class="form-control mb-3" name="messages" id="messages" readonly>'.$key['messages'].'</textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        ';
+      }
+    }
+
+    echo json_encode($outPut);
+    
+  }
+
+  // edit task modal
+  if (isset($_GET['eo'])) {
+    $id = $_GET['eo'];
+    $outPut = '';
+
+    if (Ajax::getSingleOrder($id)) {
+      foreach (Ajax::getSingleOrder($id) as $key) {
+        $outPut .= '
+          <div class="row">
+            <div class="col-md-6">
+            <label for="name">Escortee Name</label>
+            <input type="text" class="form-control mb-3" name="arial_token" id="name" value="'.$key['name'].'" disabled>
+            </div>
+            <div class="col-md-6">
+            <label for="category">Category</label>
+            <input type="text" class="form-control mb-3" name="category" id="category" value="'.$key['category'].'" disabled>
+            </div>
+            <div class="col-md-6">
+            <label for="amount">Amount</label>
+            <input type="text" class="form-control mb-3" name="amount" id="amount" value="&#8358;'.$key['amount'].'" disabled>
+            </div>
+            
+            <div class="col-md-6">
+            <label for="location">Meeting Location</label><input type="text" class="form-control mb-3" name="location" id="location" value="'.$key['location'].'" disabled>
+            </div>
+            <div class="col-md-6">
+            <label for="escortee_date">Booking Date</label>
+            <input type="text" class="form-control mb-3" name="escortee_date" id="escortee_date" value="'.Database::dateFormat($key['escortee_date']).'" disabled>
+            </div>
+            <div class="col-md-6">
+            <label for="escortee_time">Booking Time</label>
+            <input type="text" class="form-control mb-3" name="email-address" id="escortee_time" value="'.Database::time($key['escortee_time']).'" disabled>
+            </div><div class="col-md-6">
+            <label for="contact_number">Escort Booking Status</label>
+            <input type="text" class="form-control mb-3" name="contact_number" id="contact_number" value="'.$key['order_status'].'" disabled></div>
+            <div class="col-md-6">
+            <label for="escortee_order_status">Approve Job Done<span class="text-danger" style="font-size:16px;font-weight:bold;">*</span></label>
+              <select class="form-control mb-3" name="escortee_order_status" id="escortee_order_status" onchange="onChangeOrderStatus()">
+                <option>Select Option</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                </select>
+            </div>
+            <div class="col-md-12">
+              <input type="hidden" class="form-control" name="order_csrf" value="'.$key['order_entity'].'" >
+            </div>
+            <div class="col-md-12" style="display:none;" id="complaint">
+              <label for="complaint">Complaint<span class="text-danger"  style="font-size:16px;font-weight:bold;">*</span></label></label>
+              <textarea class="form-control mb-3" name="complaint" id="complaint"></textarea>
+            </div>
+            <div class="col-md-12">
+            <label for="messages">Messages</label>
+            <textarea class="form-control mb-3" name="messages" id="messages" disabled>'.$key['messages'].'</textarea>
+          </div>
+          <div class="modal-footer"><button type="submit" class="btn btn-success">Update Order</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        ';
+      }
+    }
+
+    echo json_encode($outPut);
+    
   }

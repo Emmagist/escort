@@ -40,6 +40,7 @@
 
         </div>
         <div class="row escort_row">
+          <!-- style="width:100%; max-height: 250px; object-fit: cover;filter: blur(15px); -webkit-filter: blur(15px);" -->
           <!-- <div class="col-sm-6 col-xl-3">
             <div class="card overflow-hidden rounded-2">
               <div class="position-relative">
@@ -67,59 +68,81 @@
   require "inc/footer.php";
 ?>
 <script>
-  $(document).ready(function(event) {
-    // event.preventDefault(); 
-    const slug = '<?=$slug?>';
-    $.ajax({
-        url: 'controllers/ajaxGet.php?escorts='+slug,
-        method: 'GET',
-        dataType: 'json',
-        data: slug,
-        contentType: false,
-        processData: false,
-        beforeSend: () => {
-            $('.escort_row').html('Loading contents...');
-        },
-        success: (param) => {
-            if (param) {
-                $('.escort_row').html(param);
-            }
-        }
-    })
+  $(document).ready(function () {
 
-  })
+    const slug = '<?= $slug ?>';
+
+    $.ajax({
+      url: 'controllers/ajaxGet.php',
+      method: 'GET',
+      dataType: 'json',
+      data: {
+        escorts: slug
+      },
+
+      beforeSend: function () {
+        $('.escort_row').html('Loading contents...');
+      },
+
+      success: function (param) {
+        if (param) {
+            $('.escort_row').html(param);
+        } else {
+            $('.escort_row').html('No escorts found.');
+        }
+      },
+
+      error: function (xhr, status, error) {
+        $('.escort_row').html(
+            '<p>Unable to load contents.</p>'
+        );
+      }
+    });
+
+  });
 
   //search
   $('#search__data').keyup(function () {
     const formData = $(this).val();
     const slug = '<?=$slug?>';
     $.ajax({
-        url: 'controllers/fetchAjax.php?pg=206&esc_pg=' + slug + '&data=' + encodeURIComponent(formData),
+        url: 'controllers/fetchAjax.php',
         method: 'GET',
         dataType: 'json',
+        data: {
+            pg: 206,
+            esc_pg: slug,
+            data: formData
+        },
         beforeSend: () => {
-          $('#search_result').show();
-          $('#search_result').html('Searching...');
+            $('#search_result').show().html('Searching...');
         },
         success: (param) => {
-          if (param.success) {
-            $('#search_result').html(param.success);
-          } else if (param.error) {
-            $('#search_result').html(param.error);
-            setTimeout(() => {
-              $('#search_result').fadeOut();
-            }, 10000);
-          }
+            if (param.success) {
+                $('#search_result').html(param.success);
+            } else if (param.error) {
+                $('#search_result').html(param.error);
+
+                setTimeout(() => {
+                    $('#search_result').fadeOut();
+                }, 10000);
+            }
+        },
+        error: (xhr) => {
+            console.log(xhr.responseText);
+            $('#search_result').html('Search error.');
         }
     });
     return false;
   });
 
+  
+
 
   function bookEscort(key) { //alert(key)
     const slug = '<?=$slug?>';
     const token = '<?=$_SESSION['token']?>';
-    const page = '<?=$redirect?>'
+    const page = '<?=urlencode($redirect)?>';
 
     if (token.length == 0) {
       window.location.href = 'login?page_url='+page;

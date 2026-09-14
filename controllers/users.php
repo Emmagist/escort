@@ -1,6 +1,6 @@
 <?php
 
-require_once "config/phpMailer.php";
+require_once "helper/securityState.php";
 // require_once "emailVerification.php";
 
 class Users

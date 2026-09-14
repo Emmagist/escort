@@ -72,7 +72,9 @@
           processData: false,
           beforeSend: () => {
               $('#post_button').html('Posting...');
+              $('#post_button').prop('disabled', true);
           },
+          
           success: (param) => {
             if (param.success) {
               $('#post_button').html('Uploaded');
@@ -90,6 +92,19 @@
                 $('#reg_dangers').fadeOut();
               }, 5000);
             }
+          },
+          error: function (xhr, status, error) {
+
+            console.log('AJAX Error:', error);
+            console.log('Response:', xhr.responseText);
+
+            $('#post_button')
+                .prop('disabled', false)
+                .html('Upload');
+
+            $('#reg_dangers')
+                .fadeIn()
+                .text('Something went wrong. Please try again.');
           }
       })
       return false;

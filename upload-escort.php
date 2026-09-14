@@ -45,9 +45,10 @@
                     <option value="hour">Hour</option>
                     <option value="day">Day</option>
                     <option value="week">Week</option>
+                    <option value="long_period">Long Period</option>
                   </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" id="div_currency">
                   <label for="currency">Currency</label>
                   <select name="currency" id="currency" class="form-control mb-3">
                     <option value="">Select Currency</option>
@@ -55,7 +56,7 @@
                     <option value="usd">USD</option>
                   </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" id="div_prices">
                   <label for="prices">Price</label>
                   <input type="number" class="form-control mb-3" name="prices" id="prices">
                 </div>
@@ -163,6 +164,16 @@
         }
       }
     })
+  })
+
+  $('#period').change(()=>{
+    if($('#period').val() == 'long_period'){
+      $('#div_currency').hide();
+      $('#div_prices').hide();
+    }else{
+      $('#div_currency').show();
+      $('#div_prices').show();
+    }
   })
 
   //upload escort profile

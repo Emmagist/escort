@@ -201,18 +201,16 @@
   $(document).ready(function () {
     const token = '<?=$token?>';
     $.ajax({
-      url: 'controllers/ajaxGet.php?task='+token,
+      url: 'controllers/ajaxGet.php',
       method: 'GET',
       dataType: 'json',
-      data: token,
-      contentType: false,
-      processData: false,
+      data: {task: token},
       beforeSend: () => {
           $('#task-body').html('Loading contents...');
       },
       success: (param) => {
         if (param) {
-            $('#task-body').html(param);
+          $('#task-body').html(param);
         }
       }
     })
@@ -222,12 +220,10 @@
     $('#viewTaskModal').modal('show');
 
     $.ajax({
-      url: 'controllers/ajaxGet.php?vt='+params,
+      url: 'controllers/ajaxGet.php',
       method: 'GET',
       dataType: 'json',
-      data: params,
-      contentType: false,
-      processData: false,
+      data: {vt: params},
       beforeSend: () => {
           $('#view_task_modal_body').html('Loading contents...');
       },
@@ -244,12 +240,10 @@
     $('#editTaskModal').modal('show');
 
     $.ajax({
-      url: 'controllers/ajaxGet.php?et='+params,
+      url: 'controllers/ajaxGet.php',
       method: 'GET',
       dataType: 'json',
-      data: params,
-      contentType: false,
-      processData: false,
+      data: {et: params},
       beforeSend: () => {
           $('#edit_task_modal_body').html('Loading contents...');
       },
@@ -288,14 +282,13 @@
       return false;
   })
 
+  //Sugestion
   $(document).ready(function () {
     $.ajax({
-      url: 'controllers/ajaxGet.php?sugestion=sugestion',
+      url: 'controllers/ajaxGet.php',
       method: 'GET',
       dataType: 'json',
-      data: 'sugestion',
-      contentType: false,
-      processData: false,
+      data: {sugestion: 'sugestion'},
       beforeSend: () => {
           $('#sugestion').html('Loading contents...');
       },

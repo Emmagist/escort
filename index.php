@@ -149,8 +149,8 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-sm-6 col-xl-3">
+        <div class="row" id="sugestion">
+          <!-- <div class="col-sm-6 col-xl-3">
             <div class="card overflow-hidden rounded-2">
               <div class="position-relative">
                 <a href="javascript:void(0)"><img src="assets/images/products/s4.jpg" class="card-img-top rounded-0" alt="..."></a>
@@ -229,6 +229,6 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
 <?php require "inc/footer.php";

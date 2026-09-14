@@ -100,22 +100,20 @@
 
     //escort transactions
     $(document).ready(function() {
-        $.ajax({
-            url: 'controllers/ajaxGet.php?trn=220',
-            method: 'GET',
-            dataType: 'json',
-            data: '220',
-            contentType: false,
-            processData: false,
-            beforeSend: () => {
-                $('#table-body').html('Loading Transactions...');
-            },
-            success: (param) => {
-                if (param) {
-                    $('#table-body').html(param);
-                }
+      $.ajax({
+        url: 'controllers/ajaxGet.php',
+        method: 'GET',
+        dataType: 'json',
+        data: {trn: 220},
+        beforeSend: () => {
+            $('#table-body').html('Loading Transactions...');
+        },
+        success: (param) => {
+            if (param) {
+                $('#table-body').html(param);
             }
-        })
+        }
+      })
 
     });
 
@@ -137,6 +135,25 @@
                 }
             }
         })
+
+    });
+
+    //Sugestion
+    $(document).ready(function () {
+      $.ajax({
+        url: 'controllers/ajaxGet.php',
+        method: 'GET',
+        dataType: 'json',
+        data: {sugestion: 'sugestion'},
+        beforeSend: () => {
+            $('#sugestion').html('Loading contents...');
+        },
+        success: (param) => {
+          if (param) {
+              $('#sugestion').html(param);
+          }
+        }
+      })
 
     });
 
@@ -216,7 +233,7 @@
       })
 
       return false;
-    })
+    });
 
   </script>
 

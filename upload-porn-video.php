@@ -64,12 +64,10 @@
       $('#custom_cat').hide();
       $('#built_cat').show();
       $.ajax({
-      url: 'controllers/ajaxGet.php?built_cat=200',
+      url: 'controllers/ajaxGet.php',
       method: 'GET',
       dataType: 'json',
-      data: '200',
-      contentType: false,
-      processData: false,
+      data: {built_cat:'200'},
       beforeSend: () => {
           $('#built_cat').html('Loading contents...');
       },

@@ -59,7 +59,7 @@ if ($pg == 200) {
         $user_guid = $db->entityGuid();
         $code = Database::registrationCode();
 
-        $result = $db->saveData(TBL_USERS, "user_guid = '$user_guid', role_id = '3', name = '$full_name', email = '$email', password = '$hash_password', gender = '$gender'"); // var_dump($result);exit;
+        $result = $db->saveData(TBL_USERS, "user_guid = '$user_guid', role_id = '3', name = '$full_name', email = '$email', password = '$hash_password', gender = '$gender'");
 
         if ($result) {
 
@@ -75,7 +75,7 @@ if ($pg == 200) {
         $errors = "Something went wrong!";
     }
 
-    echo json_encode(['error' => $errors, 'success' => $success]);
+    echo json_encode(['error' => $errors, 'success' => $success, 'code' => 201]);
 }
 
 //login
@@ -559,8 +559,8 @@ if ($pg == 206) {
     if (empty($data)) {
         $error = '<li class="list-items list-unstyle mb-2"><a href="" class="text-bold text-danger" style="font-weight: 600; color:#000">Search a keyword</a></li>';
     } else {
-        $columns = ['user_name', 'state', 'lga'];
-        $result = $db->searchData(TBL_ESCORTS, "*", "category_id = '$esc_pg'", $columns, "$data", 15); //var_dump($result);exit;
+        $columns = ['user_name', 'state', 'lga', 'age'];
+        $result = $db->searchData(TBL_ESCORTS, "*", "category_id = '$esc_pg'", $columns, $data, 15); //var_dump($result);exit;
 
         if ($result) { //echo 'edd';exit;
             foreach ($result as $key) {
@@ -1077,6 +1077,45 @@ if ($pg == 215) {
         'error' => $error,
         'success' => $success
     ]);
+}
+
+if ($pg == 216) {
+    $error = '';
+    $success = '';
+    $escortee_order_status = $db->escape($_POST['escortee_order_status']);
+    $order_csrf = $db->escape($_POST['order_csrf']);
+    $complaint = $db->escape($_POST['complaint']);
+    $token = $_SESSION['token'];
+
+    if (!empty($escortee_order_status) && !empty($order_csrf)) {
+
+        if ($escortee_order_status == 'approved') {
+
+            // $update = $db->update(TBL_ORDERS, "payment_status = 'paid', complaint = ''", "order_entity = '$order_csrf'");
+            if ($ajax->movePendingFundOnEscorteeOrderApprove($order_csrf)  == true) {
+                $success = 'Order Completed';
+            }else {
+                $error = 'Something went wrong!';
+            }
+
+        }elseif($escortee_order_status == 'pending'){
+
+            $update = $db->update(TBL_ORDERS, "payment_status = 'unpaid', complaint = '$complaint'", "order_entity = '$order_csrf'");
+
+            if ($update) {
+
+                $success = 'Thanks, we will look into the order process';
+
+            }
+        }else {
+            $error = 'Something went wrong!';
+        }
+        
+    } else {
+        $error = 'Something went wrong!';
+    }
+
+    echo json_encode(['error' => $error, 'success' => $success]);
 }
 
 //Check expired subscription and update user

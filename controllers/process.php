@@ -49,11 +49,13 @@
                         $_SESSION['connect'] = $userInfo['connect'];
                         $_SESSION['escort_approval'] = $userInfo['escort_approval'];
                         $db->set('login', true);
-                        $redirect = $_REQUEST['page_url'];
-                        if ($redirect == '') {
-                            header('Location: ../index.php');
+                        $page_url = $_GET['page_url'];
+                        if ($page_url == '') {
+                            header('Location: ../index.php');exit;
                         }else {
-                            header("Location: $redirect");
+                            $redirect = SecurityState::safeRedirectPath($page_url);
+
+                            header("Location: " . $redirect);exit;
                         }
                     }
                     else {

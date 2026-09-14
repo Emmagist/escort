@@ -17,7 +17,7 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="" role="navigation">
           <ul id="sidebarnav">
-            <?php if($_SESSION['role'] == 2):?>
+            <?php if($_SESSION['role'] == 2 && $_SESSION['escort_approval'] == 'approved'):?>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Home</span>
@@ -30,28 +30,27 @@
                 <span class="hide-menu">Dashboard</span>
               </a>
             </li>
-            <?php endif;?>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu text-capitalization">activities</span>
             </li>
-            <?php if($_SESSION['role'] == 2):?>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="upload-escort" aria-expanded="false">
-                <span>
-                  <i class="ti ti-typography"></i>
-                </span>
-                <span class="hide-menu">Upload Escort</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="upload-porn-video" aria-expanded="false">
-                <span>
-                  <i class="ti ti-typography"></i>
-                </span>
-                <span class="hide-menu">Upload Porn Vidoe</span>
-              </a>
-            </li>
+            <?php endif; if($_SESSION['role'] == 2 && $_SESSION['escort_approval'] == 'approved'):?>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="upload-escort" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-typography"></i>
+                  </span>
+                  <span class="hide-menu">Upload Escort</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="upload-porn-video" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-typography"></i>
+                  </span>
+                  <span class="hide-menu">Upload Porn Vidoe</span>
+                </a>
+              </li>
             <?php endif; if($_SESSION['token']):?>
             <li class="sidebar-item">
               <a class="sidebar-link" href="request-connect" aria-expanded="false">
@@ -110,7 +109,7 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <?php if($_SESSION['token'] && $_SESSION['role'] == 2):?>
+              <?php if($_SESSION['token'] && $_SESSION['role'] == 2 && $_SESSION['escort_approval'] == 'approved'):?>
                 <a class="sidebar-link" href="go-live" aria-expanded="false">
               <?php else:?>
                 <a class="sidebar-link" href="join-live" aria-expanded="false">

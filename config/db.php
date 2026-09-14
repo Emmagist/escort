@@ -89,18 +89,20 @@ use Google\Service\Analytics\Column;
 
         public function searchData($table, $field = "*", $conditions = "", $columns = [], $val = '', $limit = '') {
             $rows = [];
-            $fields = trim($field);
-            $where = "";
 
-            if (is_array($columns) && !empty($columns)) {
-                $searchParts = array_map(function ($col) use ($val) {
-                    $col = preg_replace('/[^a-zA-Z0-9_]/', '', $col); 
-                    return "$col LIKE '%$val%'";
-                }, $columns);
-                $searchClause = implode(" OR ", $searchParts);
-            } else {
-                return 0; 
+            if (!is_array($columns) || empty($columns)) {
+                return 0;
             }
+
+            $val = $this->escape($val);
+
+            $searchParts = array_map(function ($col) use ($val) {
+                $col = preg_replace('/[^a-zA-Z0-9_]/', '', $col);
+
+                return "$col LIKE '%$val%'";
+            }, $columns);
+
+            $searchClause = implode(" OR ", $searchParts);
 
             if (!empty($conditions)) {
                 $where = "WHERE $conditions AND ($searchClause)";
@@ -108,14 +110,19 @@ use Google\Service\Analytics\Column;
                 $where = "WHERE $searchClause";
             }
 
-            $limitClause = !empty($limit) ? "LIMIT $limit" : "";
-            $sql = "SELECT $fields FROM $table $where $limitClause";
+            $limitClause = !empty($limit)
+                ? "LIMIT " . (int)$limit
+                : "";
+
+            $sql = "SELECT $field FROM $table $where $limitClause";
 
             $result = $this->query($sql);
+
             if ($result && $result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $rows[] = $row;
                 }
+
                 return $rows;
             }
 
@@ -196,13 +203,20 @@ use Google\Service\Analytics\Column;
             }
         }
 
-        public function redirectURI(){
-            $protocol = $_SERVER['SERVER_PROTOCOL'];
-            // echo $protocol;
-            if (strpos($protocol, "HTTPS")) {
-                $protocol = "HTTPS://";
-            }else{
-                $protocol = "HTTP://";
+        public function redirectURI()
+        {
+            return ltrim($_SERVER['REQUEST_URI'], "/escort/");
+        }
+
+        public function redirectFullPath(){
+            if (
+                (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
+                (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+                $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+            ) {
+                $protocol = 'https://';
+            } else {
+                $protocol = 'http://';
             }
 
             return $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -222,36 +236,7 @@ use Google\Service\Analytics\Column;
                 return true;
             }
         }
-
-        public static function maskNumber($number) {
-            $length = strlen($number);
-            if ($length <= 6) {
-                return str_repeat('*', $length); // Mask all if 4 or fewer digits
-            } else {
-                $visiblePart = substr($number, -3); // Get the last 4 digits
-                $maskedPartLength = $length - 3; // Calculate how many to mask
-                $maskedPart = str_repeat('*', $maskedPartLength); // Create asterisks
-                return $maskedPart . $visiblePart; // Combine masked and visible parts
-            }
-        }
-
-        public static function maskString($string) {
-            $visible = 6; // number of visible characters at the end
-            $length = strlen($string);
-
-            // if string is shorter than or equal to 6, no need to mask
-            if ($length <= $visible) {
-                return $string;
-            }
-
-            // mask everything except last 6
-            $maskedPart = str_repeat('*', $length - $visible);
-            $visiblePart = substr($string, -$visible);
-
-            return $maskedPart . $visiblePart;
-        }
-
-
+        
         public function validateEmail($email){
             //check if email is invalid
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {

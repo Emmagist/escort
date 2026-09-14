@@ -250,12 +250,10 @@
     const cat = '<?=$cat?>';
     
     $.ajax({
-      url: 'controllers/ajaxGet.php?rel='+slug+'&cate='+cat,
+      url: 'controllers/ajaxGet.php',
       method: 'GET',
       dataType: 'json',
-      data: {slug,cat},
-      contentType: false,
-      processData: false,
+      data: {rel: slug, cate: cat},
       beforeSend: () => {
         $('#re__videos').html('Loading contents...');
       },
