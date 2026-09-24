@@ -90,6 +90,14 @@ class Users
           return $db->selectData(TBL_USERS, "*", "user_guid = '$token'");
      }
 
+     public static function findUsernameByToken($token)
+     {
+          global $db;
+          $result = $db->singleData(TBL_USERS, "username", "user_guid = '$token'");
+
+          return $result['username'];
+     }
+
      public static function subscriptionVerify($code, $amount, $paystackCode, $token, $plan)
      {
           global $db;

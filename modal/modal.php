@@ -115,3 +115,26 @@
     </div>
   </div>
 </div>
+
+<!-- Go Live -->
+<div class="modal fade" id="golive" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Create Stream</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <li class="alert alert-success list-unstyled text-center text-capitalize" id="alert-success"></li>
+        <li class="alert alert-danger list-unstyled text-center text-capitalize" id="alert-danger"></li>
+        <!-- <form action="" method="post" id="golive_modal_form"> -->
+          <label for="stream_title">Stream Title <span class="text-danger">*</span></label>
+          <input type="text" class="form-control mb-3" id="stream_title" placeholder="Enter Your Stream Title">
+          <div class="modal-footer">
+            <button type="button" class="btn" style="background: #ff315c;color:#fff;" id="golive_button">Go Live</button>
+          </div>
+        <!-- </form> -->
+      </div>
+    </div>
+  </div>
+</div>

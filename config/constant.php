@@ -64,6 +64,16 @@ define("CLOUD_MERSIVE", "e8a88038-123e-46d9-8f60-3693c4ad2bee");
 //Mailer Host
 define("MAILER_HOST",  "premium155.web-hosting.com");
 
+//LIVEKIT DEV
+// define("LIVEKIT_URL",   "ws://127.0.0.1:7880");
+
+define("LIVEKIT_API_KEY",   "APIkReiJoaP9h6z");
+
+define("LIVEKIT_API_SECRET",    "e5XGIeQ09rRTrzOvgeHdKu7vCvm0st3zgNmEWce3uf5H");
+
+//For Production LIVEKIT
+define("LIVEKIT_URL",   "wss://yard19-ir9j4jew.livekit.cloud");
+
 // Tables
 define("TBL_USERS",                 "users");
 define("TBL_ESCORTS",               "escorts");
@@ -81,6 +91,15 @@ define("TBL_PAYMENTS_LOG",          "payments_log");
 define("TBL_ORDERS",                "orders");
 define("TBL_WALLET",                "wallets");
 define("TBL_WITHDRAWAL",            "withdrawals");
+define("TBL_STREAMS",               "streams");
+define("TBL_STREAM_KEYS",           "stream_keys");
+define("TBL_LIVE_GIFT_TRANSACTIONS","live_gift_transactions");
+define("TBL_LIVE_COIN_WALLETS",     "live_coin_wallets");
+define("TBL_LIVE_GIFTS",            "live_gifts");
+define("TBL_LIVE_LIKES",            "live_likes");
+define("TBL_LIVE_FOLLOW",           "live_follows");
+define("TBL_LIVE_MESSAGES",         "live_messages");
+define("TBL_LIVE_GIFT_WALLETS",     "live_gift_wallets");
 
 define("TBL_WITHDRAWAL_CODE",       "withdrawal_code");
 define("TBL_TRANSACTION_LOG",       "transaction_logs");

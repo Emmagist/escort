@@ -112,7 +112,7 @@
               <?php if($_SESSION['token'] && $_SESSION['role'] == 2 && $_SESSION['escort_approval'] == 'approved'):?>
                 <a class="sidebar-link" href="go-live" aria-expanded="false">
               <?php else:?>
-                <a class="sidebar-link" href="join-live" aria-expanded="false">
+                <a class="sidebar-link" href="live-list" aria-expanded="false">
               <?php endif;?>
                 <span>
                   <i class="ti ti-video"></i>

@@ -1,117 +1,529 @@
 <?php
-  require "inc/auth.php";
-  require "inc/head.php";
-  require "inc/aside.php";
-  require "inc/header.php";
+    require_once __DIR__ . '/inc/auth.php';
+    require __DIR__ . "/inc/head.php";
+    require __DIR__ . "/inc/aside.php";
+    // require __DIR__ . "/inc/header.php";
 
+    // $streamGuid = (string) ($_GET['stream_id'] ?? 0);
 ?>
-    <div class="container-fluid">
-        <div class="col-md-8 offset-md-1">
-            <h3 class="p-3"><?=ucwords($_SESSION['username'])?> Live — Broadcaster</h3>
-            <div class="card p-3 mb-3" style="border: 5px black;">
-            <video id="localVideo" autoplay playsinline muted class="w-100" style="height:360px;">Go Live</video>
+<link rel="stylesheet" href="assets/css/broadcaster.css">
+<input type="hidden" id="streamer">
+<!--  Main wrapper -->
+<div class="body-wrapper" role="main">
+      
+
+<!-- <div class="container-fluid"> -->
+    <div class="live-page">
+
+        <div class="live-container">
+
+            <!-- TOP -->
+            <div class="live-topbar">
+
+                <div>
+                    <h1 class="live-title">
+                        <?= htmlspecialchars(ucwords($_SESSION['username'])) ?>'s Live
+                    </h1>
+
+                    <p class="live-subtitle">
+                        Share your moment with your audience
+                    </p>
+                </div>
+
+                <div class="live-status">
+                    <span class="status-dot" id="status-dot"></span>
+
+                    <span id="status">
+                        OFFLINE
+                    </span>
+                </div>
+
             </div>
 
-            <div class="mb-3">
-            <button id="startBtn" class="btn btn-success">Start Stream</button>
-            <button id="stopBtn" class="btn btn-danger" disabled>Stop Stream</button>
-            <button id="clearSignal" class="btn btn-secondary">Clear Signal (dev)</button>
+
+            <!-- MAIN -->
+            <div class="stream-layout">
+
+                <!-- VIDEO -->
+                <div class="video-section">
+
+                    <div class="video-wrapper">
+
+                        <!-- VIDEO TOP -->
+                        <div class="video-top">
+
+                            <div class="live-badge">
+                                <span></span>
+                                LIVE
+                            </div>
+
+                            <div class="viewer-count">
+                                👁
+                                <span id="viewer-count">0</span>
+                                viewers
+                            </div>
+
+                        </div>
+
+
+                        <!-- LIVE VIDEO -->
+                        <div id="local-video">
+
+                            <div class="video-placeholder">
+
+                                <div class="video-placeholder-icon">
+                                    📹
+                                </div>
+
+                                <h3>You're not live yet</h3>
+
+                                <p>
+                                    Click "Go Live" to start your broadcast.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- GIFT ANIMATION -->
+                        <div class="gift-animation-area">
+
+                            <div class="gift-animation" id="gift-animation">
+
+                                <div class="gift-icon">
+                                    🎁
+                                </div>
+
+                                <div>
+                                    <strong id="gift-animation-name">
+                                        Rose
+                                    </strong>
+
+                                    <small>
+                                        sent by Viewer
+                                    </small>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CONTROLS -->
+                        <div class="video-controls">
+
+                            <div class="control-group">
+
+                                <button class="control-btn"
+                                        title="Mute microphone">
+                                    🎤
+                                </button>
+
+                                <button class="control-btn"
+                                        title="Turn camera off">
+                                    📹
+                                </button>
+
+                                <button class="control-btn"
+                                        title="Settings">
+                                    ⚙
+                                </button>
+
+                            </div>
+
+
+                            <div class="control-group">
+
+                                <button class="control-btn go-live" id="go_live_button">● Go Live</button>
+                                <button type="hidden"  onclick="startBroadcast(`<?= htmlspecialchars($streamGuid) ?>`)"></button>
+
+                                <button
+                                    class="control-btn end"
+                                    onclick="endBroadcast(`<?= htmlspecialchars($streamGuid) ?>`)">
+
+                                    End Stream
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- HOST -->
+                    <div class="host-info">
+
+                        <div class="host-left">
+
+                            <div class="host-avatar">
+                                <?= strtoupper(substr($_SESSION['username'], 0, 1)) ?>
+                            </div>
+
+                            <div>
+
+                                <div class="host-name">
+                                    <?= htmlspecialchars(ucwords($_SESSION['username'])) ?>
+                                </div>
+
+                                <div class="host-role">
+                                    Broadcaster
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="stream-id">
+                            Stream ID:
+                            <?= htmlspecialchars($streamGuid) ?>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT PANEL -->
+                <aside class="side-panel">
+
+                    <!-- TABS -->
+                    <div class="panel-tabs">
+
+                        <div class="panel-tab active">
+                            🎁 Gifts
+                        </div>
+
+                        <div class="panel-tab">
+                            💬 Chat
+                        </div>
+
+                    </div>
+
+
+                    <!-- GIFTS -->
+                    <div class="gift-section">
+
+                        <div class="gift-header">
+
+                            <h3>
+                                Send a Gift
+                            </h3>
+
+                            <div class="coin-balance">
+                                🪙 12,500
+                            </div>
+
+                        </div>
+
+
+                        <!-- CATEGORIES -->
+                        <div class="gift-categories">
+
+                            <div class="gift-category active">
+                                Popular
+                            </div>
+
+                            <div class="gift-category">
+                                Love
+                            </div>
+
+                            <div class="gift-category">
+                                Fun
+                            </div>
+
+                            <div class="gift-category">
+                                Luxury
+                            </div>
+
+                        </div>
+
+
+                        <!-- GIFT GRID -->
+                        <div class="gift-grid">
+
+                            <div class="gift-card"
+                                onclick="previewGift('Rose', '🌹', 1)">
+
+                                <div class="gift-icon">
+                                    🌹
+                                </div>
+
+                                <span class="gift-name">
+                                    Rose
+                                </span>
+
+                                <span class="gift-price">
+                                    🪙 1
+                                </span>
+
+                            </div>
+
+
+                            <div class="gift-card"
+                                onclick="previewGift('Heart', '❤️', 10)">
+
+                                <div class="gift-icon">
+                                    ❤️
+                                </div>
+
+                                <span class="gift-name">
+                                    Heart
+                                </span>
+
+                                <span class="gift-price">
+                                    🪙 10
+                                </span>
+
+                            </div>
+
+
+                            <div class="gift-card"
+                                onclick="previewGift('Like', '👍', 20)">
+
+                                <div class="gift-icon">
+                                    👍
+                                </div>
+
+                                <span class="gift-name">
+                                    Like
+                                </span>
+
+                                <span class="gift-price">
+                                    🪙 20
+                                </span>
+
+                            </div>
+
+
+                            <div class="gift-card"
+                                onclick="previewGift('Coffee', '☕', 50)">
+
+                                <div class="gift-icon">
+                                    ☕
+                                </div>
+
+                                <span class="gift-name">
+                                    Coffee
+                                </span>
+
+                                <span class="gift-price">
+                                    🪙 50
+                                </span>
+
+                            </div>
+
+
+                            <div class="gift-card"
+                                onclick="previewGift('Cake', '🎂', 100)">
+
+                                <div class="gift-icon">
+                                    🎂
+                                </div>
+
+                                <span class="gift-name">
+                                    Cake
+                                </span>
+
+                                <span class="gift-price">
+                                    🪙 100
+                                </span>
+
+                            </div>
+
+
+                            <div class="gift-card"
+                                onclick="previewGift('Fire', '🔥', 250)">
+
+                                <div class="gift-icon">
+                                    🔥
+                                </div>
+
+                                <span class="gift-name">
+                                    Fire
+                                </span>
+
+                                <span class="gift-price">
+                                    🪙 250
+                                </span>
+
+                            </div>
+
+
+                            <div class="gift-card"
+                                onclick="previewGift('Diamond', '💎', 500)">
+
+                                <div class="gift-icon">
+                                    💎
+                                </div>
+
+                                <span class="gift-name">
+                                    Diamond
+                                </span>
+
+                                <span class="gift-price">
+                                    🪙 500
+                                </span>
+
+                            </div>
+
+
+                            <div class="gift-card"
+                                onclick="previewGift('Crown', '👑', 1000)">
+
+                                <div class="gift-icon">
+                                    👑
+                                </div>
+
+                                <span class="gift-name">
+                                    Crown
+                                </span>
+
+                                <span class="gift-price">
+                                    🪙 1,000
+                                </span>
+
+                            </div>
+
+
+                            <div class="gift-card"
+                                onclick="previewGift('Car', '🏎️', 2500)">
+
+                                <div class="gift-icon">
+                                    🏎️
+                                </div>
+
+                                <span class="gift-name">
+                                    Super Car
+                                </span>
+
+                                <span class="gift-price">
+                                    🪙 2,500
+                                </span>
+
+                            </div>
+
+
+                            <div class="gift-card"
+                                onclick="previewGift('Rocket', '🚀', 5000)">
+
+                                <div class="gift-icon">
+                                    🚀
+                                </div>
+
+                                <span class="gift-name">
+                                    Rocket
+                                </span>
+
+                                <span class="gift-price">
+                                    🪙 5,000
+                                </span>
+
+                            </div>
+
+
+                            <div class="gift-card"
+                                onclick="previewGift('Yacht', '🛥️', 10000)">
+
+                                <div class="gift-icon">
+                                    🛥️
+                                </div>
+
+                                <span class="gift-name">
+                                    Yacht
+                                </span>
+
+                                <span class="gift-price">
+                                    🪙 10K
+                                </span>
+
+                            </div>
+
+
+                            <div class="gift-card"
+                                onclick="previewGift('Universe', '🌌', 25000)">
+
+                                <div class="gift-icon">
+                                    🌌
+                                </div>
+
+                                <span class="gift-name">
+                                    Universe
+                                </span>
+
+                                <span class="gift-price">
+                                    🪙 25K
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CHAT -->
+                    <div class="chat-section">
+
+                        <div class="chat-header">
+                            💬 Live Chat
+                        </div>
+
+                        <div class="chat-messages" id="chat-messages">
+
+                            <div class="chat-message">
+                                <strong>System:</strong>
+                                Welcome to the live stream!
+                            </div>
+
+                            <div class="chat-message">
+                                <strong>Viewer:</strong>
+                                Amazing stream 🔥
+                            </div>
+
+                            <div class="chat-message">
+                                <strong>John:</strong>
+                                Hello everyone 👋
+                            </div>
+
+                        </div>
+
+                        <div class="chat-input">
+
+                            <input
+                                type="text"
+                                placeholder="Write a message..."
+                                id="chat-input">
+
+                            <button onclick="sendChatMessage()">
+                                ➤
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
             </div>
 
-            <div id="status" class="small text-muted">Status: idle</div>
         </div>
-    </div>
 
-<?php require "inc/footer.php"; ?>
+    <!-- </div> -->
+</div>
+<?php require "modal/modal.php";?>
+<script src="assets/src/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+<script src="assets/src/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/sidebarmenu.js"></script>
+<script src="assets/js/app.min.js"></script>
+<script src="assets/src/apexcharts/dist/apexcharts.min.js"></script>
 
+<script src="assets/js/broadcaster/broadcaster.js"></script>
 <script>
-$(function(){
-  const SIGNAL_URL = 'signal.php';
-  let pc = null;
-  let localStream = null;
-  let pollingAnswerInterval = null;
 
-  async function startLocal() {
-    localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-    $('#localVideo')[0].srcObject = localStream;
-  }
+    
 
-  async function startStreaming() {
-    $('#status').text('Status: Creating connection...');
-    pc = new RTCPeerConnection();
-
-    // Add local tracks
-    localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
-
-    pc.onicecandidate = (e) => {
-      // no special handling — ICE candidates included in SDP by default when setLocalDescription is used in browsers
-    };
-
-    // Create offer
-    const offer = await pc.createOffer();
-    await pc.setLocalDescription(offer);
-
-    // send offer (SDP + type) to signaling server
-    await $.ajax({
-      url: SIGNAL_URL + '?action=post_offer',
-      type: 'POST',
-      data: JSON.stringify(pc.localDescription),
-      contentType: 'application/sdp' // arbitrary
-    });
-
-    $('#status').text('Status: Offer posted. Waiting for answer...');
-
-    // start polling for answer every 2s
-    pollingAnswerInterval = setInterval(async () => {
-      const res = await $.getJSON(SIGNAL_URL + '?action=get_answer&_=' + Date.now());
-      if (res.answer) {
-        // set remote description
-        if (!pc.currentRemoteDescription) {
-          await pc.setRemoteDescription(new RTCSessionDescription(res.answer));
-          $('#status').text('Status: Viewer connected (answer applied). Streaming live.');
-        }
-        // stop polling further if we have answer
-        clearInterval(pollingAnswerInterval);
-      }
-    }, 2000);
-
-    $('#startBtn').prop('disabled', true);
-    $('#stopBtn').prop('disabled', false);
-  }
-
-  async function stopStreaming(){
-    if (pc) {
-      pc.getSenders().forEach(s => {
-        try { pc.removeTrack(s); } catch(e) {}
-      });
-      pc.close();
-      pc = null;
-    }
-    if (localStream) {
-      localStream.getTracks().forEach(t => t.stop());
-      localStream = null;
-      $('#localVideo')[0].srcObject = null;
-    }
-    clearInterval(pollingAnswerInterval);
-    $('#startBtn').prop('disabled', false);
-    $('#stopBtn').prop('disabled', true);
-    $('#status').text('Status: stopped');
-  }
-
-  $('#startBtn').click(async function(){ 
-    await startLocal();
-    await startStreaming();
-  });
-
-  $('#stopBtn').click(async function(){
-    await stopStreaming();
-  });
-
-  $('#clearSignal').click(async function(){
-    await $.getJSON(SIGNAL_URL + '?action=clear');
-    alert('signal cleared');
-  });
-});
 </script>
-</body>
-</html>

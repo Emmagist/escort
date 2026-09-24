@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 01, 2026 at 07:08 PM
+-- Generation Time: Sep 15, 2026 at 11:13 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -232,6 +232,60 @@ CREATE TABLE `sex_categories` (
 
 INSERT INTO `sex_categories` (`id`, `identity_guid`, `sex_category`, `slugs`, `created_at`, `updated_at`) VALUES
 (1, '5675-56798-0987-5432-65489-4321-8997', 'Big black ass', 'big-black-ass', '2024-09-29 23:47:50', '2024-09-29 23:48:22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `streams`
+--
+
+CREATE TABLE `streams` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `stream_guid` varchar(70) NOT NULL,
+  `user_id` varchar(70) NOT NULL,
+  `title` varchar(250) NOT NULL,
+  `slug` varchar(250) NOT NULL,
+  `room_name` varchar(250) NOT NULL,
+  `status` enum('scheduled','live','ended','cancelled') DEFAULT 'scheduled',
+  `is_public` tinyint(1) DEFAULT 1,
+  `viewer_count` int(10) UNSIGNED DEFAULT 0,
+  `started_at` datetime DEFAULT NULL,
+  `ended_at` datetime DEFAULT NULL,
+  `stream_created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `stream_updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stream_comments`
+--
+
+CREATE TABLE `stream_comments` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `st_cm_key` varchar(70) NOT NULL,
+  `stream_id` varchar(70) NOT NULL,
+  `user_id` varchar(70) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stream_keys`
+--
+
+CREATE TABLE `stream_keys` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `st_key_guid` varchar(70) NOT NULL,
+  `stream_id` varchar(70) NOT NULL,
+  `stream_key` varchar(255) NOT NULL,
+  `is_active` tinyint(1) DEFAULT 1,
+  `last_used_at` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `stream_updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -478,6 +532,34 @@ ALTER TABLE `sex_categories`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `streams`
+--
+ALTER TABLE `streams`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `stream_guid` (`stream_guid`),
+  ADD UNIQUE KEY `slug` (`slug`),
+  ADD UNIQUE KEY `room_name` (`room_name`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `stream_comments`
+--
+ALTER TABLE `stream_comments`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `st_cm_key` (`st_cm_key`),
+  ADD KEY `stream_id` (`stream_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `stream_keys`
+--
+ALTER TABLE `stream_keys`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `st_key_guid` (`st_key_guid`),
+  ADD UNIQUE KEY `stream_key` (`stream_key`),
+  ADD KEY `stream_id` (`stream_id`);
+
+--
 -- Indexes for table `subscriptions`
 --
 ALTER TABLE `subscriptions`
@@ -509,7 +591,8 @@ ALTER TABLE `sugar_request`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_user_guid` (`user_guid`);
 
 --
 -- Indexes for table `wallets`
@@ -571,6 +654,24 @@ ALTER TABLE `sex_categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `streams`
+--
+ALTER TABLE `streams`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `stream_comments`
+--
+ALTER TABLE `stream_comments`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `stream_keys`
+--
+ALTER TABLE `stream_keys`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `subscriptions`
 --
 ALTER TABLE `subscriptions`
@@ -611,6 +712,29 @@ ALTER TABLE `wallets`
 --
 ALTER TABLE `withdrawals`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `streams`
+--
+ALTER TABLE `streams`
+  ADD CONSTRAINT `streams_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_guid`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `stream_comments`
+--
+ALTER TABLE `stream_comments`
+  ADD CONSTRAINT `stream_comments_ibfk_1` FOREIGN KEY (`stream_id`) REFERENCES `streams` (`stream_guid`) ON DELETE CASCADE,
+  ADD CONSTRAINT `stream_comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_guid`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `stream_keys`
+--
+ALTER TABLE `stream_keys`
+  ADD CONSTRAINT `stream_keys_ibfk_1` FOREIGN KEY (`stream_id`) REFERENCES `streams` (`stream_guid`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

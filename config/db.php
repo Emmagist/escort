@@ -133,7 +133,13 @@ use Google\Service\Analytics\Column;
 
 
         public function saveData($table, $sql){
-            return $this->query("INSERT INTO " . $table . "  SET " . $sql);
+            $result = $this->query("INSERT INTO " . $table . "  SET " . $sql);
+
+            if ($result) {
+                return $this->myconn->insert_id;
+            }
+
+            return false;
         }
 
         public function erase($table, $conditions) {
@@ -357,6 +363,33 @@ use Google\Service\Analytics\Column;
                 }
                 return $rows;
             }
+        }
+
+        public function selectLimitSort($table, $field = '*', $conditions = "", $orderBy = "", $limit = "") {
+            $rows = [];
+
+            $fields = trim($field);
+
+            $where = !empty($conditions) ? " WHERE " . $conditions : "";
+
+            $order = !empty($orderBy) ? " ORDER BY " . $orderBy : "";
+
+            $limitClause = !empty($limit) ? " LIMIT " . (int) $limit : "";
+
+            $sql = "SELECT " . $fields . " FROM " . $table . $where . $order . $limitClause;
+
+            $result = $this->query($sql);
+
+            if ($result) {
+
+                while ($row = $result->fetch_assoc()) {
+                    $rows[] = $row;
+                }
+
+                return $rows;
+            }
+
+            return [];
         }
 
         public function sumUp($table, $column = "", $conditions = ""){
@@ -619,6 +652,12 @@ use Google\Service\Analytics\Column;
 
             file_put_contents("ffmpeg_error_log.txt", "DURATION FAILED:\n$output\n\n", FILE_APPEND);
             return null;
+        }
+
+        public static function avatarLetter($username){
+            $avatarLetter = strtoupper(substr(preg_replace('/[^A-Za-z]/', '', $username), 0, 1));
+
+            return $avatarLetter;
         }
 
     }
