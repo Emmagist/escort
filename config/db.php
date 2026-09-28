@@ -352,6 +352,19 @@ use Google\Service\Analytics\Column;
             }
         }
 
+        public function selectASC($table, $field = '*', $conditions = "", $column=""){
+            $rows = [];
+            $fields = trim($field);
+            $where = !empty($conditions) ? "WHERE" : "";
+            $result = $this->query("SELECT" . $fields . " FROM " . $table . " $where " . $conditions . " ORDER BY " . $column . " ASC");
+            if (!empty($result)) {
+                while ($row = $result->fetch_assoc()) {
+                   $rows[] = $row;
+                }
+                return $rows;
+            }
+        }
+
         public function selectDESC($table, $field = '*', $conditions = "", $column=""){
             $rows = [];
             $fields = trim($field);

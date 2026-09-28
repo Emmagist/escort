@@ -41,4 +41,4 @@ class GiftWallet{
     }
 }
 
-$giftWallet = new GiftWallet($db);
+$giftWalletModel = new GiftWallet($db);

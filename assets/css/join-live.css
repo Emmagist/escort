@@ -1,259 +1,445 @@
-.live-room-page {
-    max-width: 1200px;
-    margin: auto;
-    padding-bottom: 100px;
+/* =========================================================
+   JOIN LIVE - MODERN LIVE STREAMING UI
+   ========================================================= */
+
+:root {
+    --live-bg: #08090d;
+    --live-bg-2: #0d0f15;
+    --live-card: #11131a;
+    --live-card-2: #171922;
+    --live-border: rgba(255, 255, 255, 0.08);
+
+    --text-main: #ffffff;
+    --text-soft: #b7bac5;
+    --text-muted: #777b89;
+
+    --live-red: #ff3158;
+    --live-red-dark: #d91f45;
+
+    --pink: #ff4f91;
+    --purple: #8b5cf6;
+    --blue: #4f8cff;
+
+    --green: #30d158;
+    --gold: #ffc857;
+
+    --shadow:
+        0 25px 70px rgba(0, 0, 0, 0.45);
+
+    --radius-xl: 24px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+
+    --transition:
+        all .22s ease;
 }
 
 
-/* ================================
-   TOP BAR
-================================ */
+/* =========================================================
+   PAGE
+   ========================================================= */
 
-.live-room-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 10px 0;
-    margin-bottom: 12px;
-}
-
-
-.live-back-btn,
-.live-share-btn {
-    border: 0;
-    background: #f5f5f5;
-    color: #222;
-
-    width: 42px;
-    height: 42px;
-
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    text-decoration: none;
-}
-
-
-.live-share-btn {
-    width: auto;
-    border-radius: 10px;
-    padding: 0 14px;
-    gap: 7px;
-}
-
-
-.live-room-title {
-    font-weight: 700;
-}
-
-
-.live-dot,
-.live-small-dot {
-    display: inline-block;
-
-    width: 9px;
-    height: 9px;
-
-    background: #dc3545;
-
-    border-radius: 50%;
-
-    margin-right: 5px;
-}
-
-
-/* ================================
-   VIDEO
-================================ */
-
-.live-video-wrapper {
-    position: relative;
-
+.live-page {
     width: 100%;
+    min-height: calc(100vh - 70px);
+    padding: 24px;
+    background:
+        radial-gradient(
+            circle at 15% 0%,
+            rgba(139, 92, 246, 0.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 10%,
+            rgba(255, 49, 88, 0.08),
+            transparent 30%
+        ),
+        var(--live-bg);
 
-    background: #050505;
+    color: var(--text-main);
+}
 
-    border-radius: 16px;
+
+/* =========================================================
+   MAIN LAYOUT
+   ========================================================= */
+
+.live-layout {
+    width: 100%;
+    max-width: 1700px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        390px;
+
+    gap: 22px;
+    align-items: start;
+}
+
+
+/* =========================================================
+   STREAM SECTION
+   ========================================================= */
+
+.stream-section {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   VIDEO CARD
+   ========================================================= */
+
+.video-card {
+    position: relative;
+    width: 100%;
+    min-height: 650px;
 
     overflow: hidden;
 
-    min-height: 550px;
+    background:
+        linear-gradient(
+            145deg,
+            #151721,
+            #08090d
+        );
+
+    border:
+        1px solid var(--live-border);
+
+    border-radius: var(--radius-xl);
+
+    box-shadow: var(--shadow);
+
+    isolation: isolate;
 }
 
 
+/* subtle background glow */
+
+.video-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    top: -280px;
+    left: -200px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(139, 92, 246, .20),
+            transparent 70%
+        );
+
+    pointer-events: none;
+    z-index: 0;
+}
+
+
+/* =========================================================
+   LIVE VIDEO
+   ========================================================= */
+
 #remote-video {
+    position: absolute;
+    inset: 0;
+
     width: 100%;
-    height: 550px;
+    height: 100%;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #1b1d27 0%,
+            #090a0f 65%
+        );
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: #050505;
+    overflow: hidden;
+
+    z-index: 1;
 }
 
+
+/* LiveKit video elements */
 
 #remote-video video {
     width: 100%;
     height: 100%;
 
-    object-fit: contain;
+    object-fit: cover;
 
-    background: #050505;
+    display: block;
+
+    background: #050507;
 }
 
+
+/* audio elements */
+
+#remote-video audio {
+    display: none;
+}
+
+
+/* =========================================================
+   VIDEO LOADING
+   ========================================================= */
 
 .video-loading {
-    text-align: center;
-    color: #fff;
-}
-
-
-.video-loading p {
-    margin-top: 12px;
-}
-
-
-/* ================================
-   VIDEO OVERLAY
-================================ */
-
-.video-overlay-top {
     position: absolute;
 
-    top: 15px;
-    left: 15px;
-    right: 15px;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    padding: 14px 20px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(15, 16, 22, .78);
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    backdrop-filter: blur(14px);
+
+    color: #d8dae2;
+
+    font-size: 14px;
+
+    z-index: 5;
+
+    white-space: nowrap;
+}
+
+.video-loading::before {
+    content: "";
+
+    display: inline-block;
+
+    width: 10px;
+    height: 10px;
+
+    margin-right: 10px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid rgba(255,255,255,.25);
+
+    border-top-color:
+        var(--pink);
+
+    animation:
+        live-spinner .8s linear infinite;
+}
+
+@keyframes live-spinner {
+
+    to {
+        transform: rotate(360deg);
+    }
+
 }
 
 
-.streamer-mini-profile {
+/* =========================================================
+   VIDEO TOP
+   ========================================================= */
+
+.video-top {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 100px;
+
+    padding: 22px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.70),
+            transparent
+        );
+
+    z-index: 10;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   LIVE BADGE
+   ========================================================= */
+
+.live-badge {
     display: inline-flex;
 
     align-items: center;
+    gap: 8px;
 
-    gap: 10px;
+    padding: 8px 13px;
 
-    padding: 7px 10px;
+    border-radius: 999px;
 
-    background: rgba(0,0,0,.55);
-
-    backdrop-filter: blur(10px);
+    background:
+        rgba(255, 49, 88, .94);
 
     color: #fff;
 
-    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: .8px;
+
+    box-shadow:
+        0 7px 25px rgba(255, 49, 88, .28);
+
+    backdrop-filter: blur(10px);
+}
+
+.live-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #fff;
+
+    box-shadow:
+        0 0 0 4px rgba(255,255,255,.16);
+
+    animation:
+        live-pulse 1.5s infinite;
+}
+
+@keyframes live-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: .45;
+        transform: scale(.75);
+    }
+
 }
 
 
-.streamer-mini-profile small {
-    display: block;
-    opacity: .7;
+/* =========================================================
+   TOP VIDEO ACTIONS
+   ========================================================= */
+
+.video-actions-top {
+    display: flex;
+    gap: 8px;
+
+    pointer-events: auto;
 }
 
-
-.streamer-avatar {
-    width: 40px;
-    height: 40px;
+.video-action {
+    width: 42px;
+    height: 42px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    border: 1px solid rgba(255,255,255,.10);
+
     border-radius: 50%;
 
-    background: #6f42c1;
-
-    font-weight: 700;
-}
-
-
-.follow-btn {
-    border: 0;
-
-    background: #dc3545;
+    background:
+        rgba(10, 11, 15, .58);
 
     color: #fff;
 
-    border-radius: 7px;
+    font-size: 17px;
 
-    padding: 6px 12px;
+    cursor: pointer;
 
-    font-size: 12px;
+    backdrop-filter: blur(14px);
 
-    font-weight: 700;
+    transition:
+        var(--transition);
+}
+
+.video-action:hover {
+    background:
+        rgba(255,255,255,.14);
+
+    transform: translateY(-2px);
+}
+
+.video-action:active {
+    transform: scale(.94);
 }
 
 
-/* ================================
-   VIDEO ACTIONS
-================================ */
+/* =========================================================
+   VIDEO BOTTOM OVERLAY
+   ========================================================= */
 
-.video-actions {
+.video-bottom {
     position: absolute;
 
-    right: 15px;
-    bottom: 15px;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
-    display: flex;
+    padding:
+        100px 25px 25px;
 
-    gap: 8px;
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,.90),
+            rgba(0,0,0,.50) 45%,
+            transparent
+        );
+
+    z-index: 8;
 }
 
 
-.video-action {
-    border: 0;
+/* =========================================================
+   STREAMER
+   ========================================================= */
 
-    background: rgba(0,0,0,.6);
-
-    backdrop-filter: blur(8px);
-
-    color: #fff;
-
-    border-radius: 25px;
-
-    padding: 10px 15px;
-
-    font-weight: 700;
-}
-
-
-.like-action i {
-    color: #ff416c;
-}
-
-
-.gift-action i {
-    color: #ffd700;
-}
-
-
-/* ================================
-   STREAM INFO
-================================ */
-
-.stream-info-card {
-    padding: 18px 0;
-}
-
-
-.streamer-main {
+.streamer-mini {
     display: flex;
     align-items: center;
 
     gap: 12px;
 }
 
+.streamer-avatar {
+    width: 48px;
+    height: 48px;
 
-.streamer-large-avatar {
-    width: 55px;
-    height: 55px;
-
-    flex-shrink: 0;
+    flex: 0 0 48px;
 
     display: flex;
     align-items: center;
@@ -261,396 +447,1076 @@
 
     border-radius: 50%;
 
-    background: linear-gradient(
-        135deg,
-        #6f42c1,
-        #b36bff
-    );
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            var(--pink)
+        );
+
+    border:
+        2px solid rgba(255,255,255,.85);
+
+    box-shadow:
+        0 5px 25px rgba(139,92,246,.30);
 
     color: #fff;
 
-    font-size: 20px;
+    font-weight: 800;
+    font-size: 17px;
+}
 
+.streamer-info {
+    min-width: 0;
+}
+
+.streamer-info h4 {
+    margin: 0;
+
+    color: #fff;
+
+    font-size: 15px;
     font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.streamer-info span {
+    display: block;
+
+    margin-top: 4px;
+
+    color:
+        rgba(255,255,255,.65);
+
+    font-size: 12px;
 }
 
 
-.streamer-details {
-    flex: 1;
+/* =========================================================
+   FOLLOW BUTTON
+   ========================================================= */
+
+.follow-btn {
+    margin-left: auto;
+
+    border: 0;
+
+    padding: 9px 15px;
+
+    border-radius: 999px;
+
+    background: #fff;
+
+    color: #111;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        var(--transition);
+
+    white-space: nowrap;
+}
+
+.follow-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 25px rgba(255,255,255,.18);
+}
+
+.follow-btn.following {
+    background:
+        rgba(255,255,255,.12);
+
+    color: #fff;
+
+    border:
+        1px solid rgba(255,255,255,.14);
 }
 
 
-.streamer-name-line {
+/* =========================================================
+   STREAM TITLE
+   ========================================================= */
+
+.stream-title {
+    max-width: 850px;
+
+    margin-top: 15px;
+
+    color: #fff;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   FLOATING LIKES
+   ========================================================= */
+
+.floating-likes {
+    position: absolute;
+
+    right: 35px;
+    bottom: 100px;
+
+    width: 100px;
+    height: 300px;
+
+    pointer-events: none;
+
+    z-index: 20;
+
+    overflow: visible;
+}
+
+.floating-heart {
+    position: absolute;
+
+    bottom: 0;
+    right: 20px;
+
+    font-size: 30px;
+
+    animation:
+        float-heart 2.2s ease-out forwards;
+
+    filter:
+        drop-shadow(0 4px 12px rgba(255,49,88,.45));
+}
+
+@keyframes float-heart {
+
+    0% {
+        opacity: 0;
+        transform:
+            translateY(20px)
+            scale(.5);
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+
+        transform:
+            translate(
+                var(--heart-x, 0px),
+                -280px
+            )
+            scale(1.4)
+            rotate(
+                var(--heart-rotate, 12deg)
+            );
+    }
+}
+
+
+/* =========================================================
+   STREAM INFORMATION
+   ========================================================= */
+
+.stream-info {
+    margin-top: 14px;
+
+    padding: 18px 20px;
+
+    background:
+        rgba(17,19,26,.82);
+
+    border:
+        1px solid var(--live-border);
+
+    border-radius:
+        var(--radius-lg);
+
+    backdrop-filter: blur(16px);
+}
+
+.stream-info-row {
     display: flex;
 
     align-items: center;
+    justify-content: space-between;
 
-    gap: 5px;
+    gap: 20px;
 }
 
 
-.verified-badge {
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.stats {
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
+}
+
+.stat {
     display: inline-flex;
 
     align-items: center;
-    justify-content: center;
 
-    width: 17px;
-    height: 17px;
+    gap: 7px;
 
-    border-radius: 50%;
-
-    background: #0d6efd;
-
-    color: #fff;
-
-    font-size: 9px;
-}
-
-
-.streamer-status {
-    color: #777;
-
-    font-size: 12px;
-
-    margin-top: 3px;
-}
-
-
-.follow-main-btn {
-    border: 1px solid #6f42c1;
-
-    background: #6f42c1;
-
-    color: #fff;
-
-    border-radius: 9px;
-
-    padding: 9px 18px;
-
-    font-weight: 600;
-}
-
-
-.stream-title {
-    font-size: 19px;
-
-    font-weight: 700;
-
-    margin: 15px 0 0;
-}
-
-
-/* ================================
-   CHAT
-================================ */
-
-.live-chat-card {
-    border: 1px solid #eee;
-
-    border-radius: 15px;
-
-    overflow: hidden;
-
-    background: #fff;
-}
-
-
-.chat-header {
-    padding: 13px 15px;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    border-bottom: 1px solid #eee;
-}
-
-
-.chat-header span {
-    color: #888;
-
-    font-size: 12px;
-}
-
-
-.chat-messages {
-    height: 300px;
-
-    overflow-y: auto;
-
-    padding: 15px;
-}
-
-
-.chat-message {
-    margin-bottom: 12px;
-}
-
-
-.chat-message strong {
-    margin-right: 5px;
-}
-
-
-.chat-message-text {
-    color: #333;
-}
-
-
-.chat-system-message {
-    color: #888;
-
-    text-align: center;
+    color:
+        var(--text-muted);
 
     font-size: 13px;
 }
 
+.stat strong {
+    color: #fff;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
+
+.action-buttons {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.room-btn {
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    background:
+        rgba(255,255,255,.045);
+
+    color:
+        #d8dae2;
+
+    border-radius: 999px;
+
+    padding: 9px 14px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        var(--transition);
+}
+
+.room-btn:hover {
+    color: #fff;
+
+    background:
+        rgba(255,255,255,.10);
+
+    border-color:
+        rgba(255,255,255,.15);
+
+    transform:
+        translateY(-1px);
+}
+
+.room-btn:active {
+    transform:
+        scale(.96);
+}
+
+#like-button.liked {
+    color: #fff;
+
+    background:
+        rgba(255,49,88,.16);
+
+    border-color:
+        rgba(255,49,88,.30);
+}
+
+
+/* =========================================================
+   CHAT CARD
+   ========================================================= */
+
+.chat-card {
+    position: sticky;
+
+    top: 20px;
+
+    height:
+        calc(100vh - 110px);
+
+    min-height: 620px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            #12141c,
+            #0c0e13
+        );
+
+    border:
+        1px solid var(--live-border);
+
+    border-radius:
+        var(--radius-xl);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.35);
+}
+
+
+/* =========================================================
+   CHAT HEADER
+   ========================================================= */
+
+.chat-header {
+    min-height: 78px;
+
+    padding: 18px 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.07);
+
+    background:
+        rgba(255,255,255,.015);
+}
+
+.chat-title {
+    color: #fff;
+
+    font-size: 15px;
+    font-weight: 750;
+}
+
+.chat-subtitle {
+    margin-top: 4px;
+
+    color:
+        var(--text-muted);
+
+    font-size: 11px;
+}
+
+.viewer-count {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 7px 10px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    color:
+        #bfc2cc;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   CHAT MESSAGES
+   ========================================================= */
+
+.chat-messages {
+    flex: 1;
+
+    min-height: 0;
+
+    padding:
+        15px;
+
+    overflow-y: auto;
+
+    scroll-behavior: smooth;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        rgba(255,255,255,.12)
+        transparent;
+}
+
+.chat-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background:
+        rgba(255,255,255,.10);
+
+    border-radius: 999px;
+}
+
+
+/* =========================================================
+   CHAT MESSAGE
+   ========================================================= */
+
+.chat-message {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding: 8px 5px;
+
+    animation:
+        message-in .25s ease;
+}
+
+@keyframes message-in {
+
+    from {
+        opacity: 0;
+        transform:
+            translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0);
+    }
+}
+
+.chat-avatar {
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #252938,
+            #151722
+        );
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    color:
+        #c7cad4;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.chat-body {
+    min-width: 0;
+}
+
+.chat-user {
+    color:
+        #999dac;
+
+    font-size: 11px;
+
+    margin-bottom: 3px;
+}
+
+.chat-text {
+    color:
+        #e6e7eb;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    word-break: break-word;
+}
+
+.chat-message.system .chat-avatar {
+    background:
+        rgba(139,92,246,.15);
+
+    color:
+        #a98bff;
+}
+
+.chat-message.system .chat-user {
+    color:
+        #a98bff;
+}
+
+
+/* =========================================================
+   GIFTS SECTION
+   ========================================================= */
+
+.gift-section {
+    padding: 15px;
+
+    border-top:
+        1px solid rgba(255,255,255,.07);
+
+    background:
+        rgba(255,255,255,.015);
+}
+
+.gift-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+}
+
+.gift-title {
+    color: #fff;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.coin-balance {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 7px 10px;
+
+    border:
+        1px solid rgba(255,200,87,.18);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,200,87,.07);
+
+    color:
+        var(--gold);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        var(--transition);
+}
+
+.coin-balance:hover {
+    background:
+        rgba(255,200,87,.13);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   GIFT LIST
+   ========================================================= */
+
+.gift-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 7px;
+
+    max-height: 130px;
+
+    overflow-y: auto;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        rgba(255,255,255,.10)
+        transparent;
+}
+
+.gift-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.gift-list::-webkit-scrollbar-thumb {
+    background:
+        rgba(255,255,255,.12);
+
+    border-radius: 999px;
+}
+
+
+/* =========================================================
+   GIFT ITEM
+   ========================================================= */
+
+.gift-item {
+    min-width: 0;
+
+    padding:
+        8px 4px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 3px;
+
+    border:
+        1px solid transparent;
+
+    border-radius:
+        12px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    cursor: pointer;
+
+    transition:
+        var(--transition);
+}
+
+.gift-item:hover {
+    background:
+        rgba(255,255,255,.08);
+
+    border-color:
+        rgba(255,255,255,.10);
+
+    transform:
+        translateY(-3px);
+}
+
+.gift-item:active {
+    transform:
+        scale(.94);
+}
+
+.gift-icon {
+    font-size: 23px;
+
+    line-height: 1;
+}
+
+.gift-name {
+    width: 100%;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    text-align: center;
+
+    color:
+        #d7d9e0;
+
+    font-size: 9px;
+}
+
+.gift-price {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 2px;
+
+    color:
+        var(--gold);
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.gift-loading {
+    grid-column:
+        1 / -1;
+
+    padding: 15px;
+
+    text-align: center;
+
+    color:
+        var(--text-muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   CHAT INPUT
+   ========================================================= */
 
 .chat-input-area {
+    padding:
+        12px 15px 15px;
+
+    border-top:
+        1px solid rgba(255,255,255,.07);
+
+    background:
+        rgba(0,0,0,.10);
+}
+
+.chat-input-wrapper {
     display: flex;
+
+    align-items: center;
 
     gap: 8px;
 
-    padding: 10px;
+    padding:
+        5px;
 
-    border-top: 1px solid #eee;
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(255,255,255,.045);
+
+    transition:
+        var(--transition);
 }
 
+.chat-input-wrapper:focus-within {
+    border-color:
+        rgba(139,92,246,.45);
 
-#chat-input {
+    background:
+        rgba(255,255,255,.06);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(139,92,246,.08);
+}
+
+.chat-input {
     flex: 1;
 
-    border: 1px solid #ddd;
+    min-width: 0;
 
-    border-radius: 22px;
+    border: 0;
+    outline: 0;
 
-    padding: 10px 15px;
+    background: transparent;
 
-    outline: none;
+    color: #fff;
+
+    padding:
+        9px 11px;
+
+    font-size: 12px;
 }
 
+.chat-input::placeholder {
+    color:
+        #666a77;
+}
 
-.send-message-btn {
-    width: 42px;
-    height: 42px;
+.chat-send {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
 
     border: 0;
 
     border-radius: 50%;
 
-    background: #6f42c1;
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            var(--pink)
+        );
 
     color: #fff;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+        var(--transition);
+
+    box-shadow:
+        0 5px 18px
+        rgba(139,92,246,.25);
+}
+
+.chat-send:hover {
+    transform:
+        scale(1.08);
+}
+
+.chat-send:active {
+    transform:
+        scale(.92);
 }
 
 
-/* ================================
-   BOTTOM BAR
-================================ */
+/* =========================================================
+   GIFT POPUP
+   ========================================================= */
 
-.live-bottom-bar {
+.gift-popup {
     position: fixed;
 
-    bottom: 0;
+    left: 50%;
 
-    left: 0;
+    bottom: 35px;
 
-    right: 0;
+    transform:
+        translate(-50%, 30px)
+        scale(.95);
+
+    min-width: 280px;
+
+    padding:
+        16px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    background:
+        rgba(17,18,25,.94);
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    border-radius:
+        16px;
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.55);
+
+    backdrop-filter:
+        blur(18px);
+
+    opacity: 0;
+
+    visibility: hidden;
 
     z-index: 1000;
 
-    background: rgba(255,255,255,.96);
+    transition:
+        all .3s ease;
+}
 
-    backdrop-filter: blur(12px);
+.gift-popup.show {
+    opacity: 1;
 
-    border-top: 1px solid #eee;
+    visibility: visible;
 
-    padding: 10px;
+    transform:
+        translate(-50%, 0)
+        scale(1);
+}
+
+.gift-popup-icon {
+    width: 48px;
+    height: 48px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
-    gap: 12px;
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,79,145,.18),
+            rgba(139,92,246,.18)
+        );
+
+    font-size: 27px;
+}
+
+.gift-popup-title {
+    color: #fff;
+
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.gift-popup-sub {
+    margin-top: 4px;
+
+    color:
+        var(--text-muted);
+
+    font-size: 10px;
 }
 
 
-.live-bottom-bar button {
-    border: 0;
+/* =========================================================
+   COINS MODAL
+   ========================================================= */
 
-    background: #f5f5f5;
+.coins-modal {
+    position: fixed;
 
-    border-radius: 20px;
+    inset: 0;
 
-    padding: 9px 15px;
-
-    font-weight: 600;
-}
-
-
-.live-bottom-bar button i {
-    margin-right: 5px;
-}
-
-
-.coin-balance {
-    background: #fff8df;
-
-    color: #946c00;
-
-    border-radius: 20px;
-
-    padding: 9px 15px;
-
-    font-weight: 700;
-}
-
-
-/* ================================
-   GIFTS
-================================ */
-
-.gift-modal-content {
-    border-radius: 18px;
-
-    overflow: hidden;
-}
-
-
-.gift-wallet {
     display: flex;
 
     align-items: center;
+    justify-content: center;
 
-    justify-content: space-between;
+    padding: 20px;
 
-    background: #f7f4ff;
+    background:
+        rgba(0,0,0,.72);
 
-    border-radius: 12px;
+    backdrop-filter:
+        blur(8px);
 
-    padding: 12px 15px;
+    opacity: 0;
 
-    margin-bottom: 18px;
+    visibility: hidden;
+
+    z-index: 2000;
+
+    transition:
+        all .25s ease;
 }
 
+.coins-modal.show {
+    opacity: 1;
 
-.gift-wallet small {
-    display: block;
-
-    color: #777;
+    visibility: visible;
 }
 
+.coins-modal-card {
+    position: relative;
 
-.gift-wallet strong {
-    font-size: 20px;
+    width: 100%;
+
+    max-width: 500px;
+
+    max-height:
+        calc(100vh - 40px);
+
+    overflow-y: auto;
+
+    padding: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #181a24,
+            #0e1016
+        );
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    border-radius:
+        24px;
+
+    box-shadow:
+        0 30px 100px
+        rgba(0,0,0,.60);
+
+    transform:
+        translateY(15px)
+        scale(.97);
+
+    transition:
+        all .25s ease;
 }
 
+.coins-modal.show .coins-modal-card {
+    transform:
+        translateY(0)
+        scale(1);
+}
 
-.buy-coins-btn {
-    border: 0;
-
-    background: #6f42c1;
+.coins-modal-card h3 {
+    margin: 0;
 
     color: #fff;
 
-    border-radius: 8px;
+    font-size: 20px;
+}
 
-    padding: 8px 12px;
+.coins-modal-card p {
+    margin:
+        7px 0 20px;
+
+    color:
+        var(--text-muted);
 
     font-size: 12px;
-
-    font-weight: 700;
 }
 
+.modal-close {
+    position: absolute;
 
-.gift-grid {
-    display: grid;
+    top: 15px;
+    right: 15px;
 
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 10px;
-}
-
-
-.gift-item {
-    border: 1px solid #eee;
-
-    background: #fff;
-
-    border-radius: 12px;
-
-    padding: 12px 5px;
-
-    text-align: center;
-
-    transition: .2s;
-}
-
-
-.gift-item:hover,
-.gift-item.selected {
-    border-color: #6f42c1;
-
-    background: #f8f4ff;
-}
-
-
-.gift-icon {
-    display: block;
-
-    font-size: 32px;
-
-    margin-bottom: 4px;
-}
-
-
-.gift-name {
-    display: block;
-
-    font-size: 12px;
-
-    font-weight: 600;
-}
-
-
-.gift-price {
-    display: block;
-
-    font-size: 10px;
-
-    color: #777;
-
-    margin-top: 3px;
-}
-
-
-.selected-gift-section {
-    margin-top: 18px;
-
-    padding-top: 15px;
-
-    border-top: 1px solid #eee;
-}
-
-
-.quantity-control {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 20px;
-
-    margin: 15px 0;
-}
-
-
-.quantity-control button {
     width: 35px;
     height: 35px;
 
@@ -658,115 +1524,437 @@
 
     border-radius: 50%;
 
-    background: #eee;
+    background:
+        rgba(255,255,255,.06);
+
+    color:
+        #bfc2ca;
 
     font-size: 20px;
+
+    cursor: pointer;
+
+    transition:
+        var(--transition);
+}
+
+.modal-close:hover {
+    background:
+        rgba(255,255,255,.12);
+
+    color: #fff;
 }
 
 
-.send-gift-btn {
-    width: 100%;
+/* =========================================================
+   COIN PACKAGES
+   ========================================================= */
 
-    border: 0;
+.coin-packages {
+    display: grid;
 
-    border-radius: 10px;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
-    padding: 12px;
+    gap: 10px;
+}
 
-    background: #6f42c1;
+.coin-package {
+    padding: 16px;
 
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    border-radius:
+        15px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    cursor: pointer;
+
+    transition:
+        var(--transition);
+}
+
+.coin-package:hover {
+    border-color:
+        rgba(139,92,246,.40);
+
+    background:
+        rgba(139,92,246,.08);
+
+    transform:
+        translateY(-2px);
+}
+
+.coin-package-coins {
     color: #fff;
 
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.coin-package-price {
+    margin-top: 5px;
+
+    color:
+        var(--gold);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.coin-package-bonus {
+    display: inline-block;
+
+    margin-top: 7px;
+
+    padding: 4px 7px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(48,209,88,.10);
+
+    color:
+        var(--green);
+
+    font-size: 9px;
     font-weight: 700;
 }
 
 
-/* ================================
-   COIN PACKAGES
-================================ */
+/* =========================================================
+   BODY SCROLL LOCK
+   ========================================================= */
 
-.coin-package-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap: 12px;
+body.live-modal-open {
+    overflow: hidden;
 }
 
 
-.coin-package {
-    border: 1px solid #eee;
+/* =========================================================
+   TABLET
+   ========================================================= */
 
-    background: #fff;
+@media (max-width: 1200px) {
 
-    border-radius: 12px;
+    .live-layout {
+        grid-template-columns:
+            minmax(0, 1fr)
+            340px;
 
-    padding: 16px;
+        gap: 16px;
+    }
 
-    text-align: center;
+    .video-card {
+        min-height: 580px;
+    }
+
+    .chat-card {
+        min-height: 580px;
+    }
+
+    .gift-list {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+    }
+
 }
 
 
-.coin-package strong {
-    display: block;
+/* =========================================================
+   SMALL TABLET
+   ========================================================= */
 
-    font-size: 18px;
+@media (max-width: 950px) {
+
+    .live-page {
+        padding: 15px;
+    }
+
+    .live-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .video-card {
+        min-height:
+            min(70vh, 650px);
+    }
+
+    .chat-card {
+        position: relative;
+
+        top: auto;
+
+        height: 600px;
+
+        min-height: 500px;
+    }
+
 }
 
 
-.coin-package span {
-    display: block;
-
-    margin-top: 5px;
-
-    color: #777;
-}
-
-
-/* ================================
+/* =========================================================
    MOBILE
-================================ */
+   ========================================================= */
 
-@media(max-width:768px) {
+@media (max-width: 600px) {
 
-    .live-video-wrapper {
+    .live-page {
+        padding: 0;
+
+        min-height: 100vh;
+    }
+
+    .live-layout {
+        gap: 10px;
+    }
+
+    .video-card {
+        min-height:
+            calc(100vh - 170px);
+
         border-radius: 0;
 
-        margin-left: -12px;
-
-        margin-right: -12px;
+        border-left: 0;
+        border-right: 0;
     }
 
+    .video-top {
+        padding:
+            15px;
 
-    #remote-video {
-        height: 60vh;
-
-        min-height: 400px;
+        height: 80px;
     }
 
+    .live-badge {
+        padding:
+            7px 10px;
 
-    .live-room-page {
-        padding-left: 5px;
-        padding-right: 5px;
+        font-size: 10px;
     }
 
+    .video-action {
+        width: 36px;
+        height: 36px;
 
-    .gift-grid {
+        font-size: 15px;
+    }
+
+    .video-bottom {
+        padding:
+            90px 15px 18px;
+    }
+
+    .streamer-avatar {
+        width: 42px;
+        height: 42px;
+
+        flex-basis: 42px;
+    }
+
+    .streamer-info h4 {
+        font-size: 13px;
+    }
+
+    .stream-title {
+        font-size: 15px;
+
+        margin-top: 12px;
+    }
+
+    .follow-btn {
+        padding:
+            8px 12px;
+
+        font-size: 10px;
+    }
+
+    .stream-info {
+        margin-top: 0;
+
+        border-radius: 0;
+
+        padding:
+            13px 12px;
+    }
+
+    .stream-info-row {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 12px;
+    }
+
+    .stats {
+        justify-content:
+            space-between;
+
+        gap: 8px;
+    }
+
+    .action-buttons {
+        width: 100%;
+
+        display: grid;
+
         grid-template-columns:
             repeat(3, 1fr);
     }
 
+    .room-btn {
+        padding:
+            9px 5px;
 
-    .live-bottom-bar {
-        gap: 5px;
+        font-size: 10px;
     }
 
+    .chat-card {
+        height: 500px;
 
-    .live-bottom-bar button {
-        padding: 8px 10px;
+        min-height: 450px;
 
-        font-size: 12px;
+        border-radius:
+            18px 18px 0 0;
+
+        margin-top: 0;
+    }
+
+    .chat-header {
+        min-height: 65px;
+
+        padding:
+            14px;
+    }
+
+    .chat-messages {
+        padding:
+            10px;
+    }
+
+    .gift-section {
+        padding:
+            12px;
+    }
+
+    .gift-list {
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+
+        max-height: 105px;
+    }
+
+    .gift-icon {
+        font-size: 20px;
+    }
+
+    .gift-name,
+    .gift-price {
+        font-size: 8px;
+    }
+
+    .chat-input-area {
+        padding:
+            10px 12px 12px;
+    }
+
+    .gift-popup {
+        left: 15px;
+        right: 15px;
+
+        bottom: 20px;
+
+        transform:
+            translateY(30px)
+            scale(.95);
+
+        min-width: 0;
+
+        width: auto;
+    }
+
+    .gift-popup.show {
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+    .coins-modal-card {
+        padding:
+            23px 18px;
+
+        border-radius:
+            20px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .streamer-info {
+        max-width: 120px;
+    }
+
+    .follow-btn {
+        padding:
+            7px 9px;
+    }
+
+    .gift-list {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+    }
+
+    .coin-packages {
+        grid-template-columns:
+            1fr;
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+button:focus-visible,
+input:focus-visible {
+    outline:
+        2px solid rgba(139,92,246,.8);
+
+    outline-offset:
+        2px;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        scroll-behavior:
+            auto !important;
+
+        transition-duration:
+            .01ms !important;
     }
 
 }
