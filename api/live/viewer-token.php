@@ -4,19 +4,17 @@ header(
     'Content-Type: application/json'
 );
 
-require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../classes/liveKit.php';
-require_once __DIR__ . '/../classes/stream.php';
-require_once __DIR__ . '/../classes/streamKey.php';
+require_once __DIR__ . '/../../config/db.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../classes/liveKit.php';
+require_once __DIR__ . '/../../classes/stream.php';
+require_once __DIR__ . '/../../classes/streamKey.php';
 
-$streamGuid =
-    (string) ($_GET['stream_id'] ?? 0);
+$streamGuid = (string) ($_GET['stream_id'] ?? 0);
 
-$stream =
-    $streamModel->find($streamGuid);
+$stream = $streamModel->find($streamGuid);
 
 if (!$stream) {
-
     http_response_code(404);
 
     echo json_encode([

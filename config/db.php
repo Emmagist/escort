@@ -343,7 +343,7 @@ use Google\Service\Analytics\Column;
             $fields = trim($field);
             $where = !empty($conditions) ? "WHERE" : "";
             $limits = $limit; 
-            $result = $this->query("SELECT" . $fields . " FROM " . $table . " $where " . $conditions . " ORDER BY " . $column . " ASC LIMIT " . $limits);
+            $result = $this->query("SELECT " . $fields . " FROM " . $table . " $where " . $conditions . " ORDER BY " . $column . " ASC LIMIT " . $limits);
             if (!empty($result)) {
                 while ($row = $result->fetch_assoc()) {
                    $rows[] = $row;

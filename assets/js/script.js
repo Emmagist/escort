@@ -31,7 +31,7 @@ $('#registeration_form').submit(function () {
         beforeSend: () => {
             $('.register_button').html('Registering...');
         },
-        success: (param) => { alert(param)
+        success: (param) => {
             if (param.success) {
                 $('#reg_success').fadeIn()
                 $('#reg_success').text(param.success);

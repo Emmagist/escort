@@ -63,7 +63,7 @@ class LiveLike
         $streamGuid = $this->db->escape($streamGuid);
         $userId = $this->db->escape($userId);
 
-        $row = $this->db->singleData(TBL_LIVE_LIKES,"live_likes_guid", "stream_guid = '$streamGuid', user_id = '$userId'");
+        $row = $this->db->selectData(TBL_LIVE_LIKES,"live_likes_guid", "stream_guid = '$streamGuid', user_id = '$userId'");
 
         return !empty($row);
     }

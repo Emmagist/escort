@@ -1,6 +1,6 @@
-let lastMessageId = 0;
-
 async function loadMessages() {
+
+    let lastMessageId = 0;
 
     try {
 

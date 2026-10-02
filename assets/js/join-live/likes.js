@@ -8,25 +8,20 @@ async function likeStream() {
 
     try {
 
-        const response =
-            await fetch(
-                'api/likes/like.php',
-                {
-                    method: 'POST',
+        const response = await fetch('api/likes/like.php',{
+            method: 'POST',
 
-                    headers: {
-                        'Content-Type':
-                            'application/json'
-                    },
+            headers: {
+                'Content-Type':
+                    'application/json'
+            },
 
-                    body: JSON.stringify({
-                        stream_id: streamGuid
-                    })
-                }
-            );
+            body: JSON.stringify({
+                stream_id: streamGuid
+            })
+        });
 
-        const data =
-            await response.json();
+        const data = await response.json();
 
         if (!data.success) {
             return;
@@ -41,15 +36,9 @@ async function likeStream() {
 
         button.classList.add('liked');
 
-        button.innerHTML =
-            '❤️ Liked';
+        button.innerHTML = '❤️ Liked'; alert(data.count); console.log(data.count);
 
-
-        document.getElementById(
-            'like-count'
-        ).innerText =
-            Number(data.count);
-
+        document.getElementById('like-count').innerText = Number(data.count);
 
         createFloatingHeart();
 

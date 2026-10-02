@@ -9,8 +9,7 @@ async function loadMessages() {
                 `api/chat/messages.php?stream_id=${encodeURIComponent(streamGuid)}&after_id=${lastMessageId}`
             );
 
-        const data =
-            await response.json();
+        const data = await response.json();
 
         if (!data.success) {
             return;
@@ -23,11 +22,7 @@ async function loadMessages() {
                     message
                 );
 
-                lastMessageId =
-                    Math.max(
-                        lastMessageId,
-                        Number(message.id)
-                    );
+                lastMessageId = Math.max(lastMessageId, Number(message.id));
 
             }
         );

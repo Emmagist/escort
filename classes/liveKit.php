@@ -9,11 +9,9 @@ class LiveKit
 
     public function __construct()
     {
-        $this->apiKey =
-            LIVEKIT_API_KEY;
+        $this->apiKey = LIVEKIT_API_KEY;
 
-        $this->apiSecret =
-            LIVEKIT_API_SECRET;
+        $this->apiSecret = LIVEKIT_API_SECRET;
     }
 
     public function createToken(string $identity, string $room, bool $canPublish = false, bool $canSubscribe = true): string {

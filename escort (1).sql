@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 15, 2026 at 11:13 AM
+-- Generation Time: Oct 01, 2026 at 10:20 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -96,6 +96,183 @@ CREATE TABLE `escorts` (
 
 INSERT INTO `escorts` (`id`, `user_id`, `category_id`, `entity_guid`, `user_name`, `age`, `height`, `weight`, `period_prices`, `prices`, `currency`, `comments`, `created_at`, `updated_at`, `ethnicity`, `hair_long`, `hair_color`, `bust_size`, `smoker`, `alcohol`, `build`, `sexual_orientation`, `profile_image`, `state`, `lga`, `escorts_status`) VALUES
 (1, '67543388$re386yf32198765430op876y$', '67543388$re386yf32198765430op87697', '67543388$re386yf32198765430op876y$', 'marybae', 23, 170, 50, 'day', 50000, 'ngn', 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.', '2024-08-31 04:05:15', '2026-08-17 14:32:02', 'black', 'long', 'black', 'l', 'yes', 'no', 'curve', 'bisexual', '', 'lagos', 'ikeja', 'active');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `live_coin_packages`
+--
+
+CREATE TABLE `live_coin_packages` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `package_guid` varchar(70) NOT NULL,
+  `coins` int(10) UNSIGNED NOT NULL,
+  `price` decimal(12,2) NOT NULL,
+  `currency` varchar(10) NOT NULL DEFAULT 'NGN',
+  `bonus_coins` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `live_coin_packages`
+--
+
+INSERT INTO `live_coin_packages` (`id`, `package_guid`, `coins`, `price`, `currency`, `bonus_coins`, `is_active`, `created_at`) VALUES
+(1, 'c22d09de-b742-11f1-bded-ccb93e097221', 100, 100.00, 'NGN', 0, 1, '2026-09-23 11:34:37'),
+(2, 'c22d0cda-b742-11f1-bded-ccb93e097221', 550, 500.00, 'NGN', 0, 1, '2026-09-23 11:34:37'),
+(3, 'c22d0d56-b742-11f1-bded-ccb93e097221', 1200, 1000.00, 'NGN', 0, 1, '2026-09-23 11:34:37'),
+(4, 'c22d0d8c-b742-11f1-bded-ccb93e097221', 6500, 5000.00, 'NGN', 0, 1, '2026-09-23 11:34:37'),
+(5, 'c22d0db9-b742-11f1-bded-ccb93e097221', 14000, 10000.00, 'NGN', 0, 1, '2026-09-23 11:34:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `live_coin_wallets`
+--
+
+CREATE TABLE `live_coin_wallets` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `wallet_guid` varchar(70) NOT NULL,
+  `user_id` varchar(70) NOT NULL,
+  `balance` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `live_follows`
+--
+
+CREATE TABLE `live_follows` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `live_follw_guid` varchar(70) NOT NULL,
+  `follower_id` varchar(70) NOT NULL,
+  `streamer_id` varchar(70) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `live_gifts`
+--
+
+CREATE TABLE `live_gifts` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `gift_guid` varchar(70) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `icon` varchar(255) NOT NULL,
+  `coins` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `streamer_coins` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `live_gifts`
+--
+
+INSERT INTO `live_gifts` (`id`, `gift_guid`, `name`, `icon`, `coins`, `streamer_coins`, `is_active`, `created_at`) VALUES
+(1, '14da8c88-b741-11f1-bded-ccb93e097221', 'Rose', '🌹', 10, 8, 1, '2026-09-23 11:22:37'),
+(2, '14da9100-b741-11f1-bded-ccb93e097221', 'Heart', '❤️', 20, 16, 1, '2026-09-23 11:22:37'),
+(3, '14da91a1-b741-11f1-bded-ccb93e097221', 'Coffee', '☕', 30, 24, 1, '2026-09-23 11:22:37'),
+(4, '14da91f3-b741-11f1-bded-ccb93e097221', 'Cake', '🎂', 50, 40, 1, '2026-09-23 11:22:37'),
+(5, '14da923a-b741-11f1-bded-ccb93e097221', 'Fire', '🔥', 100, 80, 1, '2026-09-23 11:22:37'),
+(6, '14da927f-b741-11f1-bded-ccb93e097221', 'Diamond', '💎', 500, 400, 1, '2026-09-23 11:22:37'),
+(7, '14da92be-b741-11f1-bded-ccb93e097221', 'Crown', '👑', 1000, 800, 1, '2026-09-23 11:22:37'),
+(8, '14da92f9-b741-11f1-bded-ccb93e097221', 'Rocket', '🚀', 2500, 2000, 1, '2026-09-23 11:22:37'),
+(9, '14da9340-b741-11f1-bded-ccb93e097221', 'Luxury Car', '🚗', 5000, 4000, 1, '2026-09-23 11:22:37'),
+(10, '14da937c-b741-11f1-bded-ccb93e097221', 'Universe', '🌌', 10000, 8000, 1, '2026-09-23 11:22:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `live_gift_transactions`
+--
+
+CREATE TABLE `live_gift_transactions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `transaction_guid` varchar(70) NOT NULL,
+  `stream_guid` varchar(70) NOT NULL,
+  `sender_id` varchar(70) NOT NULL,
+  `streamer_id` varchar(70) NOT NULL,
+  `gift_id` int(10) UNSIGNED NOT NULL,
+  `quantity` int(10) UNSIGNED NOT NULL DEFAULT 1,
+  `coins_spent` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `streamer_coins` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `live_gift_wallets`
+--
+
+CREATE TABLE `live_gift_wallets` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `lg_wallet_guid` varchar(70) NOT NULL,
+  `user_id` varchar(70) NOT NULL,
+  `coins` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `live_likes`
+--
+
+CREATE TABLE `live_likes` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `live_likes_guid` varchar(70) NOT NULL,
+  `stream_guid` varchar(70) NOT NULL,
+  `user_id` varchar(70) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `live_likes`
+--
+
+INSERT INTO `live_likes` (`id`, `live_likes_guid`, `stream_guid`, `user_id`, `created_at`) VALUES
+(1, 'eaaa1091-bb89-11f1-ba6f-9d20c98f6f81', 'bdda2755-b5d2-11f1-bb04-0d710ef2930d', '5f183f835bf47f66980182a98396975773b9dd319c9f57dd59', '2026-09-28 22:14:02'),
+(2, '85d19041-bdb9-11f1-882d-a05ffcd12235', 'ec78cec3-bb91-11f1-ba6f-9d20c98f6f81', '8802d595ef043a5aa63745c11b08ea5b4d5084b2d8b7ebba5a', '2026-10-01 16:59:53'),
+(7, '5e4cf39c-bdbc-11f1-882d-a05ffcd12235', 'ec78cec3-bb91-11f1-ba6f-9d20c98f6f81', '5f183f835bf47f66980182a98396975773b9dd319c9f57dd59', '2026-10-01 17:20:15');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `live_messages`
+--
+
+CREATE TABLE `live_messages` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `message_guid` varchar(70) NOT NULL,
+  `stream_guid` varchar(70) NOT NULL,
+  `user_id` varchar(70) NOT NULL,
+  `message` text NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `live_messages`
+--
+
+INSERT INTO `live_messages` (`id`, `message_guid`, `stream_guid`, `user_id`, `message`, `is_deleted`, `created_at`) VALUES
+(1, '498743e5-bb92-11f1-ba6f-9d20c98f6f81', '98a8817e-bb91-11f1-ba6f-9d20c98f6f81', '5f183f835bf47f66980182a98396975773b9dd319c9f57dd59', 'hi', 0, '2026-09-28 23:13:58'),
+(2, '4bb141ef-bb92-11f1-ba6f-9d20c98f6f81', '98a8817e-bb91-11f1-ba6f-9d20c98f6f81', '5f183f835bf47f66980182a98396975773b9dd319c9f57dd59', 'hi', 0, '2026-09-28 23:14:02'),
+(3, '4c6f05d6-bb92-11f1-ba6f-9d20c98f6f81', '98a8817e-bb91-11f1-ba6f-9d20c98f6f81', '5f183f835bf47f66980182a98396975773b9dd319c9f57dd59', 'hi', 0, '2026-09-28 23:14:03'),
+(4, '4d816dc9-bb92-11f1-ba6f-9d20c98f6f81', '98a8817e-bb91-11f1-ba6f-9d20c98f6f81', '5f183f835bf47f66980182a98396975773b9dd319c9f57dd59', 'hi', 0, '2026-09-28 23:14:05'),
+(5, '8dc9f1e6-bbac-11f1-ba6f-9d20c98f6f81', 'ec78cec3-bb91-11f1-ba6f-9d20c98f6f81', '8802d595ef043a5aa63745c11b08ea5b4d5084b2d8b7ebba5a', 'hi', 0, '2026-09-29 14:17:56'),
+(6, '8f48372d-bbac-11f1-ba6f-9d20c98f6f81', 'ec78cec3-bb91-11f1-ba6f-9d20c98f6f81', '8802d595ef043a5aa63745c11b08ea5b4d5084b2d8b7ebba5a', 'hi', 0, '2026-09-29 14:17:58'),
+(7, '941f2326-bbac-11f1-ba6f-9d20c98f6f81', 'ec78cec3-bb91-11f1-ba6f-9d20c98f6f81', '8802d595ef043a5aa63745c11b08ea5b4d5084b2d8b7ebba5a', 'hi', 0, '2026-09-29 14:18:06'),
+(8, 'b2bbe864-bbac-11f1-ba6f-9d20c98f6f81', 'ec78cec3-bb91-11f1-ba6f-9d20c98f6f81', '8802d595ef043a5aa63745c11b08ea5b4d5084b2d8b7ebba5a', 'hi', 0, '2026-09-29 14:18:58'),
+(9, 'cf84a7ab-bbac-11f1-ba6f-9d20c98f6f81', 'ec78cec3-bb91-11f1-ba6f-9d20c98f6f81', '8802d595ef043a5aa63745c11b08ea5b4d5084b2d8b7ebba5a', 'hi', 0, '2026-09-29 14:19:46');
 
 -- --------------------------------------------------------
 
@@ -252,8 +429,23 @@ CREATE TABLE `streams` (
   `started_at` datetime DEFAULT NULL,
   `ended_at` datetime DEFAULT NULL,
   `stream_created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `stream_updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `stream_updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `like_count` bigint(20) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `streams`
+--
+
+INSERT INTO `streams` (`id`, `stream_guid`, `user_id`, `title`, `slug`, `room_name`, `status`, `is_public`, `viewer_count`, `started_at`, `ended_at`, `stream_created_at`, `stream_updated_at`, `like_count`) VALUES
+(14, '82f5976d-b5bc-11f1-bb04-0d710ef2930d', '67543388$re386yf32198765430op876y$', 'testing streams', 'testing-streams-38bae3ab', 'stream-13444dae069292d02000b4248b05ce88', 'scheduled', 1, 0, NULL, NULL, '2026-09-21 13:01:07', '2026-09-21 13:01:07', 0),
+(15, '75eb43ac-b5bd-11f1-bb04-0d710ef2930d', '67543388$re386yf32198765430op876y$', 'testing streams', 'testing-streams-950b1cd4', 'stream-4a665386c243f62c1d7cf2d4c9c0acdb', 'live', 1, 0, '2026-09-21 09:07:54', NULL, '2026-09-21 13:07:54', '2026-09-21 13:07:54', 0),
+(16, '9ca2e2f9-b5bd-11f1-bb04-0d710ef2930d', '67543388$re386yf32198765430op876y$', 'testing streams', 'testing-streams-3a820aab', 'stream-d66bf6b1b7bf096a7662c5fa657e54a1', 'live', 1, 0, '2026-09-21 09:08:59', NULL, '2026-09-21 13:08:59', '2026-09-21 13:08:59', 0),
+(17, '1ada74ba-b5be-11f1-bb04-0d710ef2930d', '67543388$re386yf32198765430op876y$', 'testing streams', 'testing-streams-7664be7d', 'stream-8a1ea19228376f718b9cfb58ce137ca6', 'live', 1, 0, '2026-09-21 09:12:31', NULL, '2026-09-21 13:12:31', '2026-09-21 13:12:31', 0),
+(18, 'a296633e-b5d2-11f1-bb04-0d710ef2930d', '67543388$re386yf32198765430op876y$', 'testing streams', 'testing-streams-6f1e41d7', 'stream-27c6e36373b6c7c8a7c6f0fb635bd64b', 'live', 1, 0, '2026-09-21 11:39:29', NULL, '2026-09-21 15:39:29', '2026-09-21 15:39:29', 0),
+(19, 'bdda2755-b5d2-11f1-bb04-0d710ef2930d', '67543388$re386yf32198765430op876y$', 'testing streams', 'testing-streams-236328a4', 'stream-c87573988e1d8bdf71c3194e5df86161', 'live', 1, 1, '2026-09-21 11:40:14', NULL, '2026-09-21 15:40:14', '2026-10-01 05:35:24', 0),
+(20, '98a8817e-bb91-11f1-ba6f-9d20c98f6f81', '5eecefa82675721af78bebe1ebd39f74aff78e40f16604f53d', 'naked weapon', 'naked-weapon-89adc668', 'stream-c88b133ab0600f038fd931c9ca8269cb', 'live', 1, 0, '2026-09-28 19:09:02', NULL, '2026-09-28 23:09:02', '2026-09-28 23:09:02', 0),
+(21, 'ec78cec3-bb91-11f1-ba6f-9d20c98f6f81', '5eecefa82675721af78bebe1ebd39f74aff78e40f16604f53d', 'live nakedness', 'live-nakedness-8be0f751', 'stream-7c0c392cba08fe429788ab4f237523a5', 'live', 1, 16, '2026-09-28 19:11:22', NULL, '2026-09-28 23:11:22', '2026-10-01 17:21:25', 0);
 
 -- --------------------------------------------------------
 
@@ -286,6 +478,20 @@ CREATE TABLE `stream_keys` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `stream_updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `stream_keys`
+--
+
+INSERT INTO `stream_keys` (`id`, `st_key_guid`, `stream_id`, `stream_key`, `is_active`, `last_used_at`, `created_at`, `stream_updated_at`) VALUES
+(1, '83002976-b5bc-11f1-bb04-0d710ef2930d', '82f5976d-b5bc-11f1-bb04-0d710ef2930d', 'sk_7b8916982a6a79675c976bc39a7a2d71623eafa135564dd01e2600407f5e0555', 1, NULL, '2026-09-21 13:01:07', '2026-09-21 13:01:07'),
+(2, '75ece0b4-b5bd-11f1-bb04-0d710ef2930d', '75eb43ac-b5bd-11f1-bb04-0d710ef2930d', 'sk_91cc5a70c639e300ffe0f4472ed40ad12b82cac4e303b3bce3afc3222766a201', 1, NULL, '2026-09-21 13:07:54', '2026-09-21 13:07:54'),
+(3, '9cae24e9-b5bd-11f1-bb04-0d710ef2930d', '9ca2e2f9-b5bd-11f1-bb04-0d710ef2930d', 'sk_6f3e7d0bab44604ba790ff67f53fe000ca8771bcbc8f8bb8ef922a3d9b094af9', 1, NULL, '2026-09-21 13:08:59', '2026-09-21 13:08:59'),
+(4, '1ae5f60a-b5be-11f1-bb04-0d710ef2930d', '1ada74ba-b5be-11f1-bb04-0d710ef2930d', 'sk_5f3527283aeecf68c68011764ab985833b1d21d11c69bdafcc7abcef78b2c9cd', 1, NULL, '2026-09-21 13:12:31', '2026-09-21 13:12:31'),
+(5, 'a2a174b9-b5d2-11f1-bb04-0d710ef2930d', 'a296633e-b5d2-11f1-bb04-0d710ef2930d', 'sk_a36226d7273a0aa594677203a85fbc64f680a09baba56c5a8235ca4e28837565', 1, NULL, '2026-09-21 15:39:29', '2026-09-21 15:39:29'),
+(6, 'bde54288-b5d2-11f1-bb04-0d710ef2930d', 'bdda2755-b5d2-11f1-bb04-0d710ef2930d', 'sk_466786768175d08042e8c920c87ada742d3875d194ef0bf41b27ad8db9d8b0ce', 1, NULL, '2026-09-21 15:40:14', '2026-09-21 15:40:14'),
+(7, '98b3a59b-bb91-11f1-ba6f-9d20c98f6f81', '98a8817e-bb91-11f1-ba6f-9d20c98f6f81', 'sk_092a835a832ec4b8e2b29cb395686240c81fc5553d469a456743a3b0cbc81ec8', 1, NULL, '2026-09-28 23:09:02', '2026-09-28 23:09:02'),
+(8, 'ec8510fa-bb91-11f1-ba6f-9d20c98f6f81', 'ec78cec3-bb91-11f1-ba6f-9d20c98f6f81', 'sk_76c1418ee46fcca8cf1e1525ace0aeb59e02bb2a531b25247a0d71b50ccfad8e', 1, NULL, '2026-09-28 23:11:22', '2026-09-28 23:11:22');
 
 -- --------------------------------------------------------
 
@@ -424,7 +630,8 @@ INSERT INTO `users` (`id`, `user_guid`, `role_id`, `name`, `username`, `email`, 
 (5, '6c001ed80ba6ded21a7bffe3ee94774c4bc3a019e867aa6b37', 3, 'anuli anjoes', NULL, 'joes@gmail.com', 'unverified', '$2y$10$VIFCS0wqHO9ISyaSwTPonOjrFkYER25xVAnRXzsCkTEvAafr6rFxG', 'female', 'none', NULL, NULL, '', '', NULL, NULL, 'waiting', '2024-09-11 08:20:46', '2024-09-11 08:20:46'),
 (6, '908f1f53eabbfc7afc0e91bc2466533424c15b185f090058a9', 3, 'anuli anjoes', NULL, 'rest@gmail.com', 'unverified', '$2y$10$dVPuINp7rhITEsThkQJHKux9ApKJZWzjU/OucGAGTzLgVotf/g6lm', 'female', 'none', NULL, NULL, '', '', NULL, NULL, 'waiting', '2024-09-11 08:24:52', '2024-09-11 08:24:52'),
 (7, '5eecefa82675721af78bebe1ebd39f74aff78e40f16604f53d', 2, 'emma gist', 'brain', 'emma1994204@gmail.com', 'unverified', '$2y$10$W2JU2Aex7D8Tc2wnYR.jVuh79u4rPNxDzbajRv6doaxKP7pa2on22', 'male', 'none', '9031985816', 90874567381, '../nin_slip/omogbon.jpeg', '../passport/omogbon.jpeg', NULL, 'ojota', 'approved', '2026-07-27 11:32:48', '2026-08-24 12:18:27'),
-(8, '5f183f835bf47f66980182a98396975773b9dd319c9f57dd59', 3, 'jerry', NULL, 'jerry@gmail.com', 'unverified', '$2y$10$B8SphBUhXCce6WsgHqwrR.WwAUwFsv6wSEqj0HPkxKz2EZAbs6ZTC', 'male', 'none', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-08-24 11:01:41', '2026-08-25 09:24:58');
+(8, '5f183f835bf47f66980182a98396975773b9dd319c9f57dd59', 3, 'jerry', NULL, 'jerry@gmail.com', 'unverified', '$2y$10$B8SphBUhXCce6WsgHqwrR.WwAUwFsv6wSEqj0HPkxKz2EZAbs6ZTC', 'male', 'none', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-08-24 11:01:41', '2026-08-25 09:24:58'),
+(9, '8802d595ef043a5aa63745c11b08ea5b4d5084b2d8b7ebba5a', 3, 'serah mery', NULL, 'emmagist@gmail.com', 'unverified', '$2y$10$MzYXsc0Pavo.y4t1hQ5AnOHK6LMZ.2U51DZCA4jwzBzs7egB0PMeO', 'female', 'none', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-09-29 07:20:23', '2026-09-29 07:20:23');
 
 -- --------------------------------------------------------
 
@@ -494,6 +701,81 @@ ALTER TABLE `escorts`
   ADD UNIQUE KEY `entity` (`entity_guid`),
   ADD UNIQUE KEY `cat_id` (`category_id`),
   ADD UNIQUE KEY `user_name` (`user_name`);
+
+--
+-- Indexes for table `live_coin_packages`
+--
+ALTER TABLE `live_coin_packages`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `package_guid` (`package_guid`);
+
+--
+-- Indexes for table `live_coin_wallets`
+--
+ALTER TABLE `live_coin_wallets`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `wallet_guid` (`wallet_guid`),
+  ADD UNIQUE KEY `unique_user_wallet` (`user_id`),
+  ADD KEY `idx_user` (`user_id`);
+
+--
+-- Indexes for table `live_follows`
+--
+ALTER TABLE `live_follows`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `live_follw_guid` (`live_follw_guid`),
+  ADD UNIQUE KEY `unique_follow` (`follower_id`,`streamer_id`),
+  ADD KEY `follower_id` (`follower_id`),
+  ADD KEY `streamer_id` (`streamer_id`);
+
+--
+-- Indexes for table `live_gifts`
+--
+ALTER TABLE `live_gifts`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `gift_guid` (`gift_guid`),
+  ADD KEY `coins` (`coins`),
+  ADD KEY `is_active` (`is_active`);
+
+--
+-- Indexes for table `live_gift_transactions`
+--
+ALTER TABLE `live_gift_transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `transaction_guid` (`transaction_guid`),
+  ADD KEY `stream_guid` (`stream_guid`),
+  ADD KEY `sender_id` (`sender_id`),
+  ADD KEY `streamer_id` (`streamer_id`),
+  ADD KEY `gift_id` (`gift_id`),
+  ADD KEY `created_at` (`created_at`);
+
+--
+-- Indexes for table `live_gift_wallets`
+--
+ALTER TABLE `live_gift_wallets`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `lg_wallet_guid` (`lg_wallet_guid`),
+  ADD UNIQUE KEY `user_id` (`user_id`),
+  ADD KEY `user_id_2` (`user_id`);
+
+--
+-- Indexes for table `live_likes`
+--
+ALTER TABLE `live_likes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_like` (`stream_guid`,`user_id`),
+  ADD UNIQUE KEY `live_likes_guid` (`live_likes_guid`),
+  ADD KEY `stream_guid` (`stream_guid`);
+
+--
+-- Indexes for table `live_messages`
+--
+ALTER TABLE `live_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `message_guid` (`message_guid`),
+  ADD KEY `idx_stream` (`stream_guid`),
+  ADD KEY `idx_user` (`user_id`),
+  ADD KEY `idx_created` (`created_at`);
 
 --
 -- Indexes for table `orders`
@@ -624,6 +906,54 @@ ALTER TABLE `escorts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `live_coin_packages`
+--
+ALTER TABLE `live_coin_packages`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `live_coin_wallets`
+--
+ALTER TABLE `live_coin_wallets`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `live_follows`
+--
+ALTER TABLE `live_follows`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `live_gifts`
+--
+ALTER TABLE `live_gifts`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `live_gift_transactions`
+--
+ALTER TABLE `live_gift_transactions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `live_gift_wallets`
+--
+ALTER TABLE `live_gift_wallets`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `live_likes`
+--
+ALTER TABLE `live_likes`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `live_messages`
+--
+ALTER TABLE `live_messages`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
@@ -657,7 +987,7 @@ ALTER TABLE `sex_categories`
 -- AUTO_INCREMENT for table `streams`
 --
 ALTER TABLE `streams`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `stream_comments`
@@ -669,7 +999,7 @@ ALTER TABLE `stream_comments`
 -- AUTO_INCREMENT for table `stream_keys`
 --
 ALTER TABLE `stream_keys`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `subscriptions`
@@ -699,7 +1029,7 @@ ALTER TABLE `sugar_request`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `wallets`
