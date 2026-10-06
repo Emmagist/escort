@@ -1,6 +1,44 @@
-let streamLiked = false;
+const likeCount = document.getElementById('like-count');
+
+$(document).ready(function () {
+
+    const like = likeCount.getAttribute('data-id');
+
+    setInterval(() => {
+        loadCount(like);
+    }, 2000);
+
+});
+
+async function loadCount(param) {
+    try {
+        const response = await fetch('api/likes/like-count.php',{
+            method: 'POST',
+
+            headers: {
+                'Content-Type':
+                    'application/json'
+            },
+
+            body: JSON.stringify({
+                stream_id: param,
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            likeCount.innerText = Number(data.count);
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 async function likeStream() {
+
+    let streamLiked = false;
 
     if (streamLiked) {
         return;
@@ -29,18 +67,22 @@ async function likeStream() {
 
         streamLiked = true;
 
-        const button =
-            document.getElementById(
-                'like-button'
-            );
+        const button = document.getElementById('like-button');
 
         button.classList.add('liked');
 
-        button.innerHTML = '❤️ Liked'; alert(data.count); console.log(data.count);
+        button.innerHTML = '❤️ Liked';
 
-        document.getElementById('like-count').innerText = Number(data.count);
+        likeCount.innerText = Number(data.count);
 
         createFloatingHeart();
+
+        setTimeout(() => {
+            button.classList.remove('liked');
+            // button.classList.add('like');
+            button.innerHTML = '❤️ Like';
+        }, 3000);
+        
 
     } catch (error) {
 

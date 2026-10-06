@@ -8,7 +8,7 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../classes/liveKit.php';
 require_once __DIR__ . '/../classes/stream.php';
 require_once __DIR__ . '/../classes/streamKey.php';
-require_once __DIR__ . './../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 if (!isset($_SESSION['token'])) {
 
@@ -21,6 +21,7 @@ if (!isset($_SESSION['token'])) {
 
     exit;
 }
+
 $streamGuid = (string) ($_GET['stream_id'] ?? '');
 
 $stream = $streamModel->find($streamGuid);

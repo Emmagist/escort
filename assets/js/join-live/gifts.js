@@ -1,3 +1,9 @@
+$(document).ready(function () {
+    setInterval(() => {
+        loadGiftBalance()
+    }, 5000);
+});
+
 async function loadGifts() {
 
     const container =
@@ -63,56 +69,28 @@ async function loadGifts() {
 
 
 async function loadGiftBalance() {
-
-    const response =
-        await fetch('api/gifts/balance.php');
-
-    const data =
-        await response.json();
+    const response = await fetch('api/gifts/balance.php');
+    const data = await response.json();
 
     if (data.success) {
-
-        document.getElementById(
-            'coin-balance'
-        ).innerText =
-            Number(data.coins).toLocaleString();
-
+        document.getElementById('coin-balance').innerText = Number(data.coins).toLocaleString();
     }
 }
 
 
-async function sendGift(
-    giftId,
-    name,
-    icon
-) {
-
+async function sendGift(giftId, name, icon) {
     try {
+        const response = await fetch('api/gifts/send.php',{
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                stream_id: streamGuid,
+                gift_id: giftId,
+                quantity: 1
+            })
+        });
 
-        const response = await fetch(
-            'api/gifts/send.php',
-            {
-                method: 'POST',
-
-                headers: {
-                    'Content-Type':
-                        'application/json'
-                },
-
-                body: JSON.stringify({
-
-                    stream_id: streamGuid,
-
-                    gift_id: giftId,
-
-                    quantity: 1
-
-                })
-            }
-        );
-
-        const data =
-            await response.json();
+        const data = await response.json();
 
         if (!data.success) {
 
@@ -120,9 +98,7 @@ async function sendGift(
                 data.message ===
                 'Insufficient coin balance'
             ) {
-
                 openBuyCoins();
-
                 return;
             }
 
@@ -135,10 +111,7 @@ async function sendGift(
         }
 
 
-        document.getElementById(
-            'coin-balance'
-        ).innerText =
-            Number(data.balance).toLocaleString();
+        document.getElementById('coin-balance').innerText =Number(data.balance).toLocaleString();
 
 
         showGiftAnimation(
@@ -206,8 +179,7 @@ function showGiftAnimation(
 function openBuyCoins() {
 
     document
-        .getElementById('coins-modal')
-        .classList.add('show');
+        .getElementById('coins-modal').classList.add('show');
 
     loadCoinPackages();
 }
@@ -215,9 +187,14 @@ function openBuyCoins() {
 
 function closeBuyCoins() {
 
-    document
-        .getElementById('coins-modal')
-        .classList.remove('show');
+    const modal =
+        document.getElementById(
+            'coins-modal'
+        );
+
+    if (modal) {
+        modal.classList.remove('show');
+    }
 
 }
 
@@ -229,13 +206,9 @@ async function loadCoinPackages() {
             'coin-packages'
         );
 
-    const response =
-        await fetch(
-            'api/gifts/packages.php'
-        );
+    const response = await fetch('api/gifts/packages.php');
 
-    const data =
-        await response.json();
+    const data = await response.json();
 
     if (!data.success) {
         return;
@@ -266,9 +239,7 @@ async function loadCoinPackages() {
 
         item.onclick = function() {
 
-            startCoinPurchase(
-                pkg.package_guid
-            );
+            startCoinPurchase(pkg.package_guid);
 
         };
 
@@ -277,9 +248,65 @@ async function loadCoinPackages() {
     });
 }
 
+async function startCoinPurchase(packageguid) {
+
+    if (!packageguid) {
+        alert('Invalid coin package.');
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            '/api/gifts/purchase.php',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    package_guid: packageguid
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!data.success) {
+            alert(data.message || 'Unable to purchase coins.');
+            return;
+        }
+
+        console.log('Coin purchase successful:', data);
+
+        const balanceElement =
+            document.getElementById('coin-balance');
+
+        if (balanceElement && data.wallet) {
+            balanceElement.textContent = Number(data.wallet.balance).toLocaleString();
+        }
+
+        if (typeof closeBuyCoins === 'function') {
+            closeBuyCoins();
+        }
+
+        const purchasedCoins = Number(data.purchase.total_coins).toLocaleString();
+
+        alert(`${purchasedCoins} coins added to your wallet!`);
+
+    } catch (error) {
+
+        console.error(
+            'Coin purchase error:',
+            error
+        );
+
+        alert('Unable to complete coin purchase.');
+    }
+}
 
 function escapeHtml(value) {
-
     return String(value)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -289,6 +316,98 @@ function escapeHtml(value) {
 
 }
 
+async function buyCoins(packageGuid) {
+    if (!packageId) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            'api/gifts/purchase.php',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    package_id: packageGuid
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!data.success) {
+            alert(data.message || 'Unable to purchase coins');
+
+            return;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Update balance immediately
+        |--------------------------------------------------------------------------
+        */
+        const balance = document.getElementById('coin-balance');
+
+        if (balance) {
+            balance.innerText = Number(data.wallet.balance).toLocaleString();
+        }
+
+        closeBuyCoins();
+
+        alert(
+            `${Number(data.purchase.total_coins).toLocaleString()} coins added to your wallet!`
+        );
+    } catch (error) {
+
+        console.error(
+            'Coin purchase error:',
+            error
+        );
+
+        alert(
+            'Unable to complete coin purchase'
+        );
+    }
+}
+
+async function loadCoinBalance() {
+
+    try {
+
+        const response = await fetch(
+            'api/gifts/balance.php',
+            {
+                method: 'GET',
+                headers: {'Accept': 'application/json'},
+                cache: 'no-store'
+            }
+        );
+
+        const data = await response.json();
+
+        if (!data.success) {
+            return;
+        }
+
+        const balance = document.getElementById('coin-balance');
+
+        if (balance) {
+            balance.innerText = Number(data.balance).toLocaleString();
+        }
+
+    } catch (error) {
+
+        console.error(
+            'Balance error:',
+            error
+        );
+    }
+}
+
+loadCoinBalance();
 
 loadGifts();
 loadGiftBalance();

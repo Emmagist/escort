@@ -25,4 +25,4 @@ if($streamGuid === ''){
 
 $messages = $liveChat->getMessages($streamGuid, $afterId, 50);
 
-echo json_encode(['success' => true, 'message' => $messages]);
+echo json_encode(['success' => true, 'messages' => $messages]);

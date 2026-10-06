@@ -10,7 +10,7 @@ class GiftWallet{
 
         $userIdEsc = $this->db->escape($userId);
 
-        $row = $this->db->singleData(TBL_LIVE_GIFT_WALLETS, "coins", "user_id -='$userIdEsc");
+        $row = $this->db->singleData(TBL_LIVE_COIN_WALLETS, "coins", "user_id ='$userIdEsc'");
 
         return (int)($row['coins'] ?? 0);
     }
@@ -27,11 +27,11 @@ class GiftWallet{
             $coins_balance = $this->getBalance($userIdEsc);
             $total_coins = $coins_balance + $coinsEsc;
 
-            $result = $this->db->update(TBL_LIVE_GIFT_WALLETS, "coins = $total_coins", "user_id = '$userId'");
+            $result = $this->db->update(TBL_LIVE_COIN_WALLETS, "coins = $total_coins", "user_id = '$userId'");
 
             return $result;exit;
         }else {
-            $result = $this->db->saveData(TBL_LIVE_GIFT_WALLETS, "lg_wallet_guid = uuid(), user_id = '$userIdEsc', coins = $coinsEsc");
+            $result = $this->db->saveData(TBL_LIVE_COIN_WALLETS, "wallet_guid = uuid(), user_id = '$userIdEsc', coins = $coinsEsc");
 
             return $result;exit;
         }

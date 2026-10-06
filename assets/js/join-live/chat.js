@@ -1,7 +1,12 @@
+$(document).ready(function () {
+    setInterval(() => {
+        loadMessages()
+    }, 2000);
+});
+
 let lastMessageId = 0;
 
 async function loadMessages() {
-
     try {
 
         const response =
@@ -18,11 +23,9 @@ async function loadMessages() {
         data.messages.forEach(
             function(message) {
 
-                appendChatMessage(
-                    message
-                );
+                appendChatMessage(message);
 
-                lastMessageId = Math.max(lastMessageId, Number(message.id));
+                // lastMessageId = Math.max(lastMessageId, Number(message.id));
 
             }
         );
@@ -37,25 +40,13 @@ async function loadMessages() {
 
 function appendChatMessage(message) {
 
-    const container =
-        document.getElementById(
-            'chat-messages'
-        );
+    const container = document.getElementById('chat-messages');
 
-    const wrapper =
-        document.createElement('div');
+    const wrapper = document.createElement('div');
 
-    wrapper.className =
-        'chat-message';
+    wrapper.className = 'chat-message';
 
-    const initial =
-        (
-            message.username ||
-            message.user_id ||
-            'U'
-        )
-        .substring(0, 1)
-        .toUpperCase();
+    const initial = (message.username || message.user_id || 'U').substring(0, 1).toUpperCase();
 
     wrapper.innerHTML = `
 
@@ -84,8 +75,7 @@ function appendChatMessage(message) {
 
     container.appendChild(wrapper);
 
-    container.scrollTop =
-        container.scrollHeight;
+    container.scrollTop = container.scrollHeight;
 }
 
 
@@ -107,43 +97,24 @@ async function sendChatMessage() {
 
     try {
 
-        const response =
-            await fetch(
-                'api/chat/send.php',
-                {
-                    method: 'POST',
+        const response = await fetch('api/chat/send.php',{
+            method: 'POST',
 
-                    headers: {
-                        'Content-Type':
-                            'application/json'
-                    },
+            headers: {
+                'Content-Type':
+                    'application/json'
+            },
 
-                    body: JSON.stringify({
+            body: JSON.stringify({
+                stream_id: streamGuid,
+                message: message
+            })
+        });
 
-                        stream_id:
-                            streamGuid,
+        const data = await response.json();
 
-                        message:
-                            message
-
-                    })
-                }
-            );
-
-        const data =
-            await response.json();
-
-        if (data.success) {
-
-            input.value = '';
-
-        } else {
-
-            alert(
-                data.message ||
-                'Unable to send message'
-            );
-
+        if (data.success) {input.value = '';} else {
+            alert(data.message || 'Unable to send message');
         }
 
     } finally {
@@ -156,30 +127,20 @@ async function sendChatMessage() {
 }
 
 
-document
-    .getElementById('chat-input')
-    .addEventListener(
-        'keydown',
-        function(event) {
+document.getElementById('chat-input').addEventListener('keydown', function(event) {
 
-            if (
-                event.key === 'Enter' &&
-                !event.shiftKey
-            ) {
+    if (
+        event.key === 'Enter' &&
+        !event.shiftKey
+    ) {
 
-                event.preventDefault();
+        event.preventDefault();
 
-                sendChatMessage();
+        sendChatMessage();
 
-            }
+    }
 
-        }
-    );
+});
 
 
-setInterval(
-    loadMessages,
-    2000
-);
-
-loadMessages();
+// loadMessages();

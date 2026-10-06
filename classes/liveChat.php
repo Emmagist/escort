@@ -60,7 +60,7 @@ class LiveChat
 
         $rows = [];
 
-        $rows = $this->db->selectLimitAsc(TBL_LIVE_MESSAGES, "*", "stream_guid = '$streamGuid' AND is_deleted = 0 AND id > $afterId", "id", $limit);
+        $rows = $this->db->selectLimitAsc(TBL_LIVE_MESSAGES, "*", "stream_guid = '$streamGuid' AND is_deleted = 0", "id", $limit);
 
         if (!is_array($rows)) {
             return [];

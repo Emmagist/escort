@@ -158,16 +158,42 @@ async function startBroadcast(streamGuid)
 
             return;
         }
+        console.log(data.success);
 
         room = new LivekitClient.Room({
-                adaptiveStream: true,
-                dynacast: true
-            });
+            adaptiveStream: true,
+            dynacast: true
+        });
 
         await room.connect(
             data.server_url,
             data.token
         );
+
+        if (!navigator.mediaDevices) {
+
+            alert('Camera and microphone require HTTPS or localhost.');
+
+            console.error(
+                'navigator.mediaDevices is unavailable.',
+                {
+                    protocol: location.protocol,
+                    hostname: location.hostname,
+                    secureContext: window.isSecureContext
+                }
+            );
+
+            return;
+        }
+
+        if (!navigator.mediaDevices.getUserMedia) {
+
+            alert(
+                'This browser does not support camera/microphone access.'
+            );
+
+            return;
+        }
 
         await room.localParticipant.enableCameraAndMicrophone();
 

@@ -51,8 +51,7 @@ if ($streamGuid === '' || $giftGuid === '') {
 }
 
 
-$stream =
-    $streamModel->find($streamGuid);
+$stream = $streamModel->find($streamGuid);
 
 
 if (!$stream) {

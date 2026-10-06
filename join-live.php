@@ -92,221 +92,63 @@ require __DIR__ . "/inc/header.php";
                         id="floating-likes">
                     </div>
 
-
                     <div class="video-bottom">
-
                         <div class="streamer-mini">
-
-                            <div
-                                class="streamer-avatar"
-                                id="streamer-avatar">
-
-                                S
-
-                            </div>
-
+                            <div class="streamer-avatar" id="streamer-avatar"> S</div>
                             <div class="streamer-info">
-
-                                <h4 id="streamer-name">
-
-                                    Live Streamer
-
-                                </h4>
-
-                                <span>
-
-                                    <span id="live-viewers">
-                                        <?= (int)$stream['viewer_count'] ?>
-                                    </span>
-
-                                    viewers
-
-                                </span>
-
+                                <h4 id="streamer-name">Live Streamer</h4>
+                                <span><span id="live-viewers"><?= (int)$stream['viewer_count'] ?></span>viewers</span>
                             </div>
-
                             <?php if (!$isOwner): ?>
-
-                            <button
-                                class="follow-btn"
-                                id="follow-btn"
-                                onclick="followStreamer()">
-
-                                + Follow
-
-                            </button>
-
+                            <button class="follow-btn" id="follow-btn" onclick="followStreamer()">+ Follow</button>
                             <?php endif; ?>
-
                         </div>
-
-
-                        <div
-                            class="stream-title"
-                            id="stream-title">
-
-                            <?= htmlspecialchars(
-                                $stream['title'],
-                                ENT_QUOTES,
-                                'UTF-8'
-                            ) ?>
-
-                        </div>
-
+                        <div class="stream-title" id="stream-title"><?= ucwords(htmlspecialchars($stream['title'],ENT_QUOTES,'UTF-8')) ?></div>
                     </div>
-
                 </div>
-
 
                 <!-- STREAM INFORMATION -->
-
                 <div class="stream-info">
-
                     <div class="stream-info-row">
-
                         <div class="stats">
-
+                            <span class="stat">👁<strong id="viewer-count"><?= (int)$stream['viewer_count'] ?></strong></span>
                             <span class="stat">
-
-                                👁
-
-                                <strong id="viewer-count">
-                                    <?= (int)$stream['viewer_count'] ?>
-                                </strong>
-
+                                ❤️ <strong id="like-count" data-id="<?=$streamGuid?>">0</strong>
                             </span>
-
-                            <span class="stat">
-
-                                ❤️
-
-                                <strong id="like-count">
-                                    0
-                                </strong>
-
-                            </span>
-
-                            <span class="stat">
-
-                                🎁
-
-                                <strong id="gift-count">
-                                    0
-                                </strong>
-
-                            </span>
-
+                            <span class="stat">🎁 <strong id="gift-count">0</strong></span>
                         </div>
-
-
                         <div class="action-buttons">
-
-                            <button
-                                class="room-btn"
-                                id="like-button"
-                                onclick="likeStream()">
-
-                                ❤️ Like
-
-                            </button>
-
-                            <button
-                                class="room-btn"
-                                onclick="shareStream()">
-
-                                ↗ Share
-
-                            </button>
-
-                            <button
-                                class="room-btn"
-                                onclick="copyStreamLink()">
-
-                                🔗 Copy
-
-                            </button>
-
+                            <button type="button" class="room-btn" id="like-button" onclick="likeStream()">❤️ Like</button>
+                            <button class="room-btn" onclick="shareStream()">↗ Share</button>
+                            <button class="room-btn" onclick="copyStreamLink()">🔗 Copy</button>
                         </div>
-
                     </div>
-
                 </div>
-
             </section>
-
 
             <!-- =================================================
                 CHAT
             ================================================= -->
-
             <aside class="chat-card">
-
                 <div class="chat-header">
-
                     <div>
-
-                        <div class="chat-title">
-
-                            Live Chat
-
-                        </div>
-
-                        <div class="chat-subtitle">
-
-                            Join the conversation
-
-                        </div>
-
+                        <div class="chat-title">Live Chat</div>
+                        <div class="chat-subtitle">Join the conversation</div>
                     </div>
-
-                    <div class="viewer-count">
-
-                        👁
-
-                        <span id="chat-viewers">
-                            <?= (int)$stream['viewer_count'] ?>
-                        </span>
-
+                    <div class="viewer-count">👁<span id="chat-viewers"><?= (int)$stream['viewer_count'] ?></span>
                     </div>
-
                 </div>
-
-
-                <div
-                    class="chat-messages"
-                    id="chat-messages">
-
+                <div class="chat-messages" id="chat-messages">
                     <div class="chat-message system">
-
-                        <div class="chat-avatar">
-
-                            ★
-
-                        </div>
-
+                        <div class="chat-avatar">★</div>
                         <div class="chat-body">
-
-                            <div class="chat-user">
-
-                                System
-
-                            </div>
-
-                            <div class="chat-text">
-
-                                Welcome to the live stream!
-
-                            </div>
-
+                            <div class="chat-user">System</div>
+                            <div class="chat-text"> Welcome to the live stream!</div>
                         </div>
-
                     </div>
-
                 </div>
-
 
                 <!-- GIFTS -->
-
                 <div class="gift-section">
 
                     <div class="gift-header">
@@ -383,78 +225,21 @@ require __DIR__ . "/inc/header.php";
 
     </div>
 
-
     <!-- GIFT POPUP -->
-
-    <div
-        class="gift-popup"
-        id="gift-popup">
-
-        <div
-            class="gift-popup-icon"
-            id="gift-popup-icon">
-
-            🎁
-
-        </div>
-
-        <div
-            class="gift-popup-title"
-            id="gift-popup-title">
-
-            Gift Sent!
-
-        </div>
-
-        <div
-            class="gift-popup-sub"
-            id="gift-popup-sub">
-
-            Your gift was sent to the streamer
-
-        </div>
-
+    <div class="gift-popup" id="gift-popup">
+        <div class="gift-popup-icon" id="gift-popup-icon">🎁 </div>
+        <div class="gift-popup-title" id="gift-popup-title">Gift Sent!</div>
+        <div class="gift-popup-sub" id="gift-popup-sub">Your gift was sent to the streamer</div>
     </div>
 
-
     <!-- BUY COINS MODAL -->
-
-    <div
-        class="coins-modal"
-        id="coins-modal">
-
+    <div class="coins-modal" id="coins-modal">
         <div class="coins-modal-card">
-
-            <button
-                class="modal-close"
-                onclick="closeBuyCoins()">
-
-                ×
-
-            </button>
-
-            <h3>
-
-                Buy Coins
-
-            </h3>
-
-            <p>
-
-                Choose a coin package
-
-            </p>
-
-            <div
-                id="coin-packages"
-                class="coin-packages">
-
-                Loading...
-
-            </div>
-
+            <button class="modal-close"onclick="closeBuyCoins()">×</button>
+            <h3>Buy Coins</h3>
+            <p>Choose a coin package</p>
+            <div id="coin-packages" class="coin-packages">Loading...</div>
         </div>
-
     </div>
 
 <?php require "inc/footer.php"; ?>

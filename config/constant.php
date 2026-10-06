@@ -100,6 +100,9 @@ define("TBL_LIVE_LIKES",            "live_likes");
 define("TBL_LIVE_FOLLOW",           "live_follows");
 define("TBL_LIVE_MESSAGES",         "live_messages");
 define("TBL_LIVE_GIFT_WALLETS",     "live_gift_wallets");
+define("TBL_COINS_PACKAGES",        "coin_packages");
+// define("TBL_COIN_WALLETS",          "coin_wallets");
+define("TBL_COIN_TRANSACTION",      "coin_transactions");
 
 define("TBL_WITHDRAWAL_CODE",       "withdrawal_code");
 define("TBL_TRANSACTION_LOG",       "transaction_logs");

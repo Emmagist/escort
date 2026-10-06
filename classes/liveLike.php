@@ -9,6 +9,43 @@ class LiveLike
         $this->db = $db;
     }
 
+    public function likeCount(string $streamGuid): array {
+
+        $streamGuid = trim($streamGuid);
+
+        if ($streamGuid === '') {
+            return [
+                'success' => false,
+                'message' => 'Invalid request'
+            ];
+        }
+
+        $streamGuidEsc = $this->db->escape($streamGuid);
+
+        $stream = $this->db->singleData(TBL_STREAMS, "stream_guid,user_id,status", "stream_guid = '$streamGuidEsc'");
+
+        if (!$stream || $stream['status'] !== 'live') {
+            return [
+                'success' => false,
+                'message' => 'Stream is not live'
+            ];
+        }
+
+        $countResult = $this->db->myconn->query("SELECT COUNT(*) AS total FROM live_likes WHERE stream_guid = '$streamGuidEsc'");
+
+        $count = 0;
+
+        if ($countResult) {
+            $row = $countResult->fetch_assoc();
+            $count = (int)$row['total'];
+        }
+
+        return [
+            'success' => true,
+            'count' => $count
+        ];
+    }
+
     public function like(string $streamGuid, string $userId): array {
 
         $streamGuid = trim($streamGuid);

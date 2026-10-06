@@ -39,7 +39,7 @@ class LiveFollow
         $followerId = $this->db->escape($followerId);
         $streamerId = $this->db->escape($streamerId);
 
-        $row = $this->db->singleData(TBL_LIVE_FOLLOW, "live_follw_guid", "follower_id = '$followerId', streamer_id = '$streamerId'");
+        $row = $this->db->singleData(TBL_LIVE_FOLLOW, "live_follw_guid", "follower_id = '$followerId' AND streamer_id = '$streamerId'");
 
         return !empty($row);
     }
