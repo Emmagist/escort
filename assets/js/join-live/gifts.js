@@ -11,11 +11,9 @@ async function loadGifts() {
 
     try {
 
-        const response =
-            await fetch('api/gifts/list.php');
+        const response = await fetch('api/gifts/list.php');
 
-        const data =
-            await response.json();
+        const data = await response.json();
 
         if (!data.success) {
             throw new Error('Unable to load gifts');
@@ -28,8 +26,7 @@ async function loadGifts() {
             const button =
                 document.createElement('button');
 
-            button.className =
-                'gift-item';
+            button.className = 'gift-item';
 
             button.innerHTML = `
                 <span class="gift-icon">
@@ -48,7 +45,7 @@ async function loadGifts() {
             button.onclick = function() {
 
                 sendGift(
-                    gift.id,
+                    gift.gift_guid,
                     gift.name,
                     gift.icon
                 );
@@ -78,19 +75,73 @@ async function loadGiftBalance() {
 }
 
 
-async function sendGift(giftId, name, icon) {
-    try {
-        const response = await fetch('api/gifts/send.php',{
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                stream_id: streamGuid,
-                gift_id: giftId,
-                quantity: 1
-            })
-        });
+async function sendGift(giftGuid, name, icon) {
 
-        const data = await response.json();
+    try {
+
+        const response = await fetch(
+            '/api/gifts/send.php',
+            {
+                method: 'POST',
+
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+
+                body: JSON.stringify({
+                    stream_id: streamGuid,
+                    gift_guid: giftGuid,
+                    quantity: 1
+                })
+            }
+        );
+
+
+        /*
+         * Get raw response first
+         * so PHP errors can be seen.
+         */
+
+        const raw = await response.text();
+
+        console.log(
+            'Send gift HTTP status:',
+            response.status
+        );
+
+        console.log(
+            'Send gift raw response:',
+            raw
+        );
+
+
+        let data;
+
+        try {
+
+            data = JSON.parse(raw);
+
+        } catch (jsonError) {
+
+            console.error(
+                'Invalid JSON from send.php:',
+                raw
+            );
+
+            alert(
+                'Server returned an invalid response. Check PHP error log.'
+            );
+
+            return;
+        }
+
+
+        console.log(
+            'Send gift response:',
+            data
+        );
+
 
         if (!data.success) {
 
@@ -98,9 +149,12 @@ async function sendGift(giftId, name, icon) {
                 data.message ===
                 'Insufficient coin balance'
             ) {
+
                 openBuyCoins();
+
                 return;
             }
+
 
             alert(
                 data.message ||
@@ -111,8 +165,28 @@ async function sendGift(giftId, name, icon) {
         }
 
 
-        document.getElementById('coin-balance').innerText =Number(data.balance).toLocaleString();
+        /*
+         * Update balance
+         */
 
+        const balanceElement =
+            document.getElementById(
+                'coin-balance'
+            );
+
+
+        if (balanceElement) {
+
+            balanceElement.innerText =
+                Number(
+                    data.balance
+                ).toLocaleString();
+        }
+
+
+        /*
+         * Gift animation
+         */
 
         showGiftAnimation(
             data.gift.name,
@@ -120,23 +194,35 @@ async function sendGift(giftId, name, icon) {
         );
 
 
+        /*
+         * Gift count
+         */
+
         const countElement =
             document.getElementById(
                 'gift-count'
             );
 
-        countElement.innerText =
-            Number(countElement.innerText) + 1;
+
+        if (countElement) {
+
+            countElement.innerText =
+                Number(
+                    countElement.innerText || 0
+                ) + 1;
+        }
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            'Send gift error:',
+            error
+        );
 
         alert(
             'Unable to send gift'
         );
-
     }
 }
 
@@ -278,10 +364,9 @@ async function startCoinPurchase(packageguid) {
             return;
         }
 
-        console.log('Coin purchase successful:', data);
+        // console.log('Coin purchase successful:', data);
 
-        const balanceElement =
-            document.getElementById('coin-balance');
+        const balanceElement = document.getElementById('coin-balance');
 
         if (balanceElement && data.wallet) {
             balanceElement.textContent = Number(data.wallet.balance).toLocaleString();

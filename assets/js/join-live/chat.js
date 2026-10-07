@@ -40,42 +40,80 @@ async function loadMessages() {
 
 function appendChatMessage(message) {
 
-    const container = document.getElementById('chat-messages');
+    const chatContainer =
+        document.getElementById('chat-messages');
 
-    const wrapper = document.createElement('div');
+    if (chatContainer) {
 
-    wrapper.className = 'chat-message';
+        const wrapper =
+            document.createElement('div');
 
-    const initial = (message.username || message.user_id || 'U').substring(0, 1).toUpperCase();
+        wrapper.className = 'chat-message';
 
-    wrapper.innerHTML = `
+        const username =
+            message.username ||
+            message.name ||
+            'User';
 
-        <div class="chat-avatar">
-            ${escapeHtml(initial)}
-        </div>
+        const text =
+            message.message ||
+            '';
 
-        <div class="chat-body">
+        const avatar =
+            message.avatar ||
+            '';
 
-            <div class="chat-user">
-                ${escapeHtml(
-                    message.username ||
-                    'User'
-                )}
+        const firstLetter =
+            username.charAt(0).toUpperCase();
+
+        wrapper.innerHTML = `
+
+            <div class="chat-avatar">
+
+                ${
+                    avatar
+                    ? `<img
+                        src="${escapeChatHtml(avatar)}"
+                        alt=""
+                        onerror="this.style.display='none';"
+                    >`
+                    : firstLetter
+                }
+
             </div>
 
-            <div class="chat-text">
-                ${escapeHtml(
-                    message.message
-                )}
+            <div class="chat-body">
+
+                <div class="chat-user">
+                    ${escapeChatHtml(username)}
+                </div>
+
+                <div class="chat-text">
+                    ${escapeChatHtml(text)}
+                </div>
+
             </div>
 
-        </div>
+        `;
 
-    `;
+        chatContainer.appendChild(wrapper);
 
-    container.appendChild(wrapper);
+        /*
+         * Keep normal chat scrolled to bottom
+         */
 
-    container.scrollTop = container.scrollHeight;
+        chatContainer.scrollTop =
+            chatContainer.scrollHeight;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | TIKTOK STYLE VIDEO COMMENT
+    |--------------------------------------------------------------------------
+    */
+
+    showLiveVideoComment(message);
 }
 
 
@@ -141,6 +179,158 @@ document.getElementById('chat-input').addEventListener('keydown', function(event
     }
 
 });
+
+function showLiveVideoComment(message) {
+
+    const container =
+        document.getElementById(
+            'live-comments-overlay'
+        );
+
+    if (!container) {
+        return;
+    }
+
+
+    const username =
+        message.username ||
+        message.name ||
+        'User';
+
+
+    const text =
+        message.message ||
+        '';
+
+
+    const avatar =
+        message.avatar ||
+        '';
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Create comment
+    |--------------------------------------------------------------------------
+    */
+
+    const comment =
+        document.createElement('div');
+
+    comment.className =
+        'live-comment';
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Avatar
+    |--------------------------------------------------------------------------
+    */
+
+    const firstLetter =
+        username
+            .charAt(0)
+            .toUpperCase();
+
+
+    const avatarHtml =
+        avatar
+
+        ? `
+            <img
+                src="${escapeChatHtml(avatar)}"
+                alt=""
+                onerror="
+                    this.style.display='none';
+                    this.parentElement.innerText='${firstLetter}';
+                "
+            >
+        `
+
+        : firstLetter;
+
+
+    comment.innerHTML = `
+
+        <div class="live-comment-avatar">
+
+            ${avatarHtml}
+
+        </div>
+
+
+        <div class="live-comment-body">
+
+            <div class="live-comment-user">
+
+                ${escapeChatHtml(username)}
+
+            </div>
+
+
+            <div class="live-comment-text">
+
+                ${escapeChatHtml(text)}
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Add to video
+    |--------------------------------------------------------------------------
+    */
+
+    container.appendChild(comment);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Keep only latest comments
+    |--------------------------------------------------------------------------
+    */
+
+    while (container.children.length > 7) {
+
+        container.removeChild(
+            container.firstElementChild
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Remove after animation
+    |--------------------------------------------------------------------------
+    */
+
+    setTimeout(() => {
+
+        if (comment.parentNode) {
+
+            comment.remove();
+
+        }
+
+    }, 8000);
+
+}
+
+function escapeChatHtml(value) {
+
+    const div =
+        document.createElement('div');
+
+    div.textContent =
+        String(value ?? '');
+
+    return div.innerHTML;
+}
 
 
 // loadMessages();

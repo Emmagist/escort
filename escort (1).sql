@@ -135,7 +135,7 @@ CREATE TABLE `live_coin_wallets` (
   `id` int(10) UNSIGNED NOT NULL,
   `wallet_guid` varchar(70) NOT NULL,
   `user_id` varchar(70) NOT NULL,
-  `balance` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `coins` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
