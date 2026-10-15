@@ -138,27 +138,72 @@ function copyStreamLink() {
 }
 
 
-function startHeartbeat() {
 
-    setInterval(function() {
+let heartbeatTimer = null;
 
-        fetch('api/live/heartbeat.php', {
-
+async function sendHeartbeat() {
+    try {
+        const response = await fetch('/api/live/heartbeat.php', {
             method: 'POST',
-
             headers: {
                 'Content-Type': 'application/json'
             },
-
+            credentials: 'same-origin',
             body: JSON.stringify({
                 stream_id: streamGuid
             })
-
         });
 
-    }, 15000);
+        if (!response.ok) {
+            throw new Error(`Heartbeat HTTP ${response.status}`);
+        }
 
+        const data = await response.json();
+
+        if (!data.success) {
+            console.warn('Heartbeat:', data.message);
+            return;
+        }
+
+        const viewerCount = document.getElementById('live-viewers');
+
+        if (viewerCount) {
+            viewerCount.textContent = data.viewer_count;
+        }
+
+    } catch (error) {
+        console.error('Heartbeat failed:', error);
+    }
 }
+
+function startHeartbeat() {
+    if (heartbeatTimer !== null) {
+        return;
+    }
+
+    sendHeartbeat();
+
+    heartbeatTimer = setInterval(sendHeartbeat, 15000);
+}
+
+function stopHeartbeat() {
+    if (heartbeatTimer !== null) {
+        clearInterval(heartbeatTimer);
+        heartbeatTimer = null;
+    }
+}
+
+window.addEventListener('pagehide', function () {
+    stopHeartbeat();
+
+    const payload = new Blob(
+        [JSON.stringify({ stream_id: streamGuid })],
+        { type: 'application/json' }
+    );
+
+    navigator.sendBeacon('/api/live/leave.php', payload);
+});
+
 
 
 window.addEventListener(

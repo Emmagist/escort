@@ -40,746 +40,205 @@ require __DIR__ . "/inc/header.php";
 <link rel="stylesheet" href="assets/css/join-live.css">
 
 
-<div class="container-fluid">
 
-    <div class="live-page">
 
-        <div class="live-layout">
+<div class="live-layout">
 
+    <!-- LIVE VIDEO AND COMMENTS -->
+    <section class="stream-section">
 
-            <!-- =================================================
-                 MAIN STREAM
-            ================================================== -->
+        <div class="video-card">
 
-            <section class="stream-section">
-
-
-                <!-- =================================================
-                     VIDEO CARD
-                ================================================== -->
-
-                <div class="video-card">
-
-
-                    <!-- =================================================
-                         LIVE TOP BAR
-                    ================================================== -->
-
-                    <div class="video-top">
-
-                        <div class="live-badge">
-
-                            <span class="live-dot"></span>
-
-                            LIVE
-
-                        </div>
-
-
-                        <div class="video-actions-top">
-
-                            <button
-                                type="button"
-                                class="video-action"
-                                onclick="toggleMute()"
-                                title="Mute / Unmute">
-
-                                🔊
-
-                            </button>
-
-
-                            <button
-                                type="button"
-                                class="video-action"
-                                onclick="toggleFullscreen()"
-                                title="Fullscreen">
-
-                                ⛶
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         LIVE VIDEO
-                    ================================================== -->
-
-                    <div id="remote-video">
-
-                        <div class="video-loading">
-
-                            <div class="video-loading-spinner"></div>
-
-                            <span>
-                                Connecting to live stream...
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         TIKTOK STYLE COMMENTS
-                    ================================================== -->
-
-                    <div
-                        class="live-comments-overlay"
-                        id="live-comments-overlay">
-                    </div>
-
-
-
-                    <!-- =================================================
-                         FLOATING LIKES
-                    ================================================== -->
-
-                    <div
-                        class="floating-likes"
-                        id="floating-likes">
-                    </div>
-
-
-
-                    <!-- =================================================
-                         RIGHT SIDE VIDEO ACTIONS
-                    ================================================== -->
-
-                    <div class="video-side-actions">
-
-
-                        <!-- LIKE -->
-
-                        <button
-                            type="button"
-                            class="video-side-button"
-                            id="video-like-button"
-                            onclick="likeStream()">
-
-                            <span class="video-side-icon">
-                                ❤️
-                            </span>
-
-                            <span
-                                class="video-side-count"
-                                id="video-like-count">
-
-                                0
-
-                            </span>
-
-                        </button>
-
-
-
-                        <!-- SHARE -->
-
-                        <button
-                            type="button"
-                            class="video-side-button"
-                            onclick="shareStream()">
-
-                            <span class="video-side-icon">
-                                ↗
-                            </span>
-
-                            <span class="video-side-label">
-                                Share
-                            </span>
-
-                        </button>
-
-
-
-                        <!-- COPY -->
-
-                        <button
-                            type="button"
-                            class="video-side-button"
-                            onclick="copyStreamLink()">
-
-                            <span class="video-side-icon">
-                                🔗
-                            </span>
-
-                            <span class="video-side-label">
-                                Copy
-                            </span>
-
-                        </button>
-
-
-
-                        <!-- GIFT -->
-
-                        <button
-                            type="button"
-                            class="video-side-button"
-                            onclick="document.getElementById('gift-list').scrollIntoView({behavior:'smooth'})">
-
-                            <span class="video-side-icon">
-                                🎁
-                            </span>
-
-                            <span
-                                class="video-side-count"
-                                id="video-gift-count">
-
-                                0
-
-                            </span>
-
-                        </button>
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         STREAMER INFORMATION
-                    ================================================== -->
-
-                    <div class="video-bottom">
-
-
-                        <div class="streamer-mini">
-
-
-                            <!-- STREAMER AVATAR -->
-
-                            <div
-                                class="streamer-avatar"
-                                id="streamer-avatar">
-
-                                S
-
-                            </div>
-
-
-
-                            <!-- STREAMER DETAILS -->
-
-                            <div class="streamer-info">
-
-                                <h4 id="streamer-name">
-
-                                    Live Streamer
-
-                                </h4>
-
-
-                                <span>
-
-                                    <span id="live-viewers">
-
-                                        <?= (int)$stream['viewer_count'] ?>
-
-                                    </span>
-
-                                    viewers
-
-                                </span>
-
-                            </div>
-
-
-
-                            <!-- FOLLOW -->
-
-                            <?php if (!$isOwner): ?>
-
-                                <button
-                                    type="button"
-                                    class="follow-btn"
-                                    id="follow-btn"
-                                    onclick="followStreamer()">
-
-                                    + Follow
-
-                                </button>
-
-                            <?php endif; ?>
-
-
-                        </div>
-
-
-
-                        <!-- STREAM TITLE -->
-
-                        <div
-                            class="stream-title"
-                            id="stream-title">
-
-                            <?= ucwords(
-                                htmlspecialchars(
-                                    $stream['title'],
-                                    ENT_QUOTES,
-                                    'UTF-8'
-                                )
-                            ) ?>
-
-                        </div>
-
-                    </div>
-
+            <div class="video-top">
+                <div class="live-badge">
+                    <span class="live-dot"></span> LIVE
                 </div>
 
+                <div class="video-actions-top">
+                    <button type="button" class="video-action"
+                            onclick="toggleMute()" title="Mute or unmute">
+                        🔊
+                    </button>
 
-
-                <!-- =================================================
-                     STREAM INFORMATION
-                ================================================== -->
-
-                <div class="stream-info">
-
-                    <div class="stream-info-row">
-
-
-                        <!-- STATS -->
-
-                        <div class="stats">
-
-
-                            <span class="stat">
-
-                                👁
-
-                                <strong id="viewer-count">
-
-                                    <?= (int)$stream['viewer_count'] ?>
-
-                                </strong>
-
-                            </span>
-
-
-
-                            <span class="stat">
-
-                                ❤️
-
-                                <strong
-                                    id="like-count"
-                                    data-id="<?= htmlspecialchars($streamGuid, ENT_QUOTES, 'UTF-8') ?>">
-
-                                    0
-
-                                </strong>
-
-                            </span>
-
-
-
-                            <span class="stat">
-
-                                🎁
-
-                                <strong id="gift-count">
-
-                                    0
-
-                                </strong>
-
-                            </span>
-
-                        </div>
-
-
-
-                        <!-- ACTION BUTTONS -->
-
-                        <div class="action-buttons">
-
-
-                            <button
-                                type="button"
-                                class="room-btn"
-                                id="like-button"
-                                onclick="likeStream()">
-
-                                ❤️ Like
-
-                            </button>
-
-
-                            <button
-                                type="button"
-                                class="room-btn"
-                                onclick="shareStream()">
-
-                                ↗ Share
-
-                            </button>
-
-
-                            <button
-                                type="button"
-                                class="room-btn"
-                                onclick="copyStreamLink()">
-
-                                🔗 Copy
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
+                    <button type="button" class="video-action"
+                            onclick="toggleFullscreen()" title="Fullscreen">
+                        ⛶
+                    </button>
                 </div>
-
-            </section>
-
-
-
-            <!-- =================================================
-                 DESKTOP CHAT PANEL
-            ================================================== -->
-
-            <aside class="chat-card">
-
-
-                <!-- =================================================
-                     CHAT HEADER
-                ================================================== -->
-
-                <div class="chat-header">
-
-                    <div>
-
-                        <div class="chat-title">
-
-                            Live Chat
-
-                        </div>
-
-
-                        <div class="chat-subtitle">
-
-                            Join the conversation
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="viewer-count">
-
-                        👁
-
-                        <span id="chat-viewers">
-
-                            <?= (int)$stream['viewer_count'] ?>
-
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =================================================
-                     CHAT MESSAGES
-                ================================================== -->
-
-                <div
-                    class="chat-messages"
-                    id="chat-messages">
-
-
-                    <div class="chat-message system">
-
-
-                        <div class="chat-avatar">
-
-                            ★
-
-                        </div>
-
-
-                        <div class="chat-body">
-
-                            <div class="chat-user">
-
-                                System
-
-                            </div>
-
-
-                            <div class="chat-text">
-
-                                Welcome to the live stream!
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =================================================
-                     GIFT SECTION
-                ================================================== -->
-
-                <div class="gift-section">
-
-
-                    <div class="gift-header">
-
-
-                        <div class="gift-title">
-
-                            Send a gift
-
-                        </div>
-
-
-                        <!-- COIN BALANCE -->
-
-                        <button
-                            type="button"
-                            class="coin-balance"
-                            onclick="openBuyCoins()">
-
-                            🪙
-
-                            <span id="coin-balance">
-
-                                0
-
-                            </span>
-
-                            <span>
-
-                                +
-
-                            </span>
-
-                        </button>
-
-                    </div>
-
-
-
-                    <!-- GIFT LIST -->
-
-                    <div
-                        class="gift-list"
-                        id="gift-list">
-
-                        <div class="gift-loading">
-
-                            Loading gifts...
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =================================================
-                     CHAT INPUT
-                ================================================== -->
-
-                <div class="chat-input-area">
-
-                    <div class="chat-input-wrapper">
-
-
-                        <input
-                            type="text"
-                            id="chat-input"
-                            class="chat-input"
-                            placeholder="Say something..."
-                            maxlength="500"
-                            autocomplete="off"
-                        >
-
-
-                        <button
-                            type="button"
-                            class="chat-send"
-                            onclick="sendChatMessage()">
-
-                            ➤
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </aside>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =========================================================
-         GIFT SENT POPUP
-    ========================================================== -->
-
-    <div
-        class="gift-popup"
-        id="gift-popup">
-
-
-        <div
-            class="gift-popup-icon"
-            id="gift-popup-icon">
-
-            🎁
-
-        </div>
-
-
-        <div
-            class="gift-popup-title"
-            id="gift-popup-title">
-
-            Gift Sent!
-
-        </div>
-
-
-        <div
-            class="gift-popup-sub"
-            id="gift-popup-sub">
-
-            Your gift was sent to the streamer
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =========================================================
-         BUY COINS MODAL
-    ========================================================== -->
-
-    <div
-        class="coins-modal"
-        id="coins-modal">
-
-
-        <div class="coins-modal-card">
-
-
-            <button
-                type="button"
-                class="modal-close"
-                onclick="closeBuyCoins()">
-
-                ×
-
-            </button>
-
-
-            <h3>
-
-                Buy Coins
-
-            </h3>
-
-
-            <p>
-
-                Choose a coin package
-
-            </p>
-
-
-            <div
-                id="coin-packages"
-                class="coin-packages">
-
-                Loading...
-
             </div>
 
+            <div id="remote-video">
+                <div class="video-loading">
+                    <p>Connecting to live stream...</p>
+                </div>
+            </div>
+
+            <div class="chat-messages live-comments-overlay"
+                 id="chat-messages"
+                 aria-live="polite">
+                <div class="chat-message system">
+                    <div class="chat-body">
+                        <div class="chat-text">Welcome to the live stream!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="live-event-overlay" aria-live="polite"></div>
+
+            <div class="floating-likes" id="floating-likes"></div>
+
+            <div class="video-side-actions">
+                <button type="button" class="video-side-button" id="like-btn" onclick="likeStream()"><span class="video-side-icon">♥</span><span id="like-count">0</span></button>
+
+                <button type="button" class="video-side-button"
+                        onclick="shareStream()">
+                    <span class="video-side-icon">↗</span>
+                    <span>Share</span>
+                </button>
+
+                <button type="button" class="video-side-button"
+                        onclick="copyStreamLink()">
+                    <span class="video-side-icon">🔗</span>
+                    <span>Copy</span>
+                </button>
+
+                <button type="button" class="video-side-button"
+                        onclick="document.getElementById('gift-list').scrollIntoView({behavior:'smooth',block:'nearest'})">
+                    <span class="video-side-icon">🎁</span>
+                    <span>Gifts</span>
+                </button>
+            </div>
+
+            <div class="video-bottom">
+                <div class="streamer-mini">
+                    <div class="streamer-avatar" id="streamer-avatar">S</div>
+
+                    <div class="streamer-info">
+                        <h4 id="streamer-name">Live Streamer</h4>
+                        <span>
+                            <span id="live-viewers"><?= (int)$stream['viewer_count'] ?></span>
+                            viewers
+                        </span>
+                    </div>
+
+                    <?php if (!$isOwner): ?>
+                        <button type="button" class="follow-btn"
+                                id="follow-btn" onclick="followStreamer()">
+                            + Follow
+                        </button>
+                    <?php endif; ?>
+                </div>
+
+                <div class="stream-title" id="stream-title">
+                    <?= htmlspecialchars($stream['title'], ENT_QUOTES, 'UTF-8') ?>
+                </div>
+            </div>
         </div>
 
-    </div>
+        <!-- COMMENT INPUT: restored and connected to existing functions -->
+        <div class="live-comment-composer">
+            <input type="text"
+                   id="chat-input"
+                   class="chat-input"
+                   placeholder="Say something to the streamer..."
+                   maxlength="300"
+                   autocomplete="off"
+                   onkeydown="handleChatKey(event)">
+
+            <button type="button"
+                    class="chat-send"
+                    onclick="sendChatMessage()"
+                    aria-label="Send comment">
+                ➤
+            </button>
+        </div>
+
+    </section>
+
+    <!-- GIFT PANEL ONLY — original gift IDs and card classes retained -->
+    <aside class="chat-card gift-panel">
+
+        <div class="gift-header">
+            <div>
+                <div class="gift-title">Send a gift</div>
+                <div class="gift-subtitle">Support the streamer</div>
+            </div>
+
+            <button type="button" class="coin-balance"
+                    onclick="openBuyCoins()">
+                🪙 <span id="coin-balance">0</span> +
+            </button>
+        </div>
+
+        <div class="gift-panel-label">
+            <span>Choose your gift</span>
+            <span>Tap to send</span>
+        </div>
+
+        <div class="gift-list" id="gift-list">
+            <div class="gift-loading">Loading gifts...</div>
+        </div>
+
+        <div class="gift-panel-footer">
+            🎁 Gifts help support your favourite streamer.
+        </div>
+
+    </aside>
 
 </div>
 
 
+<!-- Buy Coins Modal -->
+<div id="coins-modal" class="coins-modal" aria-hidden="true">
+    <div class="coins-modal-content">
+
+        <div class="coins-modal-header">
+            <h3>Buy Coins</h3>
+
+            <button type="button"
+                    onclick="closeBuyCoins()"
+                    aria-label="Close Buy Coins modal">
+                &times;
+            </button>
+        </div>
+
+        <p>Choose a coin package to support your favourite streamer.</p>
+
+        <div id="coin-packages">
+            <p>Loading coin packages...</p>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Gift sent notification -->
+<div id="gift-popup" class="gift-popup" role="status" aria-live="polite">
+    <div class="gift-popup-content">
+        <div id="gift-popup-icon" class="gift-popup-icon">🎁</div>
+        <div>
+            <div id="gift-popup-title" class="gift-popup-title">
+                Gift Sent!
+            </div>
+            <div id="gift-popup-sub" class="gift-popup-sub">
+                Your gift was sent to the streamer
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php require "inc/footer.php"; ?>
-
-
-
-<!-- =========================================================
-     JAVASCRIPT VARIABLES
-========================================================== -->
-
 <script>
-
-const streamGuid =
-    <?= json_encode($streamGuid) ?>;
-
-
-const streamerId =
-    <?= json_encode((string)$stream['user_id']) ?>;
-
-
-const currentStreamTitle =
-    <?= json_encode((string)$stream['title']) ?>;
-
+    const streamGuid = <?= json_encode($streamGuid) ?>;
+    const streamerId = <?= json_encode((string) $stream['user_id']) ?>;
 </script>
 
-
-
-<!-- =========================================================
-     LIVE STREAM JAVASCRIPT
-========================================================== -->
-
 <script src="assets/js/join-live/viewer.js"></script>
-
-
-<!-- =========================================================
-     CHAT
-========================================================== -->
-
 <script src="assets/js/join-live/chat.js"></script>
-
-
-<!-- =========================================================
-     GIFTS
-========================================================== -->
-
 <script src="assets/js/join-live/gifts.js"></script>
-
-
-<!-- =========================================================
-     LIKES
-========================================================== -->
-
 <script src="assets/js/join-live/likes.js"></script>
-
-
-<!-- =========================================================
-     FOLLOW
-========================================================== -->
-
 <script src="assets/js/join-live/follow.js"></script>
-
-
+<script src="assets/js/join-live/events.js"></script>
 
 <!-- =========================================================
      TIKTOK STYLE VIDEO COMMENTS

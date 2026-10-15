@@ -182,10 +182,7 @@ document.getElementById('chat-input').addEventListener('keydown', function(event
 
 function showLiveVideoComment(message) {
 
-    const container =
-        document.getElementById(
-            'live-comments-overlay'
-        );
+    const container = document.getElementById('live-comments-overlay') || document.getElementById('chat-messages');
 
     if (!container) {
         return;

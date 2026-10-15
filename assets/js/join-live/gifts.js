@@ -227,62 +227,61 @@ async function sendGift(giftGuid, name, icon) {
 }
 
 
-function showGiftAnimation(
-    name,
-    icon
-) {
+function showGiftAnimation(name, icon) {
+    const popup = document.getElementById('gift-popup');
+    const popupIcon = document.getElementById('gift-popup-icon');
+    const popupTitle = document.getElementById('gift-popup-title');
+    const popupSub = document.getElementById('gift-popup-sub');
 
-    document.getElementById(
-        'gift-popup-icon'
-    ).innerText = icon;
+    if (!popup || !popupIcon || !popupTitle || !popupSub) {
+        console.warn('Gift animation elements are missing.');
+        return;
+    }
 
-    document.getElementById(
-        'gift-popup-title'
-    ).innerText =
-        name + ' Sent!';
-
-    document.getElementById(
-        'gift-popup-sub'
-    ).innerText =
-        'Your gift was sent to the streamer';
-
-
-    const popup =
-        document.getElementById(
-            'gift-popup'
-        );
+    popupIcon.textContent = icon || '🎁';
+    popupTitle.textContent = `${name || 'Gift'} Sent!`;
+    popupSub.textContent = 'Your gift was sent to the streamer';
 
     popup.classList.add('show');
 
-    setTimeout(function() {
+    if (window.giftPopupTimer) {
+        clearTimeout(window.giftPopupTimer);
+    }
 
+    window.giftPopupTimer = setTimeout(function () {
         popup.classList.remove('show');
-
-    }, 1800);
+    }, 2500);
 }
+
 
 
 function openBuyCoins() {
+    const modal = document.getElementById('coins-modal');
 
-    document
-        .getElementById('coins-modal').classList.add('show');
-
-    loadCoinPackages();
-}
-
-
-function closeBuyCoins() {
-
-    const modal =
-        document.getElementById(
-            'coins-modal'
-        );
-
-    if (modal) {
-        modal.classList.remove('show');
+    if (!modal) {
+        console.error('Buy Coins modal (#coins-modal) was not found.');
+        return;
     }
 
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
+
+    if (typeof loadCoinPackages === 'function') {
+        loadCoinPackages();
+    }
 }
+
+function closeBuyCoins() {
+    const modal = document.getElementById('coins-modal');
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+}
+
 
 
 async function loadCoinPackages() {

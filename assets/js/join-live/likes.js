@@ -1,124 +1,171 @@
-const likeCount = document.getElementById('like-count');
 
-$(document).ready(function () {
+(function () {
+    'use strict';
 
-    const like = likeCount.getAttribute('data-id');
+    let likeButton;
+    let likeCount;
+    let floatingLikes;
 
-    setInterval(() => {
-        loadCount(like);
-    }, 2000);
+    let likeRequestPending = false;
+    let countRequestPending = false;
 
-});
+    function initLikes() {
+        likeButton = document.getElementById('like-btn');
+        likeCount = document.getElementById('like-count');
+        floatingLikes = document.getElementById('floating-likes');
 
-async function loadCount(param) {
-    try {
-        const response = await fetch('api/likes/like-count.php',{
-            method: 'POST',
-
-            headers: {
-                'Content-Type':
-                    'application/json'
-            },
-
-            body: JSON.stringify({
-                stream_id: param,
-            })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            likeCount.innerText = Number(data.count);
-        }
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-async function likeStream() {
-
-    let streamLiked = false;
-
-    if (streamLiked) {
-        return;
-    }
-
-    try {
-
-        const response = await fetch('api/likes/like.php',{
-            method: 'POST',
-
-            headers: {
-                'Content-Type':
-                    'application/json'
-            },
-
-            body: JSON.stringify({
-                stream_id: streamGuid
-            })
-        });
-
-        const data = await response.json();
-
-        if (!data.success) {
+        if (!likeButton || !likeCount) {
+            console.error('Likes: required HTML elements are missing.');
             return;
         }
 
-        streamLiked = true;
+        if (typeof streamGuid === 'undefined' || !streamGuid) {
+            console.error('Likes: streamGuid is missing.');
+            return;
+        }
 
-        const button = document.getElementById('like-button');
+        likeButton.disabled = false;
 
-        button.classList.add('liked');
-
-        button.innerHTML = '❤️ Liked';
-
-        likeCount.innerText = Number(data.count);
-
-        createFloatingHeart();
-
-        setTimeout(() => {
-            button.classList.remove('liked');
-            // button.classList.add('like');
-            button.innerHTML = '❤️ Like';
-        }, 3000);
-        
-
-    } catch (error) {
-
-        console.error(error);
-
+        loadCount();
+        setInterval(loadCount, 3000);
     }
-}
 
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLikes, {
+            once: true
+        });
+    } else {
+        initLikes();
+    }
 
-function createFloatingHeart() {
+    async function loadCount() {
+        if (countRequestPending) return;
 
-    const container =
-        document.getElementById(
-            'floating-likes'
+        countRequestPending = true;
+
+        try {
+            const response = await fetch('api/likes/like-count.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    stream_id: streamGuid
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                updateCount(data.count);
+            }
+        } catch (error) {
+            console.error('Like count error:', error);
+        } finally {
+            countRequestPending = false;
+        }
+    }
+
+    function updateCount(count) {
+        likeCount = document.getElementById('like-count');
+
+        if (!likeCount) return;
+
+        const number = Number(count);
+        likeCount.textContent = Number.isFinite(number)
+            ? Math.max(0, number)
+            : 0;
+    }
+
+    window.likeStream = async function () {
+        if (likeRequestPending) return;
+
+        if (
+            !likeButton ||
+            typeof streamGuid === 'undefined' ||
+            !streamGuid
+        ) {
+            console.error('Like button or stream ID is missing.');
+            return;
+        }
+
+        likeRequestPending = true;
+
+        try {
+            const response = await fetch('api/likes/like.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    stream_id: streamGuid
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.success) {
+                console.warn(data.message || 'Unable to like stream.');
+                return;
+            }
+
+            updateCount(data.count);
+
+            // Restart the button animation on every click.
+            likeButton.classList.remove('like-pop');
+            void likeButton.offsetWidth;
+            likeButton.classList.add('like-pop');
+
+            createFloatingHeart();
+
+            setTimeout(() => {
+                if (likeButton) {
+                    likeButton.classList.remove('like-pop');
+                }
+            }, 450);
+
+        } catch (error) {
+            console.error('Like request error:', error);
+        } finally {
+            likeRequestPending = false;
+        }
+    };
+
+    function createFloatingHeart() {
+        floatingLikes = document.getElementById('floating-likes');
+
+        if (!floatingLikes) {
+            console.error('Floating hearts container not found.');
+            return;
+        }
+
+        const heart = document.createElement('span');
+
+        heart.className = 'floating-heart';
+        heart.textContent = '❤️';
+        heart.setAttribute('aria-hidden', 'true');
+
+        heart.style.left = `${20 + Math.random() * 60}%`;
+        heart.style.setProperty(
+            '--drift',
+            `${Math.floor(Math.random() * 100) - 50}px`
         );
 
-    const heart =
-        document.createElement('span');
+        floatingLikes.appendChild(heart);
 
-    heart.className =
-        'floating-heart';
+        heart.addEventListener('animationend', () => {
+            heart.remove();
+        }, { once: true });
 
-    heart.innerHTML = '❤️';
-
-    heart.style.setProperty(
-        '--x',
-        `${Math.floor(
-            Math.random() * 100
-        ) - 50}px`
-    );
-
-    container.appendChild(heart);
-
-    setTimeout(function() {
-
-        heart.remove();
-
-    }, 1500);
-}
+        // Fallback cleanup if CSS animation does not finish.
+        setTimeout(() => heart.remove(), 2500);
+    }
+})();
